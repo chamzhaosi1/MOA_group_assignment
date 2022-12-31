@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FINAL YEAR REPORT MANAGEMENT SYSTEM</string>
+    <string name="student_id_login">STUDENT ID</string>
+    <string name="student_password_login">PASSWORD</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="link_contact_us">Forget password? Contact us</string>
+</resources>
