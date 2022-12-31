@@ -78,5 +78,4 @@
         android:textColor="@color/link_color"
         android:textSize="@dimen/link_size"/>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
