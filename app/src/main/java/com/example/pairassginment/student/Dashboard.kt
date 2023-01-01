@@ -31,7 +31,7 @@ class Dashboard : AppCompatActivity() {
         step3.setSubtitle("Subtitle of this step third.")
 
         //programatically seting style to Title
-        step3.setTitleTextAppearance(R.style.TextAppearance_AppCompat_System)
+        step3.setTitleTextAppearance(R.style.vertical_progress_bar_title)
 
     }
 }
