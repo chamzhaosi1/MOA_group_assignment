@@ -33,5 +33,7 @@ class Dashboard : AppCompatActivity() {
         //programatically seting style to Title
         step3.setTitleTextAppearance(R.style.vertical_progress_bar_title)
 
+
+
     }
 }
