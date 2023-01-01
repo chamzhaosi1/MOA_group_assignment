@@ -1,5 +1,6 @@
 package com.example.pairassginment.student
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -33,7 +34,10 @@ class Dashboard : AppCompatActivity() {
         //programatically seting style to Title
         step3.setTitleTextAppearance(R.style.vertical_progress_bar_title)
 
-
+        binding.detialBtn.setOnClickListener{
+            var intent = Intent(this, ListOfItem::class.java)
+            startActivity(intent)
+        }
 
     }
 }

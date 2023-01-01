@@ -70,6 +70,7 @@
                         android:layout_gravity="center_vertical">
 
                         <Button
+                            android:id="@+id/detialBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Detail"
