@@ -4,4 +4,7 @@
     <string name="student_password_login">PASSWORD</string>
     <string name="sign_in">SIGN IN</string>
     <string name="link_contact_us">Forget password? Contact us</string>
+    <string name="submitted_date">Submitted Date: %1$s</string>
+    <string name="approved_date">Approved Date: %1$s</string>
+    <string name="rejected_date">Rejected Date: %1$s</string>
 </resources>

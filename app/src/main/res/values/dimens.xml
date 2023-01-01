@@ -4,4 +4,6 @@
     <dimen name="sign_in_btn_text_size">20sp</dimen>
     <dimen name="link_size">18sp</dimen>
     <dimen name="notice_text_size">18sp</dimen>
+    <dimen name="submitted_topic_text_size">25sp</dimen>
+    <dimen name="date_text_size">20sp</dimen>
 </resources>
