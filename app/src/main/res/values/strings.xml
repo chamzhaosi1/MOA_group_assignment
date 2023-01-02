@@ -7,4 +7,5 @@
     <string name="submitted_date">Submitted Date: %1$s</string>
     <string name="approved_date">Approved Date: %1$s</string>
     <string name="rejected_date">Rejected Date: %1$s</string>
+    <string name="three_topics_title">Selected Title</string>
 </resources>
