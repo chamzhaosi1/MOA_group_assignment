@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pairassginment.databinding.ActivityListOfItemBinding
-import com.example.pairassginment.recycleAdapter.itemRecycleAdapter
+import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 
-class ListOfItem : AppCompatActivity() {
+class ListOfThreeTopic : AppCompatActivity() {
     private lateinit var binding: ActivityListOfItemBinding
     private lateinit var itemsArray: ArrayList<ThreeTopicsItem>
 
@@ -52,7 +52,7 @@ class ListOfItem : AppCompatActivity() {
         adpater.setOnClickListener(object : itemRecycleAdapter.onItemClickListner{
             override fun onItemClick(position: Int) {
                 // To do some things, that you want
-                Toast.makeText(this@ListOfItem, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show()
             }
         })
     }

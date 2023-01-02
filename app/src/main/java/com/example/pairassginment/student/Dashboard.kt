@@ -3,7 +3,6 @@ package com.example.pairassginment.student
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import com.example.pairassginment.R
 import com.example.pairassginment.databinding.ActivityDashboardBinding
 import com.transferwise.sequencelayout.SequenceStep
@@ -35,7 +34,7 @@ class Dashboard : AppCompatActivity() {
         step3.setTitleTextAppearance(R.style.vertical_progress_bar_title)
 
         binding.detialBtn.setOnClickListener{
-            var intent = Intent(this, ListOfItem::class.java)
+            var intent = Intent(this, ListOfThreeTopic::class.java)
             startActivity(intent)
         }
 

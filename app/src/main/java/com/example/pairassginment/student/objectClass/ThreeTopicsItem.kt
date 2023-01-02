@@ -1,4 +1,4 @@
-package com.example.pairassginment.student
+package com.example.pairassginment.student.objectClass
 
 data class ThreeTopicsItem(
     val topicSubmitted: String,

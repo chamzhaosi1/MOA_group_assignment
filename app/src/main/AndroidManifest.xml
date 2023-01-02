@@ -13,7 +13,14 @@
         android:theme="@style/Theme.PairAssginment"
         tools:targetApi="31">
         <activity
-            android:name=".student.ListOfItem"
+            android:name=".topicsSubmitForm"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".student.ListOfThreeTopic"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
