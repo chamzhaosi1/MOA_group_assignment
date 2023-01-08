@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.pairassginment.R
 import com.example.pairassginment.databinding.ActivityDashboardBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.transferwise.sequencelayout.SequenceStep
 import java.util.Objects
@@ -39,17 +40,33 @@ class Dashboard : AppCompatActivity() {
 //        }
 
         val uid:String = FirebaseAuth.getInstance().currentUser!!.uid;
+        val email:String = FirebaseAuth.getInstance().currentUser!!.email.toString();
         Log.d("User id", uid)
 
-        val user:MutableMap<String, String> = HashMap()
-        user["uid"] = uid;
-
-
-        mDB.collection("Users").document(uid)
-            .set(user)
+        val user = hashMapOf<String, Any>(
+            "email" to email,
+            "name" to "Cham Zhao Si",
+            "address" to "30-11 Jalan Daud",
+            "gender" to "mela"
+        )
+//
+        mDB.collection("Users")
+            .document(uid)
+            .update(user)
             .addOnCompleteListener {
                 Toast.makeText(this@Dashboard, "record added successfully", Toast.LENGTH_SHORT).show()
             }
+
+//        mDB.collection("Users")
+//            .whereEqualTo("name", "Cham Zhao Si")
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                for(document in documents){
+//                    if (document != null){
+//                        Log.d("Result", document.data.toString())
+//                    }
+//                }
+//            }
 
     }
 }
