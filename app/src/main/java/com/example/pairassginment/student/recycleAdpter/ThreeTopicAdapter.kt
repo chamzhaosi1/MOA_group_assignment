@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
-import com.example.pairassginment.databinding.CardLayoutBinding
 import android.content.Context
+import com.example.pairassginment.databinding.TopicsCardLayoutBinding
 import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 
 class itemRecycleAdapter (val context: Context, val items: ArrayList<ThreeTopicsItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -22,9 +22,9 @@ class itemRecycleAdapter (val context: Context, val items: ArrayList<ThreeTopics
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = CardLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = TopicsCardLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(LayoutInflater.from(context).inflate(
-            R.layout.card_layout,
+            R.layout.topics_card_layout,
             parent,
             false
         ), mListener, binding)
@@ -57,7 +57,7 @@ class itemRecycleAdapter (val context: Context, val items: ArrayList<ThreeTopics
         return items.size
     }
 
-     class ViewHolder(itemView: View, listener: onItemClickListner, binding: CardLayoutBinding): RecyclerView.ViewHolder(binding.root){
+     class ViewHolder(itemView: View, listener: onItemClickListner, binding: TopicsCardLayoutBinding): RecyclerView.ViewHolder(binding.root){
          val itemImage = binding.itemImage
          val itemTopic = binding.itemTopicSubmitted
          val itemSubmittedDate = binding.itemSubmittedDate
