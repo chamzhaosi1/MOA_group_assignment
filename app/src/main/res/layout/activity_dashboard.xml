@@ -257,7 +257,7 @@
                 </com.transferwise.sequencelayout.SequenceStep>
 
                 <com.transferwise.sequencelayout.SequenceStep
-                    android:id="@+id/six_step"
+                    android:id="@+id/sixth_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:anchor="2 Dec"
@@ -297,7 +297,7 @@
                 </com.transferwise.sequencelayout.SequenceStep>
 
                 <com.transferwise.sequencelayout.SequenceStep
-                    android:id="@+id/seven_step"
+                    android:id="@+id/seventh_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:anchor="2 Dec"

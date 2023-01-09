@@ -125,6 +125,18 @@ mDB.collection("Users")
             }
 ```
 
+## To check whether the key existing or not
+```kotlin
+val dataMap : MutableMap<String, Any>? = document.data
+                    Log.d("dataMap", dataMap.toString())
+
+                    if(dataMap!!.containsKey("Babi")){
+                        Log.d("dataMap", "Babi is existing")
+                    }else{
+                        Log.d("dataMap", "Babi is not existing")
+                    }
+```
+
 ## Remark
 ```kotlin
 val alovelaceDocumentRef = db.document("users/alovelace")
