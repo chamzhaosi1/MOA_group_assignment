@@ -21,7 +21,7 @@ class Dashboard : AppCompatActivity() {
 
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private var student_detial: StudentDetail = StudentDetail()
+    private var student_detail: StudentDetail = StudentDetail()
     private var batch_deadline: BatchDeadline = BatchDeadline()
 
     private var firstStep: SequenceStep? = null;
@@ -76,18 +76,17 @@ class Dashboard : AppCompatActivity() {
         poster_detial_btn = binding.posterDetailBtn
 
         getStudentDetail()
-
     }
 
     private fun getStudentNameIDReady(){
-        binding.studentNameIdTv.text = student_detial.student_name.toString() + " " + student_detial.student_id.toString()
+        binding.studentNameIdTv.text = student_detail.student_name.toString() + " " + student_detail.student_id.toString()
     }
 
     private fun getSequenceStepReady(){
-        Log.d("Batch Detail", student_detial.toString())
+        Log.d("Batch Detail", student_detail.toString())
 
         mDB.collection("Batch")
-            .document(student_detial.batch_id!!)
+            .document(student_detail.batch_id!!)
             .get()
             .addOnCompleteListener{
                 Log.d("Batch Detail", "Run complete")
@@ -167,9 +166,9 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun getSubmissionDetail(){
-        if(student_detial.submission_id!!.isNotEmpty()){
+        if(student_detail.submission_id!!.isNotEmpty()){
             mDB.collection("Submission")
-                .document(student_detial.submission_id!!)
+                .document(student_detail.submission_id!!)
                 .collection("Topics")
                 .get()
                 .addOnSuccessListener { documents ->
@@ -197,6 +196,15 @@ class Dashboard : AppCompatActivity() {
                         if(topic_status == "Approved"){
                             topics_detail_btn?.visibility = View.VISIBLE
                             topics_submit_btn?.visibility = View.GONE
+
+                            topics_detail_btn!!.setOnClickListener {
+                                val intent = Intent(this@Dashboard, ListOfThreeTopic::class.java)
+                                intent.putExtra("student_detail", student_detail)
+                                startActivity(intent)
+                                finish()
+                            }
+
+
                             firstStep!!.setActive(false)
                             secondStep!!.setActive(true)
                             Log.d("second step", secondStep.toString())
@@ -210,11 +218,11 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun getStudentDetail(){
-        student_detial.role_id = intent.getStringExtra("role_id").toString()
-        Log.d("Student detail", "Above"+student_detial.role_id!!)
+        student_detail.role_id = intent.getStringExtra("role_id").toString()
+        Log.d("Student detail", "Above"+student_detail.role_id!!)
 
         mDB.collection("Students")
-            .document(student_detial.role_id!!)
+            .document(student_detail.role_id!!)
             .get()
             .addOnCompleteListener {
                 Log.d("Student detail", "run completed")
@@ -225,22 +233,22 @@ class Dashboard : AppCompatActivity() {
                     Log.d("Student detail", "Success to retrieve student detail")
                     Log.d("Student detail", document.data.toString())
 
-                    student_detial.student_name = document.data?.get("Name").toString()
-                    student_detial.student_id = document.data?.get("Student_ID").toString()
+                    student_detail.student_name = document.data?.get("Name").toString()
+                    student_detail.student_id = document.data?.get("Student_ID").toString()
 
                     val dataMap : MutableMap<String, Any>? = document.data
 //                    Log.d("dataMap", dataMap.toString())
 
                     if(dataMap!!.containsKey("Batch_ID")){
-                        student_detial.batch_id = dataMap["Batch_ID"].toString()
+                        student_detail.batch_id = dataMap["Batch_ID"].toString()
                     }
 
                     if(dataMap!!.containsKey("Mark_ID")){
-                        student_detial.mark_id = dataMap["Mark_ID"].toString()
+                        student_detail.mark_id = dataMap["Mark_ID"].toString()
                     }
 
                     if(dataMap!!.containsKey("Submission_ID")){
-                        student_detial.submission_id = dataMap["Submission_ID"].toString()
+                        student_detail.submission_id = dataMap["Submission_ID"].toString()
                     }
 
                     getStudentNameIDReady()

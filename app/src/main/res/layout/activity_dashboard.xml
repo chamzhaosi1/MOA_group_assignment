@@ -76,6 +76,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -87,6 +88,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>
@@ -116,6 +118,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -127,6 +130,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>
@@ -158,6 +162,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -169,6 +174,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>
@@ -198,6 +204,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -209,6 +216,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>
@@ -238,6 +246,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -249,6 +258,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>
@@ -278,6 +288,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -289,6 +300,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>
@@ -318,6 +330,7 @@
                             android:text="SUBMIT"
                             android:layout_marginBottom="15dp"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
@@ -329,6 +342,7 @@
                             android:textColor="@color/little_white_black"
                             android:textStyle="bold"
                             android:padding="15dp"
+                            android:visibility="gone"
                             android:backgroundTint="@color/orange_bng"/>
 
                     </LinearLayout>

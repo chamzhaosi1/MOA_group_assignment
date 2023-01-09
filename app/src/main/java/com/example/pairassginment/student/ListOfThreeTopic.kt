@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pairassginment.databinding.ActivityListOfItemBinding
+import com.example.pairassginment.student.objectClass.StudentDetail
 import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 
 class ListOfThreeTopic : AppCompatActivity() {
@@ -39,10 +41,15 @@ class ListOfThreeTopic : AppCompatActivity() {
 
         addItemsListIntoAdapter(itemsArray);
 
+        val student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+        Log.d("Student detail list", student_detail.toString())
+
         // set home button listener
         binding.floatingHomeBtn.setOnClickListener{
             val intent = Intent(this, Dashboard::class.java)
+            intent.putExtra("role_id", student_detail!!.role_id)
             startActivity(intent);
+            finish();
         }
 
         // register an intent that will result a result
