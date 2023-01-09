@@ -14,6 +14,7 @@ import com.example.pairassginment.databinding.ActivityMainBinding
 import com.example.pairassginment.student.Dashboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : AppCompatActivity(){
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(){
     private val SHARED_PREFS: String = "sharedPrefs"
     private var sharedPreferences: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,10 +75,32 @@ class MainActivity : AppCompatActivity(){
                     "Authenticated with: " + user.email,
                     Toast.LENGTH_SHORT
                 ).show()
-                val intent = Intent(this@MainActivity, Dashboard::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
+
+                mDB.collection("Users")
+                    .document(user.uid)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null){
+                            val role = document.data!!.getValue("Role").toString()
+//                            Log.d("Role" , role)
+
+                            when(role){
+                                "student" ->{
+                                    val intent = Intent(this@MainActivity, Dashboard::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.putExtra("role_id", document.data!!.getValue("Role_ID").toString())
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                "coordinator" ->{
+                                    Log.d("Role" , role)
+                                }
+                                "supervisor" ->{
+                                    Log.d("Role" , role)
+                                }
+                            }
+                        }
+                    }
             } else {
                 // User is signed out
                 Log.d(TAG, "onAuthStateChanged:signed_out")

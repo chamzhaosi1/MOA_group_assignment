@@ -35,7 +35,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/notice_tv"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:anchor="24 OCT"
-                    app:title="TOPIC SELECTION"
+                    app:title="TOPICS SELECTION SUBMISSION"
                     app:titleTextAppearance="@style/vertical_progress_bar_title"
                     app:subtitle="DEADLINE: 23 NOV 20 \n\nSTATUS: PENDING\n\nSUBMITTED: 3/3"
                     app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
@@ -70,7 +70,16 @@
                         android:layout_gravity="center_vertical">
 
                         <Button
-                            android:id="@+id/detialBtn"
+                            android:id="@+id/topics_submit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SUBMIT"
+                            android:layout_marginBottom="15dp"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/sign_in_btn_bng"/>
+
+                        <Button
+                            android:id="@+id/topics_detail_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Detail"
@@ -89,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:anchor="24 NOV"
-                    app:title="SUBMIT PROPOSAL PRESENTATION SLIDE"
+                    app:title="PROPOSAL PRESENTATION SLIDE SUBMISSION"
                     app:titleTextAppearance="@style/vertical_progress_bar_title"
                     app:subtitle="DEADLINE: 23 dec 20 \n\nSTATUS: WAITING\n\nSUBMITTED: 1"
                     app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
@@ -101,6 +110,7 @@
                         android:layout_gravity="center_vertical">
 
                         <Button
+                            android:id="@+id/proposal_ppt_slide_submit_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SUBMIT"
@@ -109,6 +119,7 @@
                             android:backgroundTint="@color/sign_in_btn_bng"/>
 
                         <Button
+                            android:id="@+id/proposal_ppt_slide_detail_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Detail"
@@ -130,29 +141,205 @@
                     app:active="true"
                     android:paddingBottom="8dp"
                     app:anchor="Today"
-                    app:subtitle="This is the subtitle of this step.\nIt should describe steps (especially the active step) in a detailed way."
-                    app:title="Third step"
+                    app:title="PROPOSAL SUBMISSION"
                     app:titleTextAppearance="@style/vertical_progress_bar_title"
-                    app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle"/>
+                    app:subtitle="This is the subtitle of this step.\nIt should describe steps (especially the active step) in a detailed way."
+                    app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/proposal_submit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SUBMIT"
+                            android:layout_marginBottom="15dp"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/sign_in_btn_bng"/>
+
+                        <Button
+                            android:id="@+id/proposal_detail_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Detail"
+                            android:textAlignment="center"
+                            android:textColor="@color/little_white_black"
+                            android:textStyle="bold"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/orange_bng"/>
+
+                    </LinearLayout>
+
+                </com.transferwise.sequencelayout.SequenceStep>
 
                 <com.transferwise.sequencelayout.SequenceStep
                     android:id="@+id/fourth_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="Fourth step" />
+                    app:anchor="24 NOV"
+                    app:title="FINAL DRAFT SUBMISSION"
+                    app:titleTextAppearance="@style/vertical_progress_bar_title"
+                    app:subtitle="DEADLINE: 23 dec 20 \n\nSTATUS: WAITING\n\nSUBMITTED: 1"
+                    app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/final_draft_submit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SUBMIT"
+                            android:layout_marginBottom="15dp"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/sign_in_btn_bng"/>
+
+                        <Button
+                            android:id="@+id/final_draft_detail_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Detail"
+                            android:textAlignment="center"
+                            android:textColor="@color/little_white_black"
+                            android:textStyle="bold"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/orange_bng"/>
+
+                    </LinearLayout>
+
+                </com.transferwise.sequencelayout.SequenceStep>
 
                 <com.transferwise.sequencelayout.SequenceStep
                     android:id="@+id/fifth_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:anchor="2 Dec"
-                    app:title="Fifth step" />
+                    app:title="FINAL PROPOSAL PRESENTATION SLIDE SUBMISSION"
+                    app:titleTextAppearance="@style/vertical_progress_bar_title"
+                    app:subtitle="DEADLINE: 23 dec 20 \n\nSTATUS: WAITING\n\nSUBMITTED: 1"
+                    app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/final_ppt_slide_submit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SUBMIT"
+                            android:layout_marginBottom="15dp"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/sign_in_btn_bng"/>
+
+                        <Button
+                            android:id="@+id/final_ppt_slide_detail_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Detail"
+                            android:textAlignment="center"
+                            android:textColor="@color/little_white_black"
+                            android:textStyle="bold"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/orange_bng"/>
+
+                    </LinearLayout>
+
+                </com.transferwise.sequencelayout.SequenceStep>
+
+                <com.transferwise.sequencelayout.SequenceStep
+                    android:id="@+id/six_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:anchor="2 Dec"
+                    app:title="FINAL THESIS SUBMISSION"
+                    app:titleTextAppearance="@style/vertical_progress_bar_title"
+                    app:subtitle="DEADLINE: 23 dec 20 \n\nSTATUS: WAITING\n\nSUBMITTED: 1"
+                    app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/final_thesis_submit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SUBMIT"
+                            android:layout_marginBottom="15dp"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/sign_in_btn_bng"/>
+
+                        <Button
+                            android:id="@+id/final_thesis_detail_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Detail"
+                            android:textAlignment="center"
+                            android:textColor="@color/little_white_black"
+                            android:textStyle="bold"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/orange_bng"/>
+
+                    </LinearLayout>
+
+                </com.transferwise.sequencelayout.SequenceStep>
+
+                <com.transferwise.sequencelayout.SequenceStep
+                    android:id="@+id/seven_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:anchor="2 Dec"
+                    app:title="POSTER SUBMISSION"
+                    app:titleTextAppearance="@style/vertical_progress_bar_title"
+                    app:subtitle="DEADLINE: 23 dec 20 \n\nSTATUS: WAITING\n\nSUBMITTED: 1"
+                    app:subtitleTextAppearance="@style/vertical_progress_bar_subtitle">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/poster_submit_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SUBMIT"
+                            android:layout_marginBottom="15dp"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/sign_in_btn_bng"/>
+
+                        <Button
+                            android:id="@+id/poster_detail_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Detail"
+                            android:textAlignment="center"
+                            android:textColor="@color/little_white_black"
+                            android:textStyle="bold"
+                            android:padding="15dp"
+                            android:backgroundTint="@color/orange_bng"/>
+
+                    </LinearLayout>
+
+                </com.transferwise.sequencelayout.SequenceStep>
 
             </com.transferwise.sequencelayout.SequenceLayout>
 
         </LinearLayout>
 
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
