@@ -8,4 +8,5 @@
     <string name="approved_date">Approved Date: %1$s</string>
     <string name="rejected_date">Rejected Date: %1$s</string>
     <string name="three_topics_title">Selected Title</string>
+    <string name="other_document_label_tv">other document label</string>
 </resources>

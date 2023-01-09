@@ -4,6 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".student.OtherSubmitForm">
+    tools:context=".student.TopicsSubmitForm">
+
+    <TextView
+        android:id="@+id/student_name_id_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:padding="20dp"
+        android:text="Cham Zhao Si 2250160-BSE"
+        android:textAlignment="center"
+        android:textColor="@color/little_white_black"
+        android:textSize="@dimen/app_name_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/topic_label_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/other_document_label_tv"
+        app:layout_constraintTop_toBottomOf="@id/student_name_id_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:paddingVertical="10dp"
+        android:textSize="@dimen/app_name_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/student_comment_label_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="STUDENT COMMENT: "
+        app:layout_constraintTop_toBottomOf="@id/topic_label_tv"
+        app:layout_constraintBottom_toTopOf="@+id/abstracts_et"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="10dp"
+        android:paddingVertical="5dp"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/abstracts_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:lines="15"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/student_comment_label_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="top|left"
+        android:minLines="10"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:hint="Write down your comment about the uploaded document"
+        android:textSize="20sp"
+        android:background="@color/little_black_white"/>
+
+    <Button
+        android:id="@+id/upload_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Uplaod File"
+        app:layout_constraintTop_toBottomOf="@+id/abstracts_et"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:padding="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:backgroundTint="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/uploaded_file_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="15dp"
+        android:text="uploaded_file_name "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/submit_btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/upload_btn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/abstracts_et"
+        app:layout_constraintVertical_bias="0.041" />
+
+    <ImageView
+        android:id="@+id/back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back"
+        app:layout_constraintTop_toBottomOf="@id/uploaded_file_name_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20sp"
+        android:layout_marginHorizontal="20dp"
+        android:padding="10dp"/>
+
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:backgroundTint="@color/sign_in_btn_bng"
+        android:textSize="@dimen/sign_in_btn_text_size"
+        app:layout_constraintTop_toBottomOf="@id/uploaded_file_name_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20sp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
