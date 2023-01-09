@@ -138,7 +138,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="4dp"
-                    app:active="true"
                     android:paddingBottom="8dp"
                     app:anchor="Today"
                     app:title="PROPOSAL SUBMISSION"

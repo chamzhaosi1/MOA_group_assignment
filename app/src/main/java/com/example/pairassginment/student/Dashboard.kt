@@ -12,6 +12,7 @@ import com.example.pairassginment.student.objectClass.BatchDeadline
 import com.example.pairassginment.student.objectClass.StudentDetail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ServerTimestamp
 import com.transferwise.sequencelayout.SequenceStep
 
 
@@ -122,27 +123,27 @@ class Dashboard : AppCompatActivity() {
         firstStep!!.setAnchor(batch_deadline.topics_begin)
         firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0/3" )
 
-        secondStep!!.setActive(true)
+//        secondStep!!.setActive(false)
         secondStep!!.setAnchor(batch_deadline.proposal_ppt_begin)
         secondStep!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0" )
 
-        thirdStep!!.setActive(true)
+//        thirdStep!!.setActive(false)
         thirdStep!!.setAnchor(batch_deadline.proposal_begin)
         thirdStep!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_deadline + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0" )
 
-        fourthStep!!.setActive(true)
+//        fourthStep!!.setActive(false)
         fourthStep!!.setAnchor(batch_deadline.final_draft_begin)
         fourthStep!!.setSubtitle("DEADLINE: " + batch_deadline.final_draft_deadline + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0" )
 
-        fifthStep!!.setActive(true)
+//        fifthStep!!.setActive(false)
         fifthStep!!.setAnchor(batch_deadline.final_ppt_begin)
         fifthStep!!.setSubtitle("DEADLINE: " + batch_deadline.final_ppt_deadline + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0" )
 
-        sixthStep!!.setActive(true)
+//        sixthStep!!.setActive(false)
         sixthStep!!.setAnchor(batch_deadline.final_thesis_begin)
         sixthStep!!.setSubtitle("DEADLINE: " + batch_deadline.final_thesis_deadline + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0" )
 
-        seventhStep!!.setActive(true)
+//        seventhStep!!.setActive(false)
         seventhStep!!.setAnchor(batch_deadline.poster_begin)
         seventhStep!!.setSubtitle("DEADLINE: " + batch_deadline.poster_deadline + "\n\n" + "STATUS: WAITING" + "\n\n" + "SUBMITTED: 0" )
 
@@ -161,10 +162,51 @@ class Dashboard : AppCompatActivity() {
         final_thesis_detail_btn?.visibility = View.GONE
         poster_submit_btn?.visibility = View.GONE
         poster_detial_btn?.visibility = View.GONE
+
+        getSubmissionDetail()
     }
 
     private fun getSubmissionDetail(){
-//        if()
+        if(student_detial.submission_id!!.isNotEmpty()){
+            mDB.collection("Submission")
+                .document(student_detial.submission_id!!)
+                .collection("Topics")
+                .get()
+                .addOnSuccessListener { documents ->
+                    val status_array:ArrayList<String> = ArrayList()
+                    var topic_status:String? = null;
+                    val topic_size:Int = documents.size()
+                    Log.d("Submission Detail", topic_size.toString())
+
+                    for(document in documents){
+                        Log.d("Submission Detail", document.data["Status"].toString())
+                        status_array!!.add(document.data["Status"].toString())
+                    }
+
+                    topic_status = if(status_array!!.contains("Approved")){
+                                    "Approved"
+                                }else if (status_array!!.contains("Pending")){
+                                    "Pending"
+                                }else{
+                                    "Rejected"
+                                }
+
+                    if(topic_size > 0){
+                        firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: "+topic_status+ "\n\n" + "SUBMITTED: " + topic_size.toString() + "/3" )
+
+                        if(topic_status == "Approved"){
+                            topics_detail_btn?.visibility = View.VISIBLE
+                            topics_submit_btn?.visibility = View.GONE
+                            firstStep!!.setActive(false)
+                            secondStep!!.setActive(true)
+                            Log.d("second step", secondStep.toString())
+                        }else{
+                            topics_detail_btn?.visibility = View.VISIBLE
+                            topics_submit_btn?.visibility = View.VISIBLE
+                        }
+                    }
+                }
+        }
     }
 
     private fun getStudentDetail(){
