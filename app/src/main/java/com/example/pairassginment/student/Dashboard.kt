@@ -201,9 +201,7 @@ class Dashboard : AppCompatActivity() {
                                 val intent = Intent(this@Dashboard, ListOfThreeTopic::class.java)
                                 intent.putExtra("student_detail", student_detail)
                                 startActivity(intent)
-                                finish()
                             }
-
 
                             firstStep!!.setActive(false)
                             secondStep!!.setActive(true)

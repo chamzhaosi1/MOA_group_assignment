@@ -12,38 +12,81 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pairassginment.databinding.ActivityListOfItemBinding
 import com.example.pairassginment.student.objectClass.StudentDetail
 import com.example.pairassginment.student.objectClass.ThreeTopicsItem
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ListOfThreeTopic : AppCompatActivity() {
     private lateinit var binding: ActivityListOfItemBinding
-    private lateinit var itemsArray: ArrayList<ThreeTopicsItem>
+    private lateinit var topicsDetailArray: ArrayList<ThreeTopicsItem>
     private var MY_CODE_REQUEST: Int = 0;
     private var MY_ITEM_CODE_REQUEST: Int = 10;
 
+    private var student_detail: StudentDetail? = null;
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    // register an intent that will result a result
+    private val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
+    }
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onActivityResult(MY_CODE_REQUEST, result)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityListOfItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        topicsDetailArray = ArrayList();
 
-        itemsArray = ArrayList();
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal", "Arduino of solar", "31 Dec 2022", "1 Jan 2023","", "Approved", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal", "Student Portal Website", "31 Dec 2022", "", "","Pending", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal", "Financing System", "31 Dec 2022","", "1 Jan 2023","Rejected", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal", "Arduino of solar", "31 Dec 2022", "1 Jan 2023","", "Approved", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal","Student Portal Website", "31 Dec 2022", "", "","Pending", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem( "bal, bal, bal, bal","Financing System", "31 Dec 2022","", "1 Jan 2023","Rejected", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal", "Arduino of solar", "31 Dec 2022", "1 Jan 2023","", "Approved", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal", "Student Portal Website", "31 Dec 2022", "", "","Pending", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal","Financing System", "31 Dec 2022","", "1 Jan 2023","Rejected", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal","Arduino of solar", "31 Dec 2022", "1 Jan 2023","", "Approved", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal","Student Portal Website", "31 Dec 2022", "", "","Pending", "bala, bala, bala ..."))
-        itemsArray.add(ThreeTopicsItem("bal, bal, bal, bal","Financing System", "31 Dec 2022","", "1 Jan 2023","Rejected", "bala, bala, bala ..."))
-
-        addItemsListIntoAdapter(itemsArray);
-
-        val student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+        student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
         Log.d("Student detail list", student_detail.toString())
 
+        getStudentNameIDReady()
+        getTopicsDetail()
+    }
+
+    private fun getStudentNameIDReady(){
+        binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
+    }
+
+    private fun getTopicsDetail(){
+        mDB.collection("Submission")
+            .document(student_detail?.submission_id!!)
+            .collection("Topics")
+            .get()
+            .addOnSuccessListener { documents ->
+                if(documents != null){
+                    for (document in documents){
+                        if (document != null){
+                            val dataMap:MutableMap<String, Any> = document.data
+
+                            val title = dataMap["Title"].toString()
+                            val abstract = dataMap["Abstract"].toString()
+                            val data_submit = dataMap["Date_Submit"].toString()
+                            val status = dataMap["Status"].toString();
+                            var supervisor_comment:String? = null
+                            var data_feedback:String? = null
+                            var topic_id = dataMap["Topics_ID"].toString();
+
+                            if(dataMap.containsKey("Supervisor_Comment")){
+                                supervisor_comment = dataMap["Supervisor_Comment"].toString()
+                            }
+
+                            if(dataMap.containsKey("Date_Feedback")){
+                                data_feedback = dataMap["Date_Feedback"].toString()
+                            }
+
+                            topicsDetailArray.add(ThreeTopicsItem(title, abstract, data_submit, data_feedback, supervisor_comment, status, topic_id ))
+                        }
+                    }
+                }
+                Log.d("Go to adapter", topicsDetailArray.toString())
+                addItemsListIntoAdapter(topicsDetailArray)
+                setBtnOnClickListener()
+            }
+    }
+
+    private fun setBtnOnClickListener(){
         // set home button listener
         binding.floatingHomeBtn.setOnClickListener{
             val intent = Intent(this, Dashboard::class.java)
@@ -52,17 +95,46 @@ class ListOfThreeTopic : AppCompatActivity() {
             finish();
         }
 
-        // register an intent that will result a result
-        val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            onActivityResult(MY_CODE_REQUEST, result)
-        }
-
         // set create / add btn listener
         binding.floatingAddBtn.setOnClickListener{
             val intent = Intent(this, TopicsSubmitForm::class.java)
             // after registered and clicked the btn then get the intent launch
+            intent.putExtra("student_detail", student_detail)
             startForResult.launch(intent)
         }
+    }
+
+    private fun addItemsListIntoAdapter(itemsArray : ArrayList<ThreeTopicsItem>){
+        Log.d("Adapter", itemsArray.toString())
+        // set linear layout manager
+        val layoutManager = LinearLayoutManager(this)
+        binding.listOfItemRecycleView.layoutManager = layoutManager
+
+        // add the items list into layout
+        val adapter = itemRecycleAdapter(this, itemsArray)
+        binding.listOfItemRecycleView.adapter = adapter
+
+        val intent_view_submit_form = Intent(this, ViewTopicsSubmitForm::class.java)
+        val intent_topic_submit_form = Intent(this, TopicsSubmitForm::class.java)
+
+        // set each card listener
+        adapter.setOnClickListener(object : itemRecycleAdapter.onItemClickListner{
+            override fun onItemClick(position: Int) {
+                // To do some things, that you want
+                // Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show(
+                intent_view_submit_form.putExtra("student_detail", student_detail)
+                intent_view_submit_form.putExtra("item_clicked", itemsArray[position])
+
+                intent_topic_submit_form.putExtra("student_detail", student_detail)
+                intent_topic_submit_form.putExtra("item_clicked", itemsArray[position])
+
+                Log.d("item clicked", itemsArray[position].toString())
+                when(itemsArray[position].status){
+                    "Pending"  -> startActivity(intent_topic_submit_form)
+                    else -> startItemForResult.launch(intent_view_submit_form)
+                }
+            }
+        })
     }
 
     // once the activity is finished than get the result
@@ -77,38 +149,6 @@ class ListOfThreeTopic : AppCompatActivity() {
         }
     }
 
-    fun addItemsListIntoAdapter(itemsArray : ArrayList<ThreeTopicsItem>){
-        // set linear layout manager
-        val layoutManager = LinearLayoutManager(this)
-        binding.listOfItemRecycleView.layoutManager = layoutManager
-
-        // add the items list into layout
-        val adapter = itemRecycleAdapter(this, itemsArray)
-        binding.listOfItemRecycleView.adapter = adapter
-
-        val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
-        }
-
-        val intent_view_submit_form = Intent(this, ViewTopicsSubmitForm::class.java)
-        val intent_topic_submit_form = Intent(this, TopicsSubmitForm::class.java)
-
-        // set each card listener
-        adapter.setOnClickListener(object : itemRecycleAdapter.onItemClickListner{
-            override fun onItemClick(position: Int) {
-                // To do some things, that you want
-                // Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show(
-                intent_view_submit_form.putExtra("item_clicked", itemsArray[position])
-                intent_topic_submit_form.putExtra("item_clicked", itemsArray[position])
-
-                when(itemsArray[position].submittedStatus){
-                    "Pending"  -> startActivity(intent_topic_submit_form)
-                    else -> startItemForResult.launch(intent_view_submit_form)
-                }
-            }
-        })
-    }
-
     // once the activity is finished than get the result
     private fun onItemActivityResult(requestCode: Int, result: ActivityResult){
         if (result.resultCode == Activity.RESULT_OK) {
@@ -121,3 +161,5 @@ class ListOfThreeTopic : AppCompatActivity() {
         }
     }
 }
+
+

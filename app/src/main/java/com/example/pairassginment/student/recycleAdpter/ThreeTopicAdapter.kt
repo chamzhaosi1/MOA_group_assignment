@@ -34,24 +34,24 @@ class itemRecycleAdapter (val context: Context, val items: ArrayList<ThreeTopics
 
         if(holder is ViewHolder){
             holder.itemImage.setImageResource(R.drawable.idea)
-            holder.itemTopic.text = (items[position].topicSubmitted)
-            holder.itemSubmittedDate.text = context.getString(R.string.submitted_date, items[position].dateSubmitted)
+            holder.itemTopic.text = (items[position].title)
+            holder.itemSubmittedDate.text = context.getString(R.string.submitted_date, items[position].date_submitted)
 
-            when (items[position].submittedStatus){
-                "Approved" ->
-                    {holder.itemApprovedRejectedDate.text = context.getString(R.string.approved_date, items[position].dateApproved)
-                        holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.approved_green))}
 
-                "Pending" ->
-                holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.pending_yellow))
+            when (items[position].status){
+                "Approved" -> {
+                    holder.itemApprovedRejectedDate.text = context.getString(R.string.approved_date, items[position].date_feedback)
+                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.approved_green))
+                }
 
-                else ->
-                {holder.itemApprovedRejectedDate.text = context.getString(R.string.rejected_date, items[position].dateReject)
-                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.rejected_red))}
+                "Rejected" ->{
+                    holder.itemApprovedRejectedDate.text = context.getString(R.string.rejected_date, items[position].date_feedback)
+                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.rejected_red))
+                }
 
+                else ->holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.pending_yellow))}
             }
         }
-    }
 
     override fun getItemCount(): Int {
         return items.size

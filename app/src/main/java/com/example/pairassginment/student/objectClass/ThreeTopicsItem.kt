@@ -4,13 +4,13 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ThreeTopicsItem(
-    val abstractSubmitted: String?,
-    val topicSubmitted: String?,
-    val dateSubmitted: String?,
-    val dateApproved: String?,
-    val dateReject: String?,
-    val submittedStatus: String?,
-    val supervisorComment: String?,
+    val title: String? = null,
+    val abstract: String? = null,
+    val date_submitted: String? = null,
+    val date_feedback: String? = null,
+    val supervisor_comment: String? = null,
+    val status: String? = null,
+    val topic_id: String? = null,
     ) : Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -24,13 +24,13 @@ data class ThreeTopicsItem(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(abstractSubmitted)
-        parcel.writeString(topicSubmitted)
-        parcel.writeString(dateSubmitted)
-        parcel.writeString(dateApproved)
-        parcel.writeString(dateReject)
-        parcel.writeString(submittedStatus)
-        parcel.writeString(supervisorComment)
+        parcel.writeString(title)
+        parcel.writeString(abstract)
+        parcel.writeString(date_submitted)
+        parcel.writeString(date_feedback)
+        parcel.writeString(supervisor_comment)
+        parcel.writeString(status)
+        parcel.writeString(topic_id)
     }
 
     override fun describeContents(): Int {
