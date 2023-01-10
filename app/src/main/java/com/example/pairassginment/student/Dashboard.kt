@@ -245,7 +245,7 @@ class Dashboard : AppCompatActivity() {
             .collection("Proposal_PPT")
             .get()
             .addOnSuccessListener { documents ->
-
+                Log.d("Proposal Submission Detail", documents.size().toString())
                 if (documents.size() > 0){
                     val status_array:ArrayList<String> = ArrayList()
                     var proposal_ppt_status:String? = null;
@@ -268,7 +268,7 @@ class Dashboard : AppCompatActivity() {
                     val intentDetailList = Intent(this@Dashboard, ListOfOtherDocuments::class.java)
                     val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
 
-                    firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: "+proposal_ppt_status+ "\n\n" + "SUBMITTED: " + proposal_ppt_size.toString() + "/3" )
+                    secondStep!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: "+proposal_ppt_status+ "\n\n" + "SUBMITTED: " + proposal_ppt_size.toString() + "/3" )
 
                     if(proposal_ppt_status == "Approved"){
                         proposal_ppt_detail_btn?.visibility = View.VISIBLE

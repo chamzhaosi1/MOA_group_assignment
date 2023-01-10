@@ -47,7 +47,7 @@
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/abstracts_et"
+        android:id="@+id/student_comment_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Uplaod File"
-        app:layout_constraintTop_toBottomOf="@+id/abstracts_et"
+        app:layout_constraintTop_toBottomOf="@+id/student_comment_et"
         app:layout_constraintLeft_toLeftOf="parent"
         android:padding="15dp"
         android:layout_marginTop="10dp"
@@ -91,7 +91,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/upload_btn"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/abstracts_et"
+        app:layout_constraintTop_toBottomOf="@+id/student_comment_et"
         app:layout_constraintVertical_bias="0.041" />
 
     <ImageView

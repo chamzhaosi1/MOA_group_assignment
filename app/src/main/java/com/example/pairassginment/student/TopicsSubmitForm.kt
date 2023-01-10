@@ -124,13 +124,9 @@ class TopicsSubmitForm : AppCompatActivity() {
                         .document(document_id)
                         .update("Topics_ID", document_id)
                         .addOnSuccessListener {
-                            val sub_id = hashMapOf<String, Any>(
-                                "Submission_ID" to randomNumber
-                            )
-
                             mDB.collection("Students")
                                 .document(student_detail!!.role_id!!)
-                                .update(sub_id)
+                                .update("Submission_ID", randomNumber)
                                 .addOnSuccessListener {
                                     val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
                                     student_detail!!.submission_id = randomNumber;

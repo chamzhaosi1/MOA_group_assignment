@@ -14,20 +14,25 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import com.example.pairassginment.databinding.ActivityOtherSubmitFormBinding
+import com.example.pairassginment.student.objectClass.StudentDetail
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OtherSubmitForm : AppCompatActivity() {
     private lateinit var binding: ActivityOtherSubmitFormBinding
+    private var student_detail: StudentDetail? = null;
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var storageReference = FirebaseStorage.getInstance()
     private var fileUrl : Uri? = null
+    private var selectFileBtnClick : Int = 0;
+    private var fileNameOnly: String? = null;
 
-    private var MY_CODE_REQUEST: Int = 100;
-
+    private var MY_CODE_REQUEST: Int = 190;
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         onActivityResult(MY_CODE_REQUEST, result)
     }
@@ -37,17 +42,54 @@ class OtherSubmitForm : AppCompatActivity() {
         binding = ActivityOtherSubmitFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+        Log.d("Student detail list", student_detail.toString())
+
+        getStudentNameIDReady()
+        getSubmissionFormLableReady()
+        setBtnOnClickListener()
+
+    }
+
+    private fun getSubmissionFormLableReady(){
+        binding.topicLabelTv.setText("UPLOAD PRESENTATION SLIDE")
+    }
+
+    private fun getStudentNameIDReady(){
+        binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
+    }
+
+    private fun setBtnOnClickListener(){
         binding.uploadBtn.setOnClickListener {
-            selectImage();
+            selectFile();
         }
 
         binding.submitBtn.setOnClickListener {
             Log.d("Image Name", fileUrl.toString())
-            uploadImage();
+
+            if(!isEmptyInput()){
+                uploadFile();
+            }else{
+                Toast.makeText(this, "Must write down your comment and upload a file.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private fun uploadImage(){
+    private fun isEmptyInput(): Boolean{
+        Log.d("TAG", "abstract: "+binding.studentCommentEt.text.toString().trim());
+        if(binding.studentCommentEt.text.toString().trim().isEmpty()){
+            return true
+        }
+
+        if(selectFileBtnClick!! <= 0){
+            return true
+        }
+
+        return false
+    }
+
+    private fun uploadFile(){
+
         var fileRef : StorageReference? = storageReference.reference
 
         // it will get the file name only, if got fileUrl.lastPathSegment
@@ -56,11 +98,42 @@ class OtherSubmitForm : AppCompatActivity() {
         // It will upload the file based on the url that we uploaded
         documentRef.putFile(fileUrl!!)
             .addOnSuccessListener {
-                Log.d("Image URL", fileUrl .toString())
+                val proposal_ppt_collection = mDB.collection("Submission")
+                val student_comment = binding.studentCommentEt.text.toString()
+                val uploaded_file_org_name = fileNameOnly
+                val uploaded_file_firebase = fileUrl!!.lastPathSegment
+                val date_submit = SimpleDateFormat("dd MMM yyyy").format(Date())
+
+                val proposal_data = hashMapOf<String, Any>(
+                    "Date_Submit" to date_submit,
+                    "Student_Comment" to student_comment,
+                    "File_Submitted_Org" to uploaded_file_org_name!!,
+                    "File_Submited" to uploaded_file_firebase!!,
+                    "Status" to "Pending"
+                )
+
+                proposal_ppt_collection
+                    .document(student_detail!!.submission_id!!)
+                    .collection("Proposal_PPT")
+                    .add(proposal_data)
+                    .addOnSuccessListener { document ->
+                        val document_id = document.id
+
+                        proposal_ppt_collection
+                            .document(student_detail!!.submission_id!!)
+                            .collection("Proposal_PPT")
+                            .document(document_id)
+                            .update("Proposal_PPT_ID", document_id)
+                            .addOnSuccessListener {
+                                val intent = Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
+                                intent.putExtra("student_detail", student_detail)
+                                startActivity(intent)
+                            }
+                    }
             }
     }
 
-    private fun selectImage(){
+    private fun selectFile(){
         var intent = Intent();
 
         // if you want find image => "image/* , word or pdf => "application/*
@@ -75,7 +148,9 @@ class OtherSubmitForm : AppCompatActivity() {
             when (requestCode) {
                 MY_CODE_REQUEST -> {
                     fileUrl = intent!!.data
-                    binding.uploadedFileNameTv.text = getFileNameFromUri(this, fileUrl!!)
+                    fileNameOnly = getFileNameFromUri(this, fileUrl!!)
+                    binding.uploadedFileNameTv.text = fileNameOnly
+                    selectFileBtnClick++
                 }
             }
         }
