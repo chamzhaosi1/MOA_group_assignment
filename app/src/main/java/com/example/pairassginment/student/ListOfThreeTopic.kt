@@ -41,6 +41,13 @@ class ListOfThreeTopic : AppCompatActivity() {
         student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
         Log.d("Student detail list", student_detail.toString())
 
+        // after sumbit a new one data
+        val message = intent!!.getStringExtra("message").toString()
+        Log.d("message", message)
+        if (message != "null") {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+
         getStudentNameIDReady()
         getTopicsDetail()
     }
@@ -137,7 +144,7 @@ class ListOfThreeTopic : AppCompatActivity() {
                 MY_CODE_REQUEST -> {
                     val message = intent!!.getStringExtra("message").toString()
 
-                    if(message != null){
+                    if(message != "null"){
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -150,10 +157,11 @@ class ListOfThreeTopic : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
             when (requestCode) {
-                MY_CODE_REQUEST -> {
+                MY_ITEM_CODE_REQUEST -> {
                     val message = intent!!.getStringExtra("message").toString()
-                    if(message != null){
-                        Toast.makeText(this, intent!!.getStringExtra("message").toString(), Toast.LENGTH_SHORT).show()
+
+                    if(message != "null"){
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -69,6 +69,7 @@ class TopicsSubmitForm : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener {
             val intent = Intent(this, ListOfThreeTopic::class.java)
+            intent.putExtra("message", "Nothing updated")
             setResult(Activity.RESULT_OK, intent);
             finish()
         }
@@ -130,6 +131,7 @@ class TopicsSubmitForm : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
                                     student_detail!!.submission_id = randomNumber;
+                                    intent.putExtra("message", "Data updated")
                                     intent.putExtra("student_detail", student_detail)
                                     startActivity(intent)
                                 }

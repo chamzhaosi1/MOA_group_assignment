@@ -1,21 +1,16 @@
 package com.example.pairassginment.student
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.databinding.ActivityDashboardBinding
 import com.example.pairassginment.student.objectClass.BatchDeadline
 import com.example.pairassginment.student.objectClass.StudentDetail
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ServerTimestamp
 import com.transferwise.sequencelayout.SequenceStep
-import java.util.*
-import kotlin.collections.ArrayList
 
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
@@ -203,6 +198,7 @@ class Dashboard : AppCompatActivity() {
 
                             topics_detail_btn!!.setOnClickListener {
                                 intentDetailList.putExtra("student_detail", student_detail)
+                                intentDetailList.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                                 startActivity(intentDetailList)
                             }
 
@@ -232,6 +228,9 @@ class Dashboard : AppCompatActivity() {
                 val intentSubmitForm = Intent(this@Dashboard, TopicsSubmitForm::class.java)
                 intentSubmitForm.putExtra("student_detail", student_detail)
                 startActivity(intentSubmitForm)
+
+                val throwable = Throwable()
+                throwable.printStackTrace()
             }
         }
     }

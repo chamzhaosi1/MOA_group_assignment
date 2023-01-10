@@ -42,12 +42,22 @@ class ListOfOtherDocuments : AppCompatActivity() {
 //        addItemsListIntoAdapter(itemsArray);
 
         student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+
+        // after sumbit a new one data
+        val message = intent!!.getStringExtra("message").toString()
+        Log.d("message", message)
+        if (message != "null") {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+
         Log.d("Student detail list", student_detail.toString())
 
 
         getStudentNameIDReady()
         getProposalPPTDetail()
     }
+
+
 
     private fun getStudentNameIDReady(){
         binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
@@ -115,23 +125,23 @@ class ListOfOtherDocuments : AppCompatActivity() {
         binding.listOfItemRecycleView.adapter = adapter
 
 
-        val intent_view_submit_form = Intent(this, ViewOtherSubmitForm::class.java)
-        val intent_topic_submit_form = Intent(this, OtherSubmitForm::class.java)
+        val intent_view_other_submit_form = Intent(this, ViewOtherSubmitForm::class.java)
+        val intent_other_submit_form = Intent(this, OtherSubmitForm::class.java)
 
         // set each card listener
         adapter.setOnClickListener(object : OtherDocumentAdapter.onItemClickListner{
             override fun onItemClick(position: Int) {
                 // To do some things, that you want
                 // Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show(
-                intent_view_submit_form.putExtra("item_clicked", itemsArray[position])
-                intent_view_submit_form.putExtra("student_detail", student_detail)
+                intent_view_other_submit_form.putExtra("item_clicked", itemsArray[position])
+                intent_view_other_submit_form.putExtra("student_detail", student_detail)
 
-                intent_topic_submit_form.putExtra("item_clicked", itemsArray[position])
-                intent_topic_submit_form.putExtra("student_detail", student_detail)
+                intent_other_submit_form.putExtra("item_clicked", itemsArray[position])
+                intent_other_submit_form.putExtra("student_detail", student_detail)
 
                 when(itemsArray[position].submittedStatus){
-                    "Pending"  -> startActivity(intent_topic_submit_form)
-                    else -> startItemForResult.launch(intent_view_submit_form)
+                    "Pending"  -> startActivity(intent_other_submit_form)
+                    else -> startItemForResult.launch(intent_view_other_submit_form)
                 }
             }
         })
@@ -142,11 +152,11 @@ class ListOfOtherDocuments : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
             when (requestCode) {
-                MY_CODE_REQUEST -> {
+                MY_ITEM_CODE_REQUEST -> {
                     val message = intent!!.getStringExtra("message").toString()
 
-                    if(message != null){
-                        Toast.makeText(this, intent!!.getStringExtra("message").toString(), Toast.LENGTH_SHORT).show()
+                    if(message != "null"){
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -160,8 +170,9 @@ class ListOfOtherDocuments : AppCompatActivity() {
             when (requestCode) {
                 MY_CODE_REQUEST -> {
                     val message = intent!!.getStringExtra("message").toString()
+                    Log.d("Message", message)
 
-                    if (message != null) {
+                    if (message != "null") {
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     }
                 }

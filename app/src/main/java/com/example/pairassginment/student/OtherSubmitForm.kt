@@ -14,7 +14,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import com.example.pairassginment.databinding.ActivityOtherSubmitFormBinding
+import com.example.pairassginment.student.objectClass.OtherDucumentItem
 import com.example.pairassginment.student.objectClass.StudentDetail
+import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -31,6 +33,7 @@ class OtherSubmitForm : AppCompatActivity() {
     private var fileUrl : Uri? = null
     private var selectFileBtnClick : Int = 0;
     private var fileNameOnly: String? = null;
+    private var item_other_detail: OtherDucumentItem? = null;
 
     private var MY_CODE_REQUEST: Int = 190;
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -42,12 +45,22 @@ class OtherSubmitForm : AppCompatActivity() {
         binding = ActivityOtherSubmitFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+        student_detail = intent.getParcelableExtra("student_detail")
+        item_other_detail = intent.getParcelableExtra("item_clicked")
+
         Log.d("Student detail list", student_detail.toString())
 
         getStudentNameIDReady()
         getSubmissionFormLabelReady()
+        getTopicsItemReadyWhenPending()
         setBtnOnClickListener()
+    }
+
+    private fun getTopicsItemReadyWhenPending(){
+        if (item_other_detail != null){
+            binding.uploadedFileNameTv.setText(item_other_detail!!.uploadedFileOrg.toString())
+            binding.studentCommentEt.setText(item_other_detail!!.studentComment.toString())
+        }
     }
 
     private fun getSubmissionFormLabelReady(){
@@ -74,6 +87,7 @@ class OtherSubmitForm : AppCompatActivity() {
         }
         binding.backBtn.setOnClickListener {
             val intent = Intent(this, ListOfOtherDocuments::class.java)
+            intent.putExtra("message", "Nothing updated")
             setResult(Activity.RESULT_OK, intent);
             finish()
         }
@@ -130,8 +144,10 @@ class OtherSubmitForm : AppCompatActivity() {
                             .update("Proposal_PPT_ID", document_id)
                             .addOnSuccessListener {
                                 val intent = Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
+                                intent.putExtra("message", "Data updated")
                                 intent.putExtra("student_detail", student_detail)
-                                startActivity(intent)
+                                startActivity(intent, )
+                                finish()
                             }
                     }
             }
