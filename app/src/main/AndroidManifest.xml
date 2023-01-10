@@ -13,21 +13,21 @@
         android:theme="@style/Theme.PairAssginment"
         tools:targetApi="31">
         <activity
-            android:name=".ViewOtherSubmitForm"
+            android:name=".student.ViewOtherSubmitForm"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".OtherSubmitForm"
+            android:name=".student.OtherSubmitForm"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ListOfOtherDocuments"
+            android:name=".student.ListOfOtherDocuments"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

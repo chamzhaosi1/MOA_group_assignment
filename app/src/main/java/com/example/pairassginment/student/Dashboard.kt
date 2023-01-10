@@ -17,7 +17,6 @@ import com.transferwise.sequencelayout.SequenceStep
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
 
@@ -164,10 +163,10 @@ class Dashboard : AppCompatActivity() {
         poster_submit_btn?.visibility = View.GONE
         poster_detial_btn?.visibility = View.GONE
 
-        getSubmissionDetail()
+        getTopicSubmissionDetail()
     }
 
-    private fun getSubmissionDetail(){
+    private fun getTopicSubmissionDetail(){
         if(student_detail.submission_id != null){
             mDB.collection("Submission")
                 .document(student_detail.submission_id!!)
@@ -209,6 +208,7 @@ class Dashboard : AppCompatActivity() {
 
                             firstStep!!.setActive(false)
                             secondStep!!.setActive(true)
+                            getProposalPPTSubmissionDetail()
                             Log.d("second step", secondStep.toString())
 
                         }else{
@@ -234,6 +234,79 @@ class Dashboard : AppCompatActivity() {
                 startActivity(intentSubmitForm)
             }
         }
+    }
+
+
+    private fun getProposalPPTSubmissionDetail(){
+        proposal_ppt_submit_btn?.visibility = View.VISIBLE
+
+        mDB.collection("Submission")
+            .document(student_detail.submission_id!!)
+            .collection("Proposal_PPT")
+            .get()
+            .addOnSuccessListener { documents ->
+
+                if (documents.size() > 0){
+                    val status_array:ArrayList<String> = ArrayList()
+                    var proposal_ppt_status:String? = null;
+                    val proposal_ppt_size:Int = documents.size()
+                    Log.d("Proposal Submission Detail", proposal_ppt_size.toString())
+
+                    for(document in documents){
+                        Log.d("Proposal Submission Detail", document.data["Status"].toString())
+                        status_array!!.add(document.data["Status"].toString())
+                    }
+
+                    proposal_ppt_status = if(status_array!!.contains("Approved")){
+                                                "Approved"
+                                            }else if (status_array!!.contains("Pending")){
+                                                "Pending"
+                                            }else{
+                                                "Rejected"
+                                            }
+
+                    val intentDetailList = Intent(this@Dashboard, ListOfOtherDocuments::class.java)
+                    val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
+
+                    firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: "+proposal_ppt_status+ "\n\n" + "SUBMITTED: " + proposal_ppt_size.toString() + "/3" )
+
+                    if(proposal_ppt_status == "Approved"){
+                        proposal_ppt_detail_btn?.visibility = View.VISIBLE
+                        proposal_ppt_submit_btn?.visibility = View.GONE
+
+                        proposal_ppt_detail_btn!!.setOnClickListener {
+                            intentDetailList.putExtra("student_detail", student_detail)
+                            startActivity(intentDetailList)
+                        }
+
+                        secondStep!!.setActive(false)
+                        thirdStep!!.setActive(true)
+
+                    }else{
+                        proposal_ppt_detail_btn?.visibility = View.VISIBLE
+                        proposal_ppt_submit_btn?.visibility = View.VISIBLE
+
+                        proposal_ppt_detail_btn!!.setOnClickListener {
+                            intentDetailList.putExtra("student_detail", student_detail)
+                            startActivity(intentDetailList)
+                        }
+
+                        proposal_ppt_submit_btn!!.setOnClickListener {
+                            intentSubmitForm.putExtra("student_detail", student_detail)
+                            startActivity(intentSubmitForm)
+                        }
+                    }
+
+                }else {
+                    proposal_ppt_submit_btn?.visibility = View.VISIBLE
+
+                    proposal_ppt_submit_btn!!.setOnClickListener {
+                        val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
+                        intentSubmitForm.putExtra("student_detail", student_detail)
+                        startActivity(intentSubmitForm)
+                    }
+                }
+            }
     }
 
     private fun getStudentDetail(){
