@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import com.transferwise.sequencelayout.SequenceStep
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Dashboard : AppCompatActivity() {
@@ -166,7 +168,7 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun getSubmissionDetail(){
-        if(student_detail.submission_id!!.isNotEmpty()){
+        if(student_detail.submission_id != null){
             mDB.collection("Submission")
                 .document(student_detail.submission_id!!)
                 .collection("Topics")
@@ -190,6 +192,9 @@ class Dashboard : AppCompatActivity() {
                                     "Rejected"
                                 }
 
+                    val intentDetailList = Intent(this@Dashboard, ListOfThreeTopic::class.java)
+                    val intentSubmitForm = Intent(this@Dashboard, TopicsSubmitForm::class.java)
+
                     if(topic_size > 0){
                         firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: "+topic_status+ "\n\n" + "SUBMITTED: " + topic_size.toString() + "/3" )
 
@@ -198,20 +203,36 @@ class Dashboard : AppCompatActivity() {
                             topics_submit_btn?.visibility = View.GONE
 
                             topics_detail_btn!!.setOnClickListener {
-                                val intent = Intent(this@Dashboard, ListOfThreeTopic::class.java)
-                                intent.putExtra("student_detail", student_detail)
-                                startActivity(intent)
+                                intentDetailList.putExtra("student_detail", student_detail)
+                                startActivity(intentDetailList)
                             }
 
                             firstStep!!.setActive(false)
                             secondStep!!.setActive(true)
                             Log.d("second step", secondStep.toString())
+
                         }else{
                             topics_detail_btn?.visibility = View.VISIBLE
                             topics_submit_btn?.visibility = View.VISIBLE
+
+                            topics_detail_btn!!.setOnClickListener {
+                                intentDetailList.putExtra("student_detail", student_detail)
+                                startActivity(intentDetailList)
+                            }
+
+                            topics_submit_btn!!.setOnClickListener {
+                                intentSubmitForm.putExtra("student_detail", student_detail)
+                                startActivity(intentSubmitForm)
+                            }
                         }
                     }
                 }
+        }else{
+            topics_submit_btn!!.setOnClickListener {
+                val intentSubmitForm = Intent(this@Dashboard, TopicsSubmitForm::class.java)
+                intentSubmitForm.putExtra("student_detail", student_detail)
+                startActivity(intentSubmitForm)
+            }
         }
     }
 

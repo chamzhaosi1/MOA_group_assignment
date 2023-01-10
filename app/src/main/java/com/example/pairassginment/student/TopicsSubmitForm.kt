@@ -75,20 +75,31 @@ class TopicsSubmitForm : AppCompatActivity() {
     }
 
     private fun updateOrAddTopicsDataToDB(){
+        var randomNumber: String? = null;
+
+        if(student_detail!!.submission_id == null){
+            randomNumber = UUID.randomUUID().toString();
+        }else{
+            randomNumber = student_detail!!.submission_id
+        }
+
         val title = binding.topicTitleEt.text.toString()
         val abstract = binding.abstractsEt.text.toString()
         val date_submit = SimpleDateFormat("dd MMM yyyy").format(Date())
         val topics_collection = mDB.collection("Submission")
-                                    .document(student_detail!!.submission_id!!)
-                                    .collection("Topics")
+//                                    .document(student_detail!!.submission_id!!)
+//                                    .collection("Topics")
+
         Log.d("Update DB", item_topics_detail.toString())
 
         if(item_topics_detail != null){
             topics_collection
+                .document(student_detail!!.submission_id!!)
+                .collection("Topics")
                 .document(item_topics_detail!!.topic_id!!)
                 .update("Title", title, "Abstract", abstract, "Data_Submit", date_submit)
                 .addOnSuccessListener {
-                    val intent = Intent()
+                    val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
                     intent.putExtra("student_detail", student_detail)
                     startActivity(intent)
                 }
@@ -101,17 +112,31 @@ class TopicsSubmitForm : AppCompatActivity() {
             )
 
             topics_collection
+                .document(randomNumber!!)
+                .collection("Topics")
                 .add(topicData)
                 .addOnSuccessListener { document ->
                     val document_id = document.id
-                    Log.d("Document id", document_id.toString())
+                    Log.d("Document id", document_id)
                     topics_collection
+                        .document(randomNumber)
+                        .collection("Topics")
                         .document(document_id)
                         .update("Topics_ID", document_id)
                         .addOnSuccessListener {
-                            val intent = Intent()
-                            intent.putExtra("student_detail", student_detail)
-                            startActivity(intent)
+                            val sub_id = hashMapOf<String, Any>(
+                                "Submission_ID" to randomNumber
+                            )
+
+                            mDB.collection("Students")
+                                .document(student_detail!!.role_id!!)
+                                .update(sub_id)
+                                .addOnSuccessListener {
+                                    val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
+                                    student_detail!!.submission_id = randomNumber;
+                                    intent.putExtra("student_detail", student_detail)
+                                    startActivity(intent)
+                                }
                         }
                 }
         }
