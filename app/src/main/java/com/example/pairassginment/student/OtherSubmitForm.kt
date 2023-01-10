@@ -46,12 +46,11 @@ class OtherSubmitForm : AppCompatActivity() {
         Log.d("Student detail list", student_detail.toString())
 
         getStudentNameIDReady()
-        getSubmissionFormLableReady()
+        getSubmissionFormLabelReady()
         setBtnOnClickListener()
-
     }
 
-    private fun getSubmissionFormLableReady(){
+    private fun getSubmissionFormLabelReady(){
         binding.topicLabelTv.setText("UPLOAD PRESENTATION SLIDE")
     }
 
@@ -72,6 +71,11 @@ class OtherSubmitForm : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "Must write down your comment and upload a file.", Toast.LENGTH_SHORT).show();
             }
+        }
+        binding.backBtn.setOnClickListener {
+            val intent = Intent(this, ListOfOtherDocuments::class.java)
+            setResult(Activity.RESULT_OK, intent);
+            finish()
         }
     }
 

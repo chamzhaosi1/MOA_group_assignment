@@ -13,12 +13,24 @@ import com.example.pairassginment.databinding.ActivityListOfItemBinding
 import com.example.pairassginment.student.objectClass.OtherDucumentItem
 import com.example.pairassginment.student.objectClass.StudentDetail
 import com.example.pairassginment.student.objectClass.ThreeTopicsItem
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ListOfOtherDocuments : AppCompatActivity() {
     private lateinit var binding: ActivityListOfItemBinding
-    private lateinit var itemsArray: ArrayList<OtherDucumentItem>
+    private lateinit var proposalPPTDetailArray: ArrayList<OtherDucumentItem>
     private var MY_CODE_REQUEST: Int = 0;
     private var MY_ITEM_CODE_REQUEST: Int = 10;
+    private var student_detail: StudentDetail? = null;
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    // register an intent that will result a result
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onActivityResult(MY_CODE_REQUEST, result)
+    }
+
+    val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,25 +38,54 @@ class ListOfOtherDocuments : AppCompatActivity() {
         binding = ActivityListOfItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        itemsArray = ArrayList();
-        itemsArray.add(OtherDucumentItem( "Arduino of solar", "31 Dec 2022", "1 Jan 2023","", "chamzhaosi_ppt_slide.ppt" ,"Approved", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem( "Student Portal Website", "31 Dec 2022", "", "","chamzhaosi_ppt_slide.ppt" ,"Pending", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Financing System", "31 Dec 2022","", "1 Jan 2023","chamzhaosi_ppt_slide.ppt" ,"Rejected", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Arduino of solar", "31 Dec 2022", "1 Jan 2023","","chamzhaosi_ppt_slide.ppt" , "Approved", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Student Portal Website", "31 Dec 2022", "", "","chamzhaosi_ppt_slide.ppt" ,"Pending", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem( "Financing System", "31 Dec 2022","", "1 Jan 2023","chamzhaosi_ppt_slide.ppt" ,"Rejected", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem( "Arduino of solar", "31 Dec 2022", "1 Jan 2023","","chamzhaosi_ppt_slide.ppt" , "Approved", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem( "Student Portal Website", "31 Dec 2022", "", "","chamzhaosi_ppt_slide.ppt" ,"Pending", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Financing System", "31 Dec 2022","", "1 Jan 2023","chamzhaosi_ppt_slide.ppt" ,"Rejected", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Arduino of solar", "31 Dec 2022", "1 Jan 2023","","chamzhaosi_ppt_slide.ppt" , "Approved", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Student Portal Website", "31 Dec 2022", "", "","chamzhaosi_ppt_slide.ppt" ,"Pending", "bala, bala, bala ..."))
-        itemsArray.add(OtherDucumentItem("Financing System", "31 Dec 2022","", "1 Jan 2023","chamzhaosi_ppt_slide.ppt" ,"Rejected", "bala, bala, bala ..."))
+        proposalPPTDetailArray = ArrayList()
+//        addItemsListIntoAdapter(itemsArray);
 
-        addItemsListIntoAdapter(itemsArray);
-
-        val student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+        student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
         Log.d("Student detail list", student_detail.toString())
 
+
+        getStudentNameIDReady()
+        getProposalPPTDetail()
+    }
+
+    private fun getStudentNameIDReady(){
+        binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
+    }
+
+    private fun getProposalPPTDetail(){
+        mDB.collection("Submission")
+            .document(student_detail?.submission_id!!)
+            .collection("Proposal_PPT")
+            .get()
+            .addOnSuccessListener { documents ->
+                if(documents != null){
+                    for (document in documents){
+                        if (document != null){
+                            val dataMap:MutableMap<String, Any> = document.data
+
+                            val date_submit = dataMap["Date_Submit"].toString()
+                            val student_comment = dataMap["Student_Comment"].toString()
+                            val file_submitted_org = dataMap["File_Submitted_Org"].toString()
+                            val file_submitted = dataMap["File_Submitted"].toString();
+                            var supervisor_comment = dataMap["Supervisor_Comment"].toString()
+                            var status = dataMap["Status"].toString()
+                            var data_feedback = dataMap["Date_Feedback"].toString()
+                            var proposal_ppt_id = dataMap["Proposal_PPT_ID"].toString();
+
+                            proposalPPTDetailArray.add(OtherDucumentItem(student_comment, date_submit, data_feedback, file_submitted_org, file_submitted,
+                                status, supervisor_comment, proposal_ppt_id))
+                        }
+                    }
+                }
+                Log.d("Go to adapter", proposalPPTDetailArray.toString())
+                addItemsListIntoAdapter(proposalPPTDetailArray)
+                setBtnOnClickListener()
+            }
+
+    }
+
+    private fun setBtnOnClickListener(){
         // set home button listener
         binding.floatingHomeBtn.setOnClickListener{
             val intent = Intent(this, Dashboard::class.java)
@@ -53,30 +94,16 @@ class ListOfOtherDocuments : AppCompatActivity() {
             finish();
         }
 
-        // register an intent that will result a result
-        val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            onActivityResult(MY_CODE_REQUEST, result)
-        }
-
         // set create / add btn listener
         binding.floatingAddBtn.setOnClickListener{
-            val intent = Intent(this, TopicsSubmitForm::class.java)
+            val intent = Intent(this, OtherSubmitForm::class.java)
             // after registered and clicked the btn then get the intent launch
+            intent.putExtra("student_detail", student_detail)
             startForResult.launch(intent)
         }
     }
 
-    // once the activity is finished than get the result
-    private fun onActivityResult(requestCode: Int, result: ActivityResult) {
-        if (result.resultCode == Activity.RESULT_OK) {
-            val intent = result.data
-            when (requestCode) {
-                MY_CODE_REQUEST -> {
-                    Toast.makeText(this, intent!!.getStringExtra("message"), Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
+
 
     fun addItemsListIntoAdapter(itemsArray : ArrayList<OtherDucumentItem>){
         // set linear layout manager
@@ -87,12 +114,9 @@ class ListOfOtherDocuments : AppCompatActivity() {
         val adapter = OtherDocumentAdapter(this, itemsArray)
         binding.listOfItemRecycleView.adapter = adapter
 
-        val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
-        }
 
-        val intent_view_submit_form = Intent(this, ViewTopicsSubmitForm::class.java)
-        val intent_topic_submit_form = Intent(this, TopicsSubmitForm::class.java)
+        val intent_view_submit_form = Intent(this, ViewOtherSubmitForm::class.java)
+        val intent_topic_submit_form = Intent(this, OtherSubmitForm::class.java)
 
         // set each card listener
         adapter.setOnClickListener(object : OtherDocumentAdapter.onItemClickListner{
@@ -100,7 +124,10 @@ class ListOfOtherDocuments : AppCompatActivity() {
                 // To do some things, that you want
                 // Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show(
                 intent_view_submit_form.putExtra("item_clicked", itemsArray[position])
+                intent_view_submit_form.putExtra("student_detail", student_detail)
+
                 intent_topic_submit_form.putExtra("item_clicked", itemsArray[position])
+                intent_topic_submit_form.putExtra("student_detail", student_detail)
 
                 when(itemsArray[position].submittedStatus){
                     "Pending"  -> startActivity(intent_topic_submit_form)
@@ -116,7 +143,27 @@ class ListOfOtherDocuments : AppCompatActivity() {
             val intent = result.data
             when (requestCode) {
                 MY_CODE_REQUEST -> {
-                    Toast.makeText(this, intent!!.getStringExtra("message"), Toast.LENGTH_SHORT).show()
+                    val message = intent!!.getStringExtra("message").toString()
+
+                    if(message != null){
+                        Toast.makeText(this, intent!!.getStringExtra("message").toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    // once the activity is finished than get the result
+    private fun onActivityResult(requestCode: Int, result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            when (requestCode) {
+                MY_CODE_REQUEST -> {
+                    val message = intent!!.getStringExtra("message").toString()
+
+                    if (message != null) {
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

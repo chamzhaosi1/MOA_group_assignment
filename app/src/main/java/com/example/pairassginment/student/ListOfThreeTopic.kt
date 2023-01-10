@@ -64,17 +64,9 @@ class ListOfThreeTopic : AppCompatActivity() {
                             val abstract = dataMap["Abstract"].toString()
                             val data_submit = dataMap["Date_Submit"].toString()
                             val status = dataMap["Status"].toString();
-                            var supervisor_comment:String? = null
-                            var data_feedback:String? = null
+                            var supervisor_comment = dataMap["Supervisor_Comment"].toString()
+                            var data_feedback = dataMap["Date_Feedback"].toString()
                             var topic_id = dataMap["Topics_ID"].toString();
-
-                            if(dataMap.containsKey("Supervisor_Comment")){
-                                supervisor_comment = dataMap["Supervisor_Comment"].toString()
-                            }
-
-                            if(dataMap.containsKey("Date_Feedback")){
-                                data_feedback = dataMap["Date_Feedback"].toString()
-                            }
 
                             topicsDetailArray.add(ThreeTopicsItem(title, abstract, data_submit, data_feedback, supervisor_comment, status, topic_id ))
                         }
@@ -143,7 +135,11 @@ class ListOfThreeTopic : AppCompatActivity() {
             val intent = result.data
             when (requestCode) {
                 MY_CODE_REQUEST -> {
-                    Toast.makeText(this, intent!!.getStringExtra("message"), Toast.LENGTH_SHORT).show()
+                    val message = intent!!.getStringExtra("message").toString()
+
+                    if(message != null){
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -155,7 +151,10 @@ class ListOfThreeTopic : AppCompatActivity() {
             val intent = result.data
             when (requestCode) {
                 MY_CODE_REQUEST -> {
-                    Toast.makeText(this, intent!!.getStringExtra("message"), Toast.LENGTH_SHORT).show()
+                    val message = intent!!.getStringExtra("message").toString()
+                    if(message != null){
+                        Toast.makeText(this, intent!!.getStringExtra("message").toString(), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

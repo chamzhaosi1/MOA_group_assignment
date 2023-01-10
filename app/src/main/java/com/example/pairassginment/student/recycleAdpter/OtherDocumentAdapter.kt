@@ -38,16 +38,16 @@ class OtherDocumentAdapter (val context: Context, val items: ArrayList<OtherDucu
 
             when (items[position].submittedStatus){
                 "Approved" ->
-                {holder.itemApprovedRejectedDate.text = context.getString(R.string.approved_date, items[position].dateApproved)
+                {holder.itemApprovedRejectedDate.text = context.getString(R.string.approved_date, items[position].dateFeedback)
                     holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.approved_green))}
 
-                "Pending" ->
-                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.pending_yellow))
+                "Rejected" ->{
+                    holder.itemApprovedRejectedDate.text = context.getString(R.string.rejected_date, items[position].dateFeedback)
+                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.rejected_red))
+                }
 
                 else ->
-                {holder.itemApprovedRejectedDate.text = context.getString(R.string.rejected_date, items[position].dateReject)
-                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.rejected_red))}
-
+                    holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.pending_yellow))
             }
         }
     }
