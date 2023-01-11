@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +21,7 @@ class ListOfThreeTopic : AppCompatActivity() {
     private lateinit var topicsDetailArray: ArrayList<ThreeTopicsItem>
     private var MY_CODE_REQUEST: Int = 0;
     private var MY_ITEM_CODE_REQUEST: Int = 10;
+    private var circleProgress: RelativeLayout? = null
 
     private var student_detail: StudentDetail? = null;
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -37,6 +40,9 @@ class ListOfThreeTopic : AppCompatActivity() {
         binding = ActivityListOfItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
         topicsDetailArray = ArrayList();
+
+        circleProgress = binding.circleCenterLayout
+        circleProgress!!.visibility = View.GONE
 
         student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
         Log.d("Student detail list", student_detail.toString())
@@ -57,10 +63,14 @@ class ListOfThreeTopic : AppCompatActivity() {
     }
 
     private fun getTopicsDetail(){
+        circleProgress!!.visibility = View.VISIBLE
         mDB.collection("Submission")
             .document(student_detail?.submission_id!!)
             .collection("Topics")
             .get()
+            .addOnCompleteListener{
+                circleProgress!!.visibility = View.GONE
+            }
             .addOnSuccessListener { documents ->
                 if(documents != null){
                     for (document in documents){

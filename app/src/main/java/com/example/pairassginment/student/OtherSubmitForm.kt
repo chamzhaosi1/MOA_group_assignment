@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class OtherSubmitForm : AppCompatActivity() {
     private lateinit var binding: ActivityOtherSubmitFormBinding
@@ -28,10 +31,12 @@ class OtherSubmitForm : AppCompatActivity() {
     private var storageReference = FirebaseStorage.getInstance()
     private var fileUrl : Uri? = null
     private var selectFileBtnClick : Int = 0;
+    private var editSubmittedDocument : Int = 0;
     private var fileNameOnly: String? = null;
     private var item_other_detail: OtherDocumentItem? = null;
     private var other_document_name: String? = null;
     private var other_document_submit_label: String? = null;
+    private var circleProgress: RelativeLayout? = null
 
     private var MY_CODE_REQUEST: Int = 190;
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -43,6 +48,9 @@ class OtherSubmitForm : AppCompatActivity() {
         binding = ActivityOtherSubmitFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        circleProgress = binding.circleCenterLayout
+        circleProgress!!.visibility = View.GONE
+
         student_detail = intent.getParcelableExtra("student_detail")
         item_other_detail = intent.getParcelableExtra("item_clicked")
         other_document_name = intent.getStringExtra("other_document_name")
@@ -52,12 +60,15 @@ class OtherSubmitForm : AppCompatActivity() {
 
         getStudentNameIDReady()
         getSubmissionFormLabelReady()
-        getTopicsItemReadyWhenPending()
+        getDocumentItemReadyWhenPending()
         setBtnOnClickListener()
     }
 
-    private fun getTopicsItemReadyWhenPending(){
+    private fun getDocumentItemReadyWhenPending(){
         if (item_other_detail != null){
+            selectFileBtnClick+=1
+            editSubmittedDocument+=1
+            Log.d("select file btn click above", selectFileBtnClick.toString())
             binding.uploadedFileNameTv.setText(item_other_detail!!.uploadedFileOrg.toString())
             binding.studentCommentEt.setText(item_other_detail!!.studentComment.toString())
         }
@@ -80,6 +91,7 @@ class OtherSubmitForm : AppCompatActivity() {
             Log.d("Image Name", fileUrl.toString())
 
             if(!isEmptyInput()){
+                circleProgress!!.visibility = View.VISIBLE
                 uploadFile();
             }else{
                 Toast.makeText(this, "Must write down your comment and upload a file.", Toast.LENGTH_SHORT).show();
@@ -101,6 +113,7 @@ class OtherSubmitForm : AppCompatActivity() {
         }
 
         if(selectFileBtnClick!! <= 0){
+            Log.d("select file btn click below", selectFileBtnClick.toString())
             return true
         }
 
@@ -112,48 +125,98 @@ class OtherSubmitForm : AppCompatActivity() {
         var fileRef : StorageReference? = storageReference.reference
 
         // it will get the file name only, if got fileUrl.lastPathSegment
-        var documentRef = fileRef!!.child("uploadedFile/${fileUrl!!.lastPathSegment}")
+        Log.d("Upload file url", fileUrl.toString())
 
-        // It will upload the file based on the url that we uploaded
-        documentRef.putFile(fileUrl!!)
-            .addOnSuccessListener {
-                val other_document_collection = mDB.collection("Submission")
-                val student_comment = binding.studentCommentEt.text.toString()
-                val uploaded_file_org_name = fileNameOnly
-                val uploaded_file_firebase = fileUrl!!.lastPathSegment
-                val date_submit = SimpleDateFormat("dd MMM yyyy").format(Date())
+        val student_comment = binding.studentCommentEt.text.toString()
+        val date_submit = SimpleDateFormat("dd MMM yyyy").format(Date())
 
-                val other_document_data = hashMapOf<String, Any>(
-                    "Date_Submit" to date_submit,
-                    "Student_Comment" to student_comment,
-                    "File_Submitted_Org" to uploaded_file_org_name!!,
-                    "File_Submitted" to uploaded_file_firebase!!,
-                    "Status" to "Pending"
-                )
+        if(fileUrl.toString() != "null"){
+            var documentRef = fileRef!!.child("uploadedFile/${fileUrl!!.lastPathSegment}")
+            val uploaded_file_org_name = fileNameOnly
+            val uploaded_file_firebase = fileUrl!!.lastPathSegment
+            // It will upload the file based on the url that we uploaded
+            documentRef.putFile(fileUrl!!)
+                .addOnSuccessListener {
 
-                other_document_collection
-                    .document(student_detail!!.submission_id!!)
-                    .collection(other_document_name.toString())
-                    .add(other_document_data)
-                    .addOnSuccessListener { document ->
-                        val document_id = document.id
+                    val other_document_data = hashMapOf<String, Any>(
+                        "Date_Submit" to date_submit,
+                        "Student_Comment" to student_comment,
+                        "File_Submitted_Org" to uploaded_file_org_name!!,
+                        "File_Submitted" to uploaded_file_firebase!!,
+                        "Status" to "Pending"
+                    )
 
-                        other_document_collection
-                            .document(student_detail!!.submission_id!!)
-                            .collection(other_document_name.toString())
-                            .document(document_id)
-                            .update(other_document_name.toString()+"_ID", document_id)
-                            .addOnSuccessListener {
-                                val intent = Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
-                                intent.putExtra("message", "Data updated")
-                                intent.putExtra("other_document_name", other_document_name)
-                                intent.putExtra("student_detail", student_detail)
-                                intent.putExtra("other_document_submit_label" ,other_document_submit_label)
-                                startActivity(intent)
-                                finish()
-                            }
-                    }
-            }
+                    uploadDataToDB(other_document_data)
+
+                }
+        }else if (editSubmittedDocument > 0){
+
+            val other_document_data = hashMapOf<String, Any>(
+                "Date_Submit" to date_submit,
+                "Student_Comment" to student_comment,
+                "Status" to "Pending"
+            )
+
+            uploadDataToDB(other_document_data)
+        }
+    }
+
+    private fun uploadDataToDB(other_document_data: HashMap<String, Any>){
+        val other_document_collection = mDB.collection("Submission")
+
+        if(editSubmittedDocument <= 0) {
+            other_document_collection
+                .document(student_detail!!.submission_id!!)
+                .collection(other_document_name.toString())
+                .add(other_document_data)
+                .addOnSuccessListener { document ->
+                    val document_id = document.id
+
+                    other_document_collection
+                        .document(student_detail!!.submission_id!!)
+                        .collection(other_document_name.toString())
+                        .document(document_id!!)
+                        .update(other_document_name.toString() + "_ID", document_id)
+                        .addOnCompleteListener {
+                            circleProgress!!.visibility = View.GONE
+                        }
+                        .addOnSuccessListener {
+                            val intent =
+                                Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
+                            intent.putExtra("message", "Data updated")
+                            intent.putExtra("other_document_name", other_document_name)
+                            intent.putExtra("student_detail", student_detail)
+                            intent.putExtra(
+                                "other_document_submit_label",
+                                other_document_submit_label
+                            )
+                            startActivity(intent)
+                            finish()
+                        }
+                }
+        }else{
+            other_document_collection
+                .document(student_detail!!.submission_id!!)
+                .collection(other_document_name.toString())
+                .document(item_other_detail!!.documentID.toString())
+                .update(other_document_data)
+                .addOnCompleteListener {
+                    circleProgress!!.visibility = View.GONE
+                }
+                .addOnSuccessListener { document ->
+                    val intent =
+                        Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
+                    intent.putExtra("message", "Data updated")
+                    intent.putExtra("other_document_name", other_document_name)
+                    intent.putExtra("student_detail", student_detail)
+                    intent.putExtra(
+                        "other_document_submit_label",
+                        other_document_submit_label
+                    )
+                    startActivity(intent)
+                    finish()
+                }
+        }
     }
 
     private fun selectFile(){

@@ -5,7 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.EditText
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.example.pairassginment.R
 import com.example.pairassginment.databinding.ActivityTopicsSubmitFormBinding
@@ -23,6 +25,7 @@ class TopicsSubmitForm : AppCompatActivity() {
     private var topics_title_et: EditText? = null;
     private var abstract_et: EditText? =null;
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private var circleProgress: RelativeLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,8 @@ class TopicsSubmitForm : AppCompatActivity() {
 
         topics_title_et = binding.topicTitleEt
         abstract_et = binding.abstractsEt
+        circleProgress = binding.circleCenterLayout
+        circleProgress!!.visibility = View.GONE
 
         student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
         item_topics_detail = intent.getParcelableExtra<ThreeTopicsItem>("item_clicked")
@@ -59,6 +64,7 @@ class TopicsSubmitForm : AppCompatActivity() {
             Log.d("Submit check", submitOperation().toString())
             when (submitOperation()){
                 true -> {
+                    circleProgress!!.visibility = View.VISIBLE
                     updateOrAddTopicsDataToDB()
                 }
                 false -> {
@@ -99,6 +105,9 @@ class TopicsSubmitForm : AppCompatActivity() {
                 .collection("Topics")
                 .document(item_topics_detail!!.topic_id!!)
                 .update("Title", title, "Abstract", abstract, "Data_Submit", date_submit)
+                .addOnCompleteListener{
+                    circleProgress!!.visibility = View.GONE
+                }
                 .addOnSuccessListener {
                     val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
                     intent.putExtra("student_detail", student_detail)
@@ -128,6 +137,9 @@ class TopicsSubmitForm : AppCompatActivity() {
                             mDB.collection("Students")
                                 .document(student_detail!!.role_id!!)
                                 .update("Submission_ID", randomNumber)
+                                .addOnCompleteListener{
+                                    circleProgress!!.visibility = View.GONE
+                                }
                                 .addOnSuccessListener {
                                     val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
                                     student_detail!!.submission_id = randomNumber;

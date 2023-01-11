@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +26,7 @@ class ListOfOtherDocuments : AppCompatActivity() {
     private var other_document_submit_label: String? = null;
     private var other_document_view_label: String? = null;
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private var circleProgress: RelativeLayout? = null
 
     // register an intent that will result a result
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -39,6 +42,9 @@ class ListOfOtherDocuments : AppCompatActivity() {
 
         binding = ActivityListOfItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        circleProgress = binding.circleCenterLayout
+        circleProgress!!.visibility = View.GONE
 
         otherDocumentDetailArray = ArrayList()
 //        addItemsListIntoAdapter(itemsArray);
@@ -67,10 +73,14 @@ class ListOfOtherDocuments : AppCompatActivity() {
     }
 
     private fun getProposalPPTDetail(){
+        circleProgress!!.visibility = View.VISIBLE
         mDB.collection("Submission")
             .document(student_detail?.submission_id!!)
             .collection(other_document_name.toString())
             .get()
+            .addOnCompleteListener {
+                circleProgress!!.visibility = View.GONE
+            }
             .addOnSuccessListener { documents ->
                 if(documents != null){
                     for (document in documents){
