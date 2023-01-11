@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
 import android.content.Context
 import com.example.pairassginment.databinding.OtherCardLayoutBinding
-import com.example.pairassginment.student.objectClass.OtherDucumentItem
+import com.example.pairassginment.student.objectClass.OtherDocumentItem
 
-class OtherDocumentAdapter (val context: Context, val items: ArrayList<OtherDucumentItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OtherDocumentAdapter (val context: Context, val items: ArrayList<OtherDocumentItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var mListener : onItemClickListner
 

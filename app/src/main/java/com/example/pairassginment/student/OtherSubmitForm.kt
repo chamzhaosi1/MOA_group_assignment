@@ -12,16 +12,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import com.example.pairassginment.databinding.ActivityOtherSubmitFormBinding
-import com.example.pairassginment.student.objectClass.OtherDucumentItem
+import com.example.pairassginment.student.objectClass.OtherDocumentItem
 import com.example.pairassginment.student.objectClass.StudentDetail
-import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +29,8 @@ class OtherSubmitForm : AppCompatActivity() {
     private var fileUrl : Uri? = null
     private var selectFileBtnClick : Int = 0;
     private var fileNameOnly: String? = null;
-    private var item_other_detail: OtherDucumentItem? = null;
+    private var item_other_detail: OtherDocumentItem? = null;
+    private var other_document_name: String? = null
 
     private var MY_CODE_REQUEST: Int = 190;
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -47,6 +44,7 @@ class OtherSubmitForm : AppCompatActivity() {
 
         student_detail = intent.getParcelableExtra("student_detail")
         item_other_detail = intent.getParcelableExtra("item_clicked")
+        other_document_name = intent.getStringExtra("other_document_name")
 
         Log.d("Student detail list", student_detail.toString())
 
@@ -132,21 +130,21 @@ class OtherSubmitForm : AppCompatActivity() {
 
                 proposal_ppt_collection
                     .document(student_detail!!.submission_id!!)
-                    .collection("Proposal_PPT")
+                    .collection(other_document_name.toString())
                     .add(proposal_data)
                     .addOnSuccessListener { document ->
                         val document_id = document.id
 
                         proposal_ppt_collection
                             .document(student_detail!!.submission_id!!)
-                            .collection("Proposal_PPT")
+                            .collection(other_document_name.toString())
                             .document(document_id)
-                            .update("Proposal_PPT_ID", document_id)
+                            .update(other_document_name.toString()+"_ID", document_id)
                             .addOnSuccessListener {
                                 val intent = Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
                                 intent.putExtra("message", "Data updated")
                                 intent.putExtra("student_detail", student_detail)
-                                startActivity(intent, )
+                                startActivity(intent)
                                 finish()
                             }
                     }

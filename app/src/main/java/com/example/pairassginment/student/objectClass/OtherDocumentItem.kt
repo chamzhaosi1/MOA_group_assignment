@@ -3,7 +3,7 @@ package com.example.pairassginment.student.objectClass
 import android.os.Parcel
 import android.os.Parcelable
 
-data class OtherDucumentItem(
+data class OtherDocumentItem(
     val studentComment: String? = null,
     val dateSubmitted: String? = null,
     val dateFeedback: String? = null,
@@ -40,12 +40,12 @@ data class OtherDucumentItem(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<OtherDucumentItem> {
-        override fun createFromParcel(parcel: Parcel): OtherDucumentItem {
-            return OtherDucumentItem(parcel)
+    companion object CREATOR : Parcelable.Creator<OtherDocumentItem> {
+        override fun createFromParcel(parcel: Parcel): OtherDocumentItem {
+            return OtherDocumentItem(parcel)
         }
 
-        override fun newArray(size: Int): Array<OtherDucumentItem?> {
+        override fun newArray(size: Int): Array<OtherDocumentItem?> {
             return arrayOfNulls(size)
         }
     }

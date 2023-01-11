@@ -3,16 +3,13 @@ package com.example.pairassginment.student
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.pairassginment.R
-import com.example.pairassginment.databinding.ActivityOtherSubmitFormBinding
 import com.example.pairassginment.databinding.ActivityViewOtherSubmitFormBinding
-import com.example.pairassginment.databinding.ActivityViewTopicsSubmitFormBinding
-import com.example.pairassginment.student.objectClass.OtherDucumentItem
+import com.example.pairassginment.student.objectClass.OtherDocumentItem
 import com.example.pairassginment.student.objectClass.StudentDetail
-import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 
 class ViewOtherSubmitForm : AppCompatActivity() {
     private lateinit var binding: ActivityViewOtherSubmitFormBinding;
-    private var proposal_ppt_detail: OtherDucumentItem? = null;
+    private var other_document_detail: OtherDocumentItem? = null;
     private var student_detail: StudentDetail? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,16 +17,16 @@ class ViewOtherSubmitForm : AppCompatActivity() {
         binding = ActivityViewOtherSubmitFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        proposal_ppt_detail = intent.getParcelableExtra("item_clicked")
+        other_document_detail = intent.getParcelableExtra("item_clicked")
         student_detail = intent.getParcelableExtra("student_detail")
 
 //        Log.d("TAG", "item: "+ item_topics)
         binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
-        binding.studentCommentTv.text = proposal_ppt_detail!!.studentComment
-        binding.uploadedFileNameTv.text = proposal_ppt_detail!!.uploadedFileOrg
-        binding.supervisorCommentTv.text = proposal_ppt_detail!!.supervisorComment
+        binding.studentCommentTv.text = other_document_detail!!.studentComment
+        binding.uploadedFileNameTv.text = other_document_detail!!.uploadedFileOrg
+        binding.supervisorCommentTv.text = other_document_detail!!.supervisorComment
 
-        when(proposal_ppt_detail!!.submittedStatus){
+        when(other_document_detail!!.submittedStatus){
             "Approved" ->
             {
                 binding.studentNameIdTv.setBackgroundColor(this.getColor(R.color.approved_green))

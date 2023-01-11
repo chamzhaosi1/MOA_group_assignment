@@ -10,17 +10,17 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pairassginment.databinding.ActivityListOfItemBinding
-import com.example.pairassginment.student.objectClass.OtherDucumentItem
+import com.example.pairassginment.student.objectClass.OtherDocumentItem
 import com.example.pairassginment.student.objectClass.StudentDetail
-import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ListOfOtherDocuments : AppCompatActivity() {
     private lateinit var binding: ActivityListOfItemBinding
-    private lateinit var proposalPPTDetailArray: ArrayList<OtherDucumentItem>
+    private lateinit var otherDocumentDetailArray: ArrayList<OtherDocumentItem>
     private var MY_CODE_REQUEST: Int = 0;
     private var MY_ITEM_CODE_REQUEST: Int = 10;
     private var student_detail: StudentDetail? = null;
+    private var other_document_name: String? = null;
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     // register an intent that will result a result
@@ -38,10 +38,11 @@ class ListOfOtherDocuments : AppCompatActivity() {
         binding = ActivityListOfItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        proposalPPTDetailArray = ArrayList()
+        otherDocumentDetailArray = ArrayList()
 //        addItemsListIntoAdapter(itemsArray);
 
         student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
+        other_document_name = intent.getStringExtra("other_document_name")
 
         // after sumbit a new one data
         val message = intent!!.getStringExtra("message").toString()
@@ -49,9 +50,6 @@ class ListOfOtherDocuments : AppCompatActivity() {
         if (message != "null") {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
-
-        Log.d("Student detail list", student_detail.toString())
-
 
         getStudentNameIDReady()
         getProposalPPTDetail()
@@ -66,7 +64,7 @@ class ListOfOtherDocuments : AppCompatActivity() {
     private fun getProposalPPTDetail(){
         mDB.collection("Submission")
             .document(student_detail?.submission_id!!)
-            .collection("Proposal_PPT")
+            .collection(other_document_name.toString())
             .get()
             .addOnSuccessListener { documents ->
                 if(documents != null){
@@ -79,20 +77,19 @@ class ListOfOtherDocuments : AppCompatActivity() {
                             val file_submitted_org = dataMap["File_Submitted_Org"].toString()
                             val file_submitted = dataMap["File_Submitted"].toString();
                             var supervisor_comment = dataMap["Supervisor_Comment"].toString()
-                            var status = dataMap["Status"].toString()
+                            var status = dataMap["Status"].toString();
                             var data_feedback = dataMap["Date_Feedback"].toString()
-                            var proposal_ppt_id = dataMap["Proposal_PPT_ID"].toString();
+                            var document_id = dataMap[other_document_name.toString()+"_ID"].toString();
 
-                            proposalPPTDetailArray.add(OtherDucumentItem(student_comment, date_submit, data_feedback, file_submitted_org, file_submitted,
-                                status, supervisor_comment, proposal_ppt_id))
+                            otherDocumentDetailArray.add(OtherDocumentItem(student_comment, date_submit, data_feedback, file_submitted_org, file_submitted,
+                                status, supervisor_comment, document_id))
                         }
                     }
                 }
-                Log.d("Go to adapter", proposalPPTDetailArray.toString())
-                addItemsListIntoAdapter(proposalPPTDetailArray)
+                Log.d("Go to adapter", otherDocumentDetailArray.toString())
+                addItemsListIntoAdapter(otherDocumentDetailArray)
                 setBtnOnClickListener()
             }
-
     }
 
     private fun setBtnOnClickListener(){
@@ -115,7 +112,7 @@ class ListOfOtherDocuments : AppCompatActivity() {
 
 
 
-    fun addItemsListIntoAdapter(itemsArray : ArrayList<OtherDucumentItem>){
+    fun addItemsListIntoAdapter(itemsArray : ArrayList<OtherDocumentItem>){
         // set linear layout manager
         val layoutManager = LinearLayoutManager(this)
         binding.listOfItemRecycleView.layoutManager = layoutManager

@@ -8,9 +8,13 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.databinding.ActivityDashboardBinding
 import com.example.pairassginment.student.objectClass.BatchDeadline
+import com.example.pairassginment.student.objectClass.OtherDocumentArrayList
 import com.example.pairassginment.student.objectClass.StudentDetail
 import com.google.firebase.firestore.FirebaseFirestore
 import com.transferwise.sequencelayout.SequenceStep
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
@@ -20,13 +24,13 @@ class Dashboard : AppCompatActivity() {
     private var student_detail: StudentDetail = StudentDetail()
     private var batch_deadline: BatchDeadline = BatchDeadline()
 
-    val firstStep = binding.firstStep
-    val secondStep = binding.secondStep
-    val thirdStep = binding.thirdStep
-    val fourthStep = binding.fourthStep
-    val fifthStep = binding.fifthStep
-    val sixthStep = binding.sixthStep
-    val seventhStep = binding.seventhStep
+    var firstStep: SequenceStep? = null
+    var secondStep: SequenceStep? = null
+    var thirdStep: SequenceStep? = null
+    var fourthStep: SequenceStep? = null
+    var fifthStep: SequenceStep? = null
+    var sixthStep: SequenceStep? = null
+    var seventhStep: SequenceStep? = null
 
     private var topics_submit_btn: Button? = null;
     private var topics_detail_btn: Button? = null;
@@ -42,8 +46,9 @@ class Dashboard : AppCompatActivity() {
     private var final_thesis_detail_btn: Button? = null;
     private var poster_submit_btn: Button? = null;
     private var poster_detial_btn: Button? = null;
-    private var other_ducument_name_array: ArrayList<String>? = null;
-    private var other_squence_step_array: ArrayList<SequenceStep>? = null;
+    private var other_ducument_tool: ArrayList<OtherDocumentArrayList>? = null;
+    private var hasContinue = true
+    private var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
@@ -65,21 +70,22 @@ class Dashboard : AppCompatActivity() {
         poster_submit_btn = binding.posterSubmitBtn
         poster_detial_btn = binding.posterDetailBtn
 
-        other_ducument_name_array = ArrayList();
-        other_ducument_name_array!!.add("Proposal_PPT")
-        other_ducument_name_array!!.add("Proposal")
-        other_ducument_name_array!!.add("Final_Draft")
-        other_ducument_name_array!!.add("Final_PPT")
-        other_ducument_name_array!!.add("Final_Thesis")
-        other_ducument_name_array!!.add("Poster")
+        firstStep = binding.firstStep
+        secondStep = binding.secondStep
+        thirdStep = binding.thirdStep
+        fourthStep = binding.fourthStep
+        fifthStep = binding.fifthStep
+        sixthStep = binding.sixthStep
+        seventhStep = binding.seventhStep
 
-        other_squence_step_array = ArrayList();
-        other_squence_step_array!!.add(secondStep)
-        other_squence_step_array!!.add(thirdStep)
-        other_squence_step_array!!.add(fourthStep)
-        other_squence_step_array!!.add(fifthStep)
-        other_squence_step_array!!.add(sixthStep)
-        other_squence_step_array!!.add(seventhStep)
+        other_ducument_tool = ArrayList();
+        other_ducument_tool!!.add(OtherDocumentArrayList("Proposal_PPT", secondStep, proposal_ppt_submit_btn, proposal_ppt_detail_btn))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Proposal", thirdStep, proposal_submit_btn, proposal_detail_btn))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Final_Draft", fourthStep, final_draft_submit_btn, final_draft_detail_btn))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Final_PPT", fifthStep, final_ppt_submit_btn, final_ppt_detial_btn))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Final_Thesis", sixthStep, final_thesis_submit_btn, final_thesis_detail_btn))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Poster", seventhStep, poster_submit_btn, poster_detial_btn))
+
 
         getStudentDetail()
     }
@@ -213,7 +219,7 @@ class Dashboard : AppCompatActivity() {
 
                             firstStep!!.setActive(false)
                             secondStep!!.setActive(true)
-                            getProposalPPTSubmissionDetail()
+                            loopOtherSubmission()
                             Log.d("second step", secondStep.toString())
 
                         }else{
@@ -244,79 +250,92 @@ class Dashboard : AppCompatActivity() {
         }
     }
 
-    private fun getProposalPPTSubmissionDetail(){
+     private fun loopOtherSubmission(){
 
-        do{
-            mDB.collection("Submission")
-                .document(student_detail.submission_id!!)
-                .collection("Proposal_PPT")
-                .get()
-                .addOnSuccessListener { documents ->
-                    Log.d("Proposal Submission Detail", documents.size().toString())
-                    if (documents.size() > 0){
-                        val status_array:ArrayList<String> = ArrayList()
-                        var proposal_ppt_status:String? = null;
-                        val proposal_ppt_size:Int = documents.size()
-                        Log.d("Proposal Submission Detail", proposal_ppt_size.toString())
+        if (hasContinue){
+            hasContinue = false
+            getOtherSubmissionDetail(index)
+            index++
+        }
+    }
 
-                        for(document in documents){
-                            Log.d("Proposal Submission Detail", document.data["Status"].toString())
-                            status_array!!.add(document.data["Status"].toString())
+     private fun getOtherSubmissionDetail(index: Int){
+         Log.d("has continue 2", hasContinue.toString())
+         Log.d("document name", other_ducument_tool!![index].other_document_name!!)
+        mDB.collection("Submission")
+            .document(student_detail.submission_id!!)
+            .collection(other_ducument_tool!![index].other_document_name!!)
+            .get()
+            .addOnSuccessListener { documents ->
+                Log.d(other_ducument_tool!![index].other_document_name!! + " Submission Detail", documents.size().toString())
+                if (documents.size() > 0){
+                    val status_array:ArrayList<String> = ArrayList()
+                    var other_documents_status:String? = null;
+                    val other_documents_size:Int = documents.size()
+                    Log.d(other_ducument_tool!![index].other_document_name!! + " Submission Detail", other_documents_size.toString())
+
+                    for(document in documents){
+                        Log.d(other_ducument_tool!![index].other_document_name!! + " Submission Detail", document.data["Status"].toString())
+                        status_array!!.add(document.data["Status"].toString())
+                    }
+
+                    other_documents_status = if(status_array!!.contains("Approved")){
+                        "Approved"
+                    }else if (status_array!!.contains("Pending")){
+                        "Pending"
+                    }else{
+                        "Rejected"
+                    }
+
+                    val intentDetailList = Intent(this@Dashboard, ListOfOtherDocuments::class.java)
+                    val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
+
+                    other_ducument_tool!![index].other_sequence_step!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: "+other_documents_status+ "\n\n" + "SUBMITTED: " + other_documents_size.toString())
+
+                    if(other_documents_status == "Approved"){
+                        other_ducument_tool!![index].other_document_detail_btn?.visibility = View.VISIBLE
+                        other_ducument_tool!![index].other_document_submit_btn?.visibility = View.GONE
+
+                        other_ducument_tool!![index].other_document_detail_btn!!.setOnClickListener {
+                            intentDetailList.putExtra("student_detail", student_detail)
+                            intentDetailList.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                            startActivity(intentDetailList)
                         }
 
-                        proposal_ppt_status = if(status_array!!.contains("Approved")){
-                                                    "Approved"
-                                                }else if (status_array!!.contains("Pending")){
-                                                    "Pending"
-                                                }else{
-                                                    "Rejected"
-                                                }
+                        other_ducument_tool!![index].other_sequence_step!!.setActive(false)
+                        other_ducument_tool!![index+1].other_sequence_step!!.setActive(true)
 
-                        val intentDetailList = Intent(this@Dashboard, ListOfOtherDocuments::class.java)
-                        val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
+                        hasContinue = true
+                        loopOtherSubmission()
 
-                        secondStep!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: "+proposal_ppt_status+ "\n\n" + "SUBMITTED: " + proposal_ppt_size.toString())
+                    }else{
+                        other_ducument_tool!![index].other_document_detail_btn?.visibility = View.VISIBLE
+                        other_ducument_tool!![index].other_document_submit_btn?.visibility = View.VISIBLE
 
-                        if(proposal_ppt_status == "Approved"){
-                            proposal_ppt_detail_btn?.visibility = View.VISIBLE
-                            proposal_ppt_submit_btn?.visibility = View.GONE
-
-                            proposal_ppt_detail_btn!!.setOnClickListener {
-                                intentDetailList.putExtra("student_detail", student_detail)
-                                startActivity(intentDetailList)
-                            }
-
-                            secondStep!!.setActive(false)
-                            thirdStep!!.setActive(true)
-
-
-
-                        }else{
-                            proposal_ppt_detail_btn?.visibility = View.VISIBLE
-                            proposal_ppt_submit_btn?.visibility = View.VISIBLE
-
-                            proposal_ppt_detail_btn!!.setOnClickListener {
-                                intentDetailList.putExtra("student_detail", student_detail)
-                                startActivity(intentDetailList)
-                            }
-
-                            proposal_ppt_submit_btn!!.setOnClickListener {
-                                intentSubmitForm.putExtra("student_detail", student_detail)
-                                startActivity(intentSubmitForm)
-                            }
+                        other_ducument_tool!![index].other_document_detail_btn!!.setOnClickListener {
+                            intentDetailList.putExtra("student_detail", student_detail)
+                            intentDetailList.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                            startActivity(intentDetailList)
                         }
 
-                    }else {
-                        proposal_ppt_submit_btn?.visibility = View.VISIBLE
-
-                        proposal_ppt_submit_btn!!.setOnClickListener {
-                            val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
+                        other_ducument_tool!![index].other_document_submit_btn!!.setOnClickListener {
                             intentSubmitForm.putExtra("student_detail", student_detail)
+                            intentSubmitForm.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
                             startActivity(intentSubmitForm)
                         }
                     }
+
+                }else {
+                    other_ducument_tool!![index].other_document_submit_btn?.visibility = View.VISIBLE
+
+                    other_ducument_tool!![index].other_document_submit_btn!!.setOnClickListener {
+                        val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
+                        intentSubmitForm.putExtra("student_detail", student_detail)
+                        intentSubmitForm.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                        startActivity(intentSubmitForm)
+                    }
                 }
-        }while (hasContinue)
+            }
     }
 
     private fun getStudentDetail(){
