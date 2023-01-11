@@ -19,8 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ListOfOtherDocuments : AppCompatActivity() {
     private lateinit var binding: ActivityListOfItemBinding
     private lateinit var otherDocumentDetailArray: ArrayList<OtherDocumentItem>
-    private var MY_CODE_REQUEST: Int = 0;
-    private var MY_ITEM_CODE_REQUEST: Int = 10;
+    private val MY_CODE_REQUEST: Int = 0;
+    private val MY_ITEM_CODE_REQUEST: Int = 10;
     private var student_detail: StudentDetail? = null;
     private var other_document_name: String? = null;
     private var other_document_submit_label: String? = null;
@@ -35,6 +35,7 @@ class ListOfOtherDocuments : AppCompatActivity() {
 
     val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
+        Log.d("Result item ", "Running")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,6 +113,7 @@ class ListOfOtherDocuments : AppCompatActivity() {
         // set home button listener
         binding.floatingHomeBtn.setOnClickListener{
             val intent = Intent(this, Dashboard::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.putExtra("role_id", student_detail!!.role_id)
             startActivity(intent);
             finish();
@@ -154,11 +156,11 @@ class ListOfOtherDocuments : AppCompatActivity() {
 
                 intent_other_submit_form.putExtra("item_clicked", itemsArray[position])
                 intent_other_submit_form.putExtra("student_detail", student_detail)
+                intent_other_submit_form.putExtra("other_document_name", other_document_name)
                 intent_other_submit_form.putExtra("other_document_submit_label", other_document_submit_label)
 
-
                 when(itemsArray[position].submittedStatus){
-                    "Pending"  -> startActivity(intent_other_submit_form)
+                    "Pending"  -> startForResult.launch(intent_other_submit_form)
                     else -> startItemForResult.launch(intent_view_other_submit_form)
                 }
             }
@@ -167,15 +169,16 @@ class ListOfOtherDocuments : AppCompatActivity() {
 
     // once the activity is finished than get the result
     private fun onItemActivityResult(requestCode: Int, result: ActivityResult){
+        Log.d("result.resultCode", result.resultCode.toString())
+        Log.d("requestCode", requestCode.toString())
+        Log.d("Activity.RESULT_OK", Activity.RESULT_OK.toString())
+
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
             when (requestCode) {
                 MY_ITEM_CODE_REQUEST -> {
-                    val message = intent!!.getStringExtra("message").toString()
-
-                    if(message != "null"){
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                    }
+                    val message = "Update Successfully"
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

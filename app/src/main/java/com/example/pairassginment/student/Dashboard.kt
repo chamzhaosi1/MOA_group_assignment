@@ -213,7 +213,6 @@ class Dashboard : AppCompatActivity() {
 
                             topics_detail_btn!!.setOnClickListener {
                                 intentDetailList.putExtra("student_detail", student_detail)
-                                intentDetailList.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                                 startActivity(intentDetailList)
                             }
 

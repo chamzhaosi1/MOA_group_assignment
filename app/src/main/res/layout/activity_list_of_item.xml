@@ -36,6 +36,7 @@
             android:layout_marginEnd="50px"
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/orange_bng"
+            app:borderWidth="0dp"
             app:layout_constraintRight_toLeftOf="@+id/floating_add_btn"
             app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -45,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:backgroundTint="@color/colorPrimary"
+            app:borderWidth="0dp"
             android:src="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

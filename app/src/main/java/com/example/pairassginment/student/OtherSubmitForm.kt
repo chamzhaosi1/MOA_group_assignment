@@ -99,7 +99,7 @@ class OtherSubmitForm : AppCompatActivity() {
         }
 
         binding.backBtn.setOnClickListener {
-            val intent = Intent(this, ListOfOtherDocuments::class.java)
+            val intent = Intent()
             intent.putExtra("message", "Nothing updated")
             setResult(Activity.RESULT_OK, intent);
             finish()
@@ -164,7 +164,8 @@ class OtherSubmitForm : AppCompatActivity() {
     private fun uploadDataToDB(other_document_data: HashMap<String, Any>){
         val other_document_collection = mDB.collection("Submission")
 
-        if(editSubmittedDocument >= 0) {
+        if(editSubmittedDocument <= 0) {
+            Log.d("testing above", editSubmittedDocument.toString())
             other_document_collection
                 .document(student_detail!!.submission_id!!)
                 .collection(other_document_name.toString())
@@ -181,9 +182,8 @@ class OtherSubmitForm : AppCompatActivity() {
                             circleProgress!!.visibility = View.GONE
                         }
                         .addOnSuccessListener {
-                            val intent =
-                                Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
-                            intent.putExtra("message", "Data updated")
+                            val intent = Intent(this, ListOfOtherDocuments::class.java)
+                            intent.putExtra("message", "Document Created")
                             intent.putExtra("other_document_name", other_document_name)
                             intent.putExtra("student_detail", student_detail)
                             intent.putExtra(
@@ -195,18 +195,21 @@ class OtherSubmitForm : AppCompatActivity() {
                         }
                 }
         }else{
+            Log.d("testing below", editSubmittedDocument.toString())
+            Log.d("testing submission id", student_detail!!.submission_id!!.toString())
+            Log.d("testing document id", item_other_detail!!.documentID.toString())
+
             other_document_collection
                 .document(student_detail!!.submission_id!!)
-                .collection(other_document_name.toString())
+                .collection(item_other_detail!!.documentType.toString())
                 .document(item_other_detail!!.documentID.toString())
                 .update(other_document_data)
                 .addOnCompleteListener {
                     circleProgress!!.visibility = View.GONE
                 }
-                .addOnSuccessListener { document ->
-                    val intent =
-                        Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
-                    intent.putExtra("message", "Data updated")
+                .addOnSuccessListener {
+                    val intent = Intent(this, ListOfOtherDocuments::class.java)
+                    intent.putExtra("message", "Document updated")
                     intent.putExtra("other_document_name", other_document_name)
                     intent.putExtra("student_detail", student_detail)
                     intent.putExtra(
@@ -215,6 +218,9 @@ class OtherSubmitForm : AppCompatActivity() {
                     )
                     startActivity(intent)
                     finish()
+
+                }.addOnFailureListener{
+                    Log.d("Failed", "Failde to upload a file")
                 }
         }
     }

@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity(){
         }
 
         bindingMain.signInButton.setOnClickListener{
-            circleProgress!!.visibility = View.VISIBLE
             signIn()
         }
     }
@@ -128,6 +127,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun signIn() {
+        circleProgress!!.visibility = View.VISIBLE
         //check if the fields are filled out
         if (!isEmpty(mEmail!!.text.toString()) && !isEmpty(mPassword!!.text.toString())
         ) {

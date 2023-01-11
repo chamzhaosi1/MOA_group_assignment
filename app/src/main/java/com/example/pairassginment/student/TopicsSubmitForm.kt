@@ -45,7 +45,7 @@ class TopicsSubmitForm : AppCompatActivity() {
 
         getStudentNameIDReady()
         getTopicsItemReadyWhenPending()
-        setBtnListner()
+        setBtnListener()
     }
 
     private fun getTopicsItemReadyWhenPending(){
@@ -59,7 +59,7 @@ class TopicsSubmitForm : AppCompatActivity() {
         binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
     }
 
-    private fun setBtnListner(){
+    private fun setBtnListener(){
         binding.submitBtn.setOnClickListener{
             Log.d("Submit check", submitOperation().toString())
             when (submitOperation()){
@@ -74,7 +74,7 @@ class TopicsSubmitForm : AppCompatActivity() {
         }
 
         binding.backBtn.setOnClickListener {
-            val intent = Intent(this, ListOfThreeTopic::class.java)
+            val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
             intent.putExtra("message", "Nothing updated")
             setResult(Activity.RESULT_OK, intent);
             finish()
@@ -110,8 +110,10 @@ class TopicsSubmitForm : AppCompatActivity() {
                 }
                 .addOnSuccessListener {
                     val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
+                    intent.putExtra("message", "Document updated")
                     intent.putExtra("student_detail", student_detail)
                     startActivity(intent)
+                    finish()
                 }
         }else {
             val topicData = hashMapOf<String, Any>(
@@ -143,9 +145,10 @@ class TopicsSubmitForm : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     val intent = Intent(this@TopicsSubmitForm, ListOfThreeTopic::class.java)
                                     student_detail!!.submission_id = randomNumber;
-                                    intent.putExtra("message", "Data updated")
+                                    intent.putExtra("message", "Document updated")
                                     intent.putExtra("student_detail", student_detail)
                                     startActivity(intent)
+                                    finish()
                                 }
                         }
                 }

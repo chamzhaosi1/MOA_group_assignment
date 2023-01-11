@@ -51,7 +51,7 @@ class ViewTopicsSubmitForm : AppCompatActivity() {
             }
         }
         binding.backBtn.setOnClickListener{
-            val intent = Intent(this, ViewTopicsSubmitForm::class.java)
+            val intent = Intent(this, ListOfThreeTopic::class.java)
             setResult(Activity.RESULT_OK, intent)
             finish();
         }
