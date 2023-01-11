@@ -85,7 +85,7 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:padding="15dp"
-        android:text="uploaded_file_name "
+        android:text="Choosing a file"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/submit_btn"
         app:layout_constraintHorizontal_bias="0.0"

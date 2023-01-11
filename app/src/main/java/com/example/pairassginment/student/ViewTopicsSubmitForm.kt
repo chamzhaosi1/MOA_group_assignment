@@ -32,6 +32,7 @@ class ViewTopicsSubmitForm : AppCompatActivity() {
         binding.topicTitleTv.text = item_topics_detail!!.title
         binding.abstractsTv.text = item_topics_detail!!.abstract
         binding.supervisorCommentTv.text = item_topics_detail!!.supervisor_comment
+        binding.documentLabelTv.text = "VIEW TITLE SUBMITTED"
 
         Log.d("item topics detail", item_topics_detail.toString())
         when(item_topics_detail!!.status){

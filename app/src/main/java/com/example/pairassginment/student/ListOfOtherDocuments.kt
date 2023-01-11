@@ -21,6 +21,8 @@ class ListOfOtherDocuments : AppCompatActivity() {
     private var MY_ITEM_CODE_REQUEST: Int = 10;
     private var student_detail: StudentDetail? = null;
     private var other_document_name: String? = null;
+    private var other_document_submit_label: String? = null;
+    private var other_document_view_label: String? = null;
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     // register an intent that will result a result
@@ -43,6 +45,11 @@ class ListOfOtherDocuments : AppCompatActivity() {
 
         student_detail = intent.getParcelableExtra<StudentDetail>("student_detail")
         other_document_name = intent.getStringExtra("other_document_name")
+        other_document_view_label = intent.getStringExtra("other_document_view_label")
+        other_document_submit_label = intent.getStringExtra("other_document_submit_label")
+
+        Log.d("document label", other_document_view_label.toString())
+        Log.d("other_document_submit_label", other_document_submit_label.toString())
 
         // after sumbit a new one data
         val message = intent!!.getStringExtra("message").toString()
@@ -54,8 +61,6 @@ class ListOfOtherDocuments : AppCompatActivity() {
         getStudentNameIDReady()
         getProposalPPTDetail()
     }
-
-
 
     private fun getStudentNameIDReady(){
         binding.studentNameIdTv.text = student_detail!!.student_name.toString() + " " + student_detail!!.student_id.toString()
@@ -80,9 +85,10 @@ class ListOfOtherDocuments : AppCompatActivity() {
                             var status = dataMap["Status"].toString();
                             var data_feedback = dataMap["Date_Feedback"].toString()
                             var document_id = dataMap[other_document_name.toString()+"_ID"].toString();
+                            var document_type = other_document_name.toString()
 
                             otherDocumentDetailArray.add(OtherDocumentItem(student_comment, date_submit, data_feedback, file_submitted_org, file_submitted,
-                                status, supervisor_comment, document_id))
+                                status, supervisor_comment, document_id, document_type))
                         }
                     }
                 }
@@ -106,6 +112,8 @@ class ListOfOtherDocuments : AppCompatActivity() {
             val intent = Intent(this, OtherSubmitForm::class.java)
             // after registered and clicked the btn then get the intent launch
             intent.putExtra("student_detail", student_detail)
+            intent.putExtra("other_document_name", other_document_name)
+            intent.putExtra("other_document_submit_label", other_document_submit_label)
             startForResult.launch(intent)
         }
     }
@@ -132,9 +140,12 @@ class ListOfOtherDocuments : AppCompatActivity() {
                 // Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show(
                 intent_view_other_submit_form.putExtra("item_clicked", itemsArray[position])
                 intent_view_other_submit_form.putExtra("student_detail", student_detail)
+                intent_view_other_submit_form.putExtra("other_document_view_label", other_document_view_label)
 
                 intent_other_submit_form.putExtra("item_clicked", itemsArray[position])
                 intent_other_submit_form.putExtra("student_detail", student_detail)
+                intent_other_submit_form.putExtra("other_document_submit_label", other_document_submit_label)
+
 
                 when(itemsArray[position].submittedStatus){
                     "Pending"  -> startActivity(intent_other_submit_form)

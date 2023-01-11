@@ -30,7 +30,8 @@ class OtherSubmitForm : AppCompatActivity() {
     private var selectFileBtnClick : Int = 0;
     private var fileNameOnly: String? = null;
     private var item_other_detail: OtherDocumentItem? = null;
-    private var other_document_name: String? = null
+    private var other_document_name: String? = null;
+    private var other_document_submit_label: String? = null;
 
     private var MY_CODE_REQUEST: Int = 190;
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -45,6 +46,7 @@ class OtherSubmitForm : AppCompatActivity() {
         student_detail = intent.getParcelableExtra("student_detail")
         item_other_detail = intent.getParcelableExtra("item_clicked")
         other_document_name = intent.getStringExtra("other_document_name")
+        other_document_submit_label = intent.getStringExtra("other_document_submit_label")
 
         Log.d("Student detail list", student_detail.toString())
 
@@ -62,7 +64,7 @@ class OtherSubmitForm : AppCompatActivity() {
     }
 
     private fun getSubmissionFormLabelReady(){
-        binding.topicLabelTv.setText("UPLOAD PRESENTATION SLIDE")
+        binding.topicLabelTv.setText(other_document_submit_label)
     }
 
     private fun getStudentNameIDReady(){
@@ -83,6 +85,7 @@ class OtherSubmitForm : AppCompatActivity() {
                 Toast.makeText(this, "Must write down your comment and upload a file.", Toast.LENGTH_SHORT).show();
             }
         }
+
         binding.backBtn.setOnClickListener {
             val intent = Intent(this, ListOfOtherDocuments::class.java)
             intent.putExtra("message", "Nothing updated")
@@ -114,28 +117,28 @@ class OtherSubmitForm : AppCompatActivity() {
         // It will upload the file based on the url that we uploaded
         documentRef.putFile(fileUrl!!)
             .addOnSuccessListener {
-                val proposal_ppt_collection = mDB.collection("Submission")
+                val other_document_collection = mDB.collection("Submission")
                 val student_comment = binding.studentCommentEt.text.toString()
                 val uploaded_file_org_name = fileNameOnly
                 val uploaded_file_firebase = fileUrl!!.lastPathSegment
                 val date_submit = SimpleDateFormat("dd MMM yyyy").format(Date())
 
-                val proposal_data = hashMapOf<String, Any>(
+                val other_document_data = hashMapOf<String, Any>(
                     "Date_Submit" to date_submit,
                     "Student_Comment" to student_comment,
                     "File_Submitted_Org" to uploaded_file_org_name!!,
-                    "File_Submited" to uploaded_file_firebase!!,
+                    "File_Submitted" to uploaded_file_firebase!!,
                     "Status" to "Pending"
                 )
 
-                proposal_ppt_collection
+                other_document_collection
                     .document(student_detail!!.submission_id!!)
                     .collection(other_document_name.toString())
-                    .add(proposal_data)
+                    .add(other_document_data)
                     .addOnSuccessListener { document ->
                         val document_id = document.id
 
-                        proposal_ppt_collection
+                        other_document_collection
                             .document(student_detail!!.submission_id!!)
                             .collection(other_document_name.toString())
                             .document(document_id)
@@ -143,7 +146,9 @@ class OtherSubmitForm : AppCompatActivity() {
                             .addOnSuccessListener {
                                 val intent = Intent(this@OtherSubmitForm, ListOfOtherDocuments::class.java)
                                 intent.putExtra("message", "Data updated")
+                                intent.putExtra("other_document_name", other_document_name)
                                 intent.putExtra("student_detail", student_detail)
+                                intent.putExtra("other_document_submit_label" ,other_document_submit_label)
                                 startActivity(intent)
                                 finish()
                             }

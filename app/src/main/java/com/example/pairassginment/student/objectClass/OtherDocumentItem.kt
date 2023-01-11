@@ -12,8 +12,10 @@ data class OtherDocumentItem(
     val submittedStatus: String? = null,
     val supervisorComment: String? = null,
     val documentID: String? = null,
+    val documentType: String? = null,
     ) : Parcelable{
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -34,6 +36,7 @@ data class OtherDocumentItem(
         parcel.writeString(submittedStatus)
         parcel.writeString(supervisorComment)
         parcel.writeString(documentID)
+        parcel.writeString(documentType)
     }
 
     override fun describeContents(): Int {

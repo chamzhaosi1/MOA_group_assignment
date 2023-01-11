@@ -26,17 +26,30 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/document_label_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/other_document_label_tv"
+            app:layout_constraintTop_toBottomOf="@id/student_name_id_tv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/student_comment_tv"
+            android:paddingVertical="10dp"
+            android:textSize="@dimen/app_name_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"/>
+
+        <TextView
             android:id="@+id/student_comment_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Arduino of solar ..."
-            app:layout_constraintTop_toBottomOf="@id/student_name_id_tv"
+            app:layout_constraintTop_toBottomOf="@id/document_label_tv"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_margin="10dp"
             android:padding="10dp"
             android:textSize="20sp"
             android:textColor="@color/black"
-            android:textAlignment="center"
             android:background="@drawable/bg_rounded"
             android:scrollbars="vertical"
             android:lines="15"
@@ -78,7 +91,6 @@
             android:padding="10dp"
             android:textSize="20sp"
             android:textColor="@color/black"
-            android:textAlignment="center"
             android:background="@drawable/bg_rounded"
             android:scrollbars="vertical"
             android:lines="15"

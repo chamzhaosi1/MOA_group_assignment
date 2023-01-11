@@ -79,12 +79,12 @@ class Dashboard : AppCompatActivity() {
         seventhStep = binding.seventhStep
 
         other_ducument_tool = ArrayList();
-        other_ducument_tool!!.add(OtherDocumentArrayList("Proposal_PPT", secondStep, proposal_ppt_submit_btn, proposal_ppt_detail_btn))
-        other_ducument_tool!!.add(OtherDocumentArrayList("Proposal", thirdStep, proposal_submit_btn, proposal_detail_btn))
-        other_ducument_tool!!.add(OtherDocumentArrayList("Final_Draft", fourthStep, final_draft_submit_btn, final_draft_detail_btn))
-        other_ducument_tool!!.add(OtherDocumentArrayList("Final_PPT", fifthStep, final_ppt_submit_btn, final_ppt_detial_btn))
-        other_ducument_tool!!.add(OtherDocumentArrayList("Final_Thesis", sixthStep, final_thesis_submit_btn, final_thesis_detail_btn))
-        other_ducument_tool!!.add(OtherDocumentArrayList("Poster", seventhStep, poster_submit_btn, poster_detial_btn))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Proposal_PPT", secondStep, proposal_ppt_submit_btn, proposal_ppt_detail_btn, "UPLOAD PRESENTATION SLIDE", "VIEW PRESENTATION SLIDE"))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Proposal", thirdStep, proposal_submit_btn, proposal_detail_btn, "UPLOAD FINAL PROPOSAL", "VIEW FINAL PROPOSAL"))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Final_Draft", fourthStep, final_draft_submit_btn, final_draft_detail_btn, "UPLOAD FINAL THESIS DRAFT", "VIEW FINAL THESIS DRAFT"))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Final_PPT", fifthStep, final_ppt_submit_btn, final_ppt_detial_btn, "UPLOAD FINAL THESIS PRESENTATION SLIDES", "VIEW FINAL PRESENTATION SLIDES"))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Final_Thesis", sixthStep, final_thesis_submit_btn, final_thesis_detail_btn, "UPLOAD FINAL THESIS REPORT", "VIEW FINAL THESIS REPORT"))
+        other_ducument_tool!!.add(OtherDocumentArrayList("Poster", seventhStep, poster_submit_btn, poster_detial_btn, "UPLOAD FYP POSTER", "VIEW FYP POSTER"))
 
 
         getStudentDetail()
@@ -242,10 +242,8 @@ class Dashboard : AppCompatActivity() {
             topics_submit_btn!!.setOnClickListener {
                 val intentSubmitForm = Intent(this@Dashboard, TopicsSubmitForm::class.java)
                 intentSubmitForm.putExtra("student_detail", student_detail)
+                Log.d("topics btn", "topics btn")
                 startActivity(intentSubmitForm)
-
-                val throwable = Throwable()
-                throwable.printStackTrace()
             }
         }
     }
@@ -254,8 +252,11 @@ class Dashboard : AppCompatActivity() {
 
         if (hasContinue){
             hasContinue = false
-            getOtherSubmissionDetail(index)
-            index++
+
+            if(other_ducument_tool!!.size > index) {
+                getOtherSubmissionDetail(index)
+                index++
+            }
         }
     }
 
@@ -299,11 +300,16 @@ class Dashboard : AppCompatActivity() {
                         other_ducument_tool!![index].other_document_detail_btn!!.setOnClickListener {
                             intentDetailList.putExtra("student_detail", student_detail)
                             intentDetailList.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                            intentDetailList.putExtra("other_document_submit_label", other_ducument_tool!![index].other_document_submit_label)
+                            intentDetailList.putExtra("other_document_view_label", other_ducument_tool!![index].other_document_view_label)
                             startActivity(intentDetailList)
                         }
 
                         other_ducument_tool!![index].other_sequence_step!!.setActive(false)
-                        other_ducument_tool!![index+1].other_sequence_step!!.setActive(true)
+
+                        if(other_ducument_tool!!.size > index+1){
+                            other_ducument_tool!![index+1].other_sequence_step!!.setActive(true)
+                        }
 
                         hasContinue = true
                         loopOtherSubmission()
@@ -315,12 +321,16 @@ class Dashboard : AppCompatActivity() {
                         other_ducument_tool!![index].other_document_detail_btn!!.setOnClickListener {
                             intentDetailList.putExtra("student_detail", student_detail)
                             intentDetailList.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                            intentDetailList.putExtra("other_document_submit_label", other_ducument_tool!![index].other_document_submit_label)
+                            intentDetailList.putExtra("other_document_view_label", other_ducument_tool!![index].other_document_view_label)
                             startActivity(intentDetailList)
                         }
 
                         other_ducument_tool!![index].other_document_submit_btn!!.setOnClickListener {
                             intentSubmitForm.putExtra("student_detail", student_detail)
                             intentSubmitForm.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                            intentSubmitForm.putExtra("other_document_submit_label", other_ducument_tool!![index].other_document_submit_label)
+                            intentSubmitForm.putExtra("other_document_view_label", other_ducument_tool!![index].other_document_view_label)
                             startActivity(intentSubmitForm)
                         }
                     }
@@ -332,6 +342,8 @@ class Dashboard : AppCompatActivity() {
                         val intentSubmitForm = Intent(this@Dashboard, OtherSubmitForm::class.java)
                         intentSubmitForm.putExtra("student_detail", student_detail)
                         intentSubmitForm.putExtra("other_document_name", other_ducument_tool!![index].other_document_name)
+                        intentSubmitForm.putExtra("other_document_submit_label", other_ducument_tool!![index].other_document_submit_label)
+                        intentSubmitForm.putExtra("other_document_view_label", other_ducument_tool!![index].other_document_view_label)
                         startActivity(intentSubmitForm)
                     }
                 }

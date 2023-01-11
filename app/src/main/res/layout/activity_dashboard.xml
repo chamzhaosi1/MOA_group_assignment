@@ -21,7 +21,7 @@
     <TextView
         android:id="@+id/notice_tv"
         android:layout_width="match_parent"
-        android:layout_height="500px"
+        android:layout_height="200dp"
         android:background="@color/little_black_white"
         android:text="Notice: "
         android:textColor="@color/black"

@@ -33,7 +33,13 @@ class OtherDocumentAdapter (val context: Context, val items: ArrayList<OtherDocu
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         if(holder is ViewHolder){
-            holder.itemImage.setImageResource(R.drawable.ppt)
+            when(items[position].documentType){
+                "Proposal_PPT" -> holder.itemImage.setImageResource(R.drawable.ppt)
+                "Final_PPT" -> holder.itemImage.setImageResource(R.drawable.ppt)
+                "Poster" -> holder.itemImage.setImageResource(R.drawable.brochure)
+                else -> holder.itemImage.setImageResource(R.drawable.txt)
+            }
+
             holder.itemSubmittedDate.text = context.getString(R.string.submitted_date, items[position].dateSubmitted)
 
             when (items[position].submittedStatus){
