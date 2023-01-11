@@ -7,7 +7,10 @@ import android.nfc.Tag
 import android.os.Bundle
 import android.text.TextUtils.isEmpty
 import android.util.Log
+import android.view.View
 import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.databinding.ActivityMainBinding
@@ -26,12 +29,15 @@ class MainActivity : AppCompatActivity(){
     private var sharedPreferences: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
     private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private var circleProgress: RelativeLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMain = ActivityMainBinding.inflate(layoutInflater)
         mEmail = bindingMain.emailLogin
         mPassword = bindingMain.passwordLogin
+        circleProgress = bindingMain.circleCenterLayout
+        circleProgress!!.visibility = View.GONE
 
         setContentView(bindingMain.root)
 
@@ -55,6 +61,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         bindingMain.signInButton.setOnClickListener{
+            circleProgress!!.visibility = View.VISIBLE
             signIn()
         }
     }
@@ -82,7 +89,6 @@ class MainActivity : AppCompatActivity(){
                     .addOnSuccessListener { document ->
                         if (document != null){
                             val role = document.data!!.getValue("Role").toString()
-//                            Log.d("Role" , role)
 
                             when(role){
                                 "student" ->{
@@ -130,7 +136,9 @@ class MainActivity : AppCompatActivity(){
             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                 mEmail!!.text.toString(), mPassword!!.text.toString()
             )
-                .addOnCompleteListener{}.addOnSuccessListener {
+                .addOnCompleteListener{
+                    circleProgress!!.visibility = View.GONE
+                }.addOnSuccessListener {
 
                     // for first time if that user success to login then store the email and password to shared preferences
                     if(sharedPreferences!!.getString("email","").toString().isEmpty()){
