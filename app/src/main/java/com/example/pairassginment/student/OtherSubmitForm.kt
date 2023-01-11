@@ -164,7 +164,7 @@ class OtherSubmitForm : AppCompatActivity() {
     private fun uploadDataToDB(other_document_data: HashMap<String, Any>){
         val other_document_collection = mDB.collection("Submission")
 
-        if(editSubmittedDocument <= 0) {
+        if(editSubmittedDocument >= 0) {
             other_document_collection
                 .document(student_detail!!.submission_id!!)
                 .collection(other_document_name.toString())
