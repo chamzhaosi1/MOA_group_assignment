@@ -143,7 +143,7 @@ class OtherSubmitForm : AppCompatActivity() {
                         "Student_Comment" to student_comment,
                         "File_Submitted_Org" to uploaded_file_org_name!!,
                         "File_Submitted" to uploaded_file_firebase!!,
-                        "Status" to "Pending"
+                        "Status" to "PENDING"
                     )
 
                     uploadDataToDB(other_document_data)
@@ -154,7 +154,7 @@ class OtherSubmitForm : AppCompatActivity() {
             val other_document_data = hashMapOf<String, Any>(
                 "Date_Submit" to date_submit,
                 "Student_Comment" to student_comment,
-                "Status" to "Pending"
+                "Status" to "PENDING"
             )
 
             uploadDataToDB(other_document_data)

@@ -36,7 +36,7 @@ class ViewTopicsSubmitForm : AppCompatActivity() {
 
         Log.d("item topics detail", item_topics_detail.toString())
         when(item_topics_detail!!.status){
-            "Approved" ->
+            "APPROVED" ->
             {
                 binding.topicTitleTv.setBackgroundColor(this.getColor(R.color.approved_green))
                 binding.abstractsTv.setBackgroundColor(this.getColor(R.color.approved_green))

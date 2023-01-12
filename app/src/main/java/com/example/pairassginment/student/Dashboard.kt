@@ -3,9 +3,11 @@ package com.example.pairassginment.student
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.pairassginment.R
 import com.example.pairassginment.databinding.ActivityDashboardBinding
 import com.example.pairassginment.student.objectClass.BatchDeadline
 import com.example.pairassginment.student.objectClass.OtherDocumentArrayList
@@ -15,6 +17,9 @@ import com.transferwise.sequencelayout.SequenceStep
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
@@ -125,6 +130,7 @@ class Dashboard : AppCompatActivity() {
                     batch_deadline.poster_deadline = document.data?.get("Poster_Deadline").toString();
 
                     setSequenceStepUI()
+                    getNotification()
                 }
             }
     }
@@ -193,12 +199,12 @@ class Dashboard : AppCompatActivity() {
                         status_array!!.add(document.data["Status"].toString())
                     }
 
-                    topic_status = if(status_array!!.contains("Approved")){
-                                    "Approved"
-                                }else if (status_array!!.contains("Pending")){
-                                    "Pending"
+                    topic_status = if(status_array!!.contains("APPROVED")){
+                                    "APPROVED"
+                                }else if (status_array!!.contains("PENDING")){
+                                    "PENDING"
                                 }else{
-                                    "Rejected"
+                                    "REJECTED"
                                 }
 
                     val intentDetailList = Intent(this@Dashboard, ListOfThreeTopic::class.java)
@@ -207,7 +213,7 @@ class Dashboard : AppCompatActivity() {
                     if(topic_size > 0){
                         firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: "+topic_status+ "\n\n" + "SUBMITTED: " + topic_size.toString() + "/3" )
 
-                        if(topic_status == "Approved"){
+                        if(topic_status == "APPROVED"){
                             topics_detail_btn?.visibility = View.VISIBLE
                             topics_submit_btn?.visibility = View.GONE
 
@@ -218,10 +224,17 @@ class Dashboard : AppCompatActivity() {
 
                             firstStep!!.setActive(false)
                             secondStep!!.setActive(true)
+                            firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_approved)
                             loopOtherSubmission()
+
                             Log.d("second step", secondStep.toString())
 
                         }else{
+                            when(topic_status){
+                                "PENDING" -> firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_waiting)
+                                else -> firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_rejected)
+                            }
+
                             topics_detail_btn?.visibility = View.VISIBLE
                             topics_submit_btn?.visibility = View.VISIBLE
 
@@ -235,9 +248,34 @@ class Dashboard : AppCompatActivity() {
                                 startActivity(intentSubmitForm)
                             }
                         }
+                    }else{
+                        val date_format = SimpleDateFormat("dd MMM yyyy")
+                        val current_date = date_format.parse(date_format.format(Date()))
+                        val compare_result = date_format.parse(batch_deadline!!.topics_deadline!!).compareTo(current_date)
+
+                        when{
+                            compare_result < 0 -> {
+                                firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_overdue)
+                                firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: OVERDUE\n\n" + "SUBMITTED: " + topic_size.toString() + "/3" )
+                            }
+                            else ->  firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_waiting)
+                        }
                     }
                 }
         }else{
+            val date_format = SimpleDateFormat("dd MMM yyyy")
+            val current_date = date_format.parse(date_format.format(Date()))
+            val compare_result = date_format.parse(batch_deadline!!.topics_deadline!!).compareTo(current_date)
+
+            when{
+                compare_result < 0 -> {
+                    firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_overdue)
+                    firstStep!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: OVERDUE\n\n" + "SUBMITTED: 0/3" )
+                }
+                else ->  firstStep!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_waiting)
+            }
+
+
             topics_submit_btn!!.setOnClickListener {
                 val intentSubmitForm = Intent(this@Dashboard, TopicsSubmitForm::class.java)
                 intentSubmitForm.putExtra("student_detail", student_detail)
@@ -279,12 +317,12 @@ class Dashboard : AppCompatActivity() {
                         status_array!!.add(document.data["Status"].toString())
                     }
 
-                    other_documents_status = if(status_array!!.contains("Approved")){
-                        "Approved"
-                    }else if (status_array!!.contains("Pending")){
-                        "Pending"
+                    other_documents_status = if(status_array!!.contains("APPROVED")){
+                        "APPROVED"
+                    }else if (status_array!!.contains("PENDING")){
+                        "PENDING"
                     }else{
-                        "Rejected"
+                        "REJECTED"
                     }
 
                     val intentDetailList = Intent(this@Dashboard, ListOfOtherDocuments::class.java)
@@ -292,7 +330,7 @@ class Dashboard : AppCompatActivity() {
 
                     other_ducument_tool!![index].other_sequence_step!!.setSubtitle("DEADLINE: " + batch_deadline.proposal_ppt_dealine + "\n\n" + "STATUS: "+other_documents_status+ "\n\n" + "SUBMITTED: " + other_documents_size.toString())
 
-                    if(other_documents_status == "Approved"){
+                    if(other_documents_status == "APPROVED"){
                         other_ducument_tool!![index].other_document_detail_btn?.visibility = View.VISIBLE
                         other_ducument_tool!![index].other_document_submit_btn?.visibility = View.GONE
 
@@ -310,10 +348,18 @@ class Dashboard : AppCompatActivity() {
                             other_ducument_tool!![index+1].other_sequence_step!!.setActive(true)
                         }
 
+                        other_ducument_tool!![index].other_sequence_step!!
+                            .setTitleTextAppearance(R.style.vertical_progress_bar_title_approved)
+
                         hasContinue = true
                         loopOtherSubmission()
 
                     }else{
+                        when(other_documents_status){
+                            "PENDING" ->  other_ducument_tool!![index].other_sequence_step!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_waiting)
+                            else ->  other_ducument_tool!![index].other_sequence_step!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_rejected)
+                        }
+
                         other_ducument_tool!![index].other_document_detail_btn?.visibility = View.VISIBLE
                         other_ducument_tool!![index].other_document_submit_btn?.visibility = View.VISIBLE
 
@@ -335,6 +381,18 @@ class Dashboard : AppCompatActivity() {
                     }
 
                 }else {
+                    val date_format = SimpleDateFormat("dd MMM yyyy")
+                    val current_date = date_format.parse(date_format.format(Date()))
+                    val compare_result = date_format.parse(batch_deadline!!.topics_deadline!!).compareTo(current_date)
+
+                    when{
+                        compare_result < 0 -> {
+                            other_ducument_tool!![index].other_sequence_step!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_overdue)
+                            other_ducument_tool!![index].other_sequence_step!!.setSubtitle("DEADLINE: " + batch_deadline.topics_deadline + "\n\n" + "STATUS: OVERDUE\n\n" + "SUBMITTED: 0" )
+                        }
+                        else ->  other_ducument_tool!![index].other_sequence_step!!.setTitleTextAppearance(R.style.vertical_progress_bar_title_waiting)
+                    }
+
                     other_ducument_tool!![index].other_document_submit_btn?.visibility = View.VISIBLE
 
                     other_ducument_tool!![index].other_document_submit_btn!!.setOnClickListener {
@@ -390,5 +448,25 @@ class Dashboard : AppCompatActivity() {
             }.addOnFailureListener{
                 Log.d("Student detail", "Failure to retrieve student detail")
             }
+    }
+
+    private fun overDueSubmission(){
+
+    }
+
+    private fun getNotification(){
+        mDB.collection("Batch/")
+            .whereEqualTo("Final_Draft_Deadline", "30 Sep 2022")
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents != null){
+                    for(document in documents){
+                        Log.d("batch detail id", document.id)
+                        Log.d("batch detail", document.data.toString())
+                    }
+                }
+            }
+
+
     }
 }

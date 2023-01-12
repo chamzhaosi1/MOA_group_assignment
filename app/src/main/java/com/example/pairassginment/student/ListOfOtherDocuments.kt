@@ -160,7 +160,7 @@ class ListOfOtherDocuments : AppCompatActivity() {
                 intent_other_submit_form.putExtra("other_document_submit_label", other_document_submit_label)
 
                 when(itemsArray[position].submittedStatus){
-                    "Pending"  -> startForResult.launch(intent_other_submit_form)
+                    "PENDING"  -> startForResult.launch(intent_other_submit_form)
                     else -> startItemForResult.launch(intent_view_other_submit_form)
                 }
             }

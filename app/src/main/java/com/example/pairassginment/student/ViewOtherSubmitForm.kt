@@ -32,7 +32,7 @@ class ViewOtherSubmitForm : AppCompatActivity() {
         binding.documentLabelTv.text = other_document_view_label
 
         when(other_document_detail!!.submittedStatus){
-            "Approved" ->
+            "APPROVED" ->
             {
                 binding.studentCommentTv.setBackgroundColor(this.getColor(R.color.approved_green))
                 binding.uploadedFileNameTv.setBackgroundColor(this.getColor(R.color.approved_green))

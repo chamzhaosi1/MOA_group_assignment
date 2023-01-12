@@ -39,12 +39,12 @@ class itemRecycleAdapter (val context: Context, val items: ArrayList<ThreeTopics
 
 
             when (items[position].status){
-                "Approved" -> {
+                "APPROVED" -> {
                     holder.itemApprovedRejectedDate.text = context.getString(R.string.approved_date, items[position].date_feedback)
                     holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.approved_green))
                 }
 
-                "Rejected" ->{
+                "REJECTED" ->{
                     holder.itemApprovedRejectedDate.text = context.getString(R.string.rejected_date, items[position].date_feedback)
                     holder.itemsBngColor.setCardBackgroundColor(context.getColor(R.color.rejected_red))
                 }

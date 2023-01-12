@@ -140,7 +140,7 @@ class ListOfThreeTopic : AppCompatActivity() {
 
                 Log.d("item clicked", itemsArray[position].toString())
                 when(itemsArray[position].status){
-                    "Pending"  -> startActivity(intent_topic_submit_form)
+                    "PENDING"  -> startActivity(intent_topic_submit_form)
                     else -> startItemForResult.launch(intent_view_submit_form)
                 }
             }

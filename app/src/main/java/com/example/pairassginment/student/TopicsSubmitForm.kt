@@ -120,7 +120,7 @@ class TopicsSubmitForm : AppCompatActivity() {
                 "Abstract" to abstract,
                 "Date_Submit" to date_submit,
                 "Title" to title,
-                "Status" to "Pending"
+                "Status" to "PENDING"
             )
 
             topics_collection
