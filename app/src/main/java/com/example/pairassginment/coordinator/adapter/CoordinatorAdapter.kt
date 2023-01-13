@@ -36,7 +36,7 @@ class CoordinatorAdapter(val items: ArrayList<StudentData>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
             holder.itemTitle.setText(items[position].name)
-            holder.itemMark.setText(items[position].mark.toString())
+            holder.itemMark.setText(items[position].total_mark.toString())
         }
     }
 

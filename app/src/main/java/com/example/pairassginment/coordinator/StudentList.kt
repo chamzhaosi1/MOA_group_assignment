@@ -3,6 +3,7 @@ package com.example.pairassginment.coordinator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +23,6 @@ import com.example.pairassginment.coordinator.objectClass.StudentData
 class StudentList : Fragment() {
     private var itemsArray: ArrayList<StudentData> = ArrayList()
     private var MY_ITEM_CODE_REQUEST: Int = 10;
-    private var SM: SendMessage? = null
 
     val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
@@ -51,38 +51,17 @@ class StudentList : Fragment() {
         recyclerViewLayoutManager.layoutManager = layoutManager
         recyclerViewAdapter.adapter= adapter
 
+        val intent_view_all_mark = Intent(this.context, ViewAllMark::class.java)
+
         // set each card listener
         adapter.setOnClickListener(object : CoordinatorAdapter.onItemClickListner {
             override fun onItemClick(position: Int) {
-                // To do some things, that you want
-                // Toast.makeText(this@ListOfThreeTopic, "Topic Clicked: " + itemsArray[position].topicSubmitted, Toast.LENGTH_SHORT).show(
-//                intent_view_approve_mark.putExtra("item_clicked", itemsArray[position])
-//                startItemForResult.launch(intent_view_approve_mark)
-
-                SM!!.sendData(itemsArray);
-
-//                when(itemsArray[position].submittedStatus){
-//                    "Pending"  -> startActivity(intent_topic_submit_form)
-//                    else -> startItemForResult.launch(intent_view_submit_form)
-//                }
+                intent_view_all_mark.putExtra("item_click", itemsArray[position])
+                startItemForResult.launch(intent_view_all_mark)
             }
         })
 
         return view
-    }
-
-    internal interface SendMessage {
-        fun sendData(message: ArrayList<StudentData>?)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        try {
-            SM = activity as SendMessage?
-        } catch (e: ClassCastException) {
-            throw ClassCastException("Error in retrieving data. Please try again")
-        }
     }
 
     // once the activity is finished than get the result

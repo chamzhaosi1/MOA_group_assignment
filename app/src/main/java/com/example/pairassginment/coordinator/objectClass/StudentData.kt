@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 data class StudentData (
     val name : String? = null,
-    val mark : Int? = null,
+    val total_mark : Int? = null,
     val proposal :Int? = null,
     val abstrak: Int? = null,
     val pendahuluan: Int? =null,
@@ -44,7 +44,7 @@ data class StudentData (
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
-        parcel.writeValue(mark)
+        parcel.writeValue(total_mark)
         parcel.writeValue(proposal)
         parcel.writeValue(abstrak)
         parcel.writeValue(pendahuluan)
