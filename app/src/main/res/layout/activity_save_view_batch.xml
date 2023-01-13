@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".coordinator.SaveViewBatch">
+
+    <TextView
+        android:id="@+id/batch_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="8dp"
+        android:padding="10dp"
+        android:text="Batch"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/date_picker_batch_btn"
+        style="?spinnerStyle"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.338"
+        app:layout_constraintStart_toEndOf="@+id/batch_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/beginTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:text="Begin"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/topic_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batch_tv"
+        app:layout_constraintVertical_bias="0.459" />
+
+    <TextView
+        android:id="@+id/deadlineTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
+        android:text="Deadline"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_batch_btn" />
+
+    <TextView
+        android:id="@+id/topic_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="70dp"
+        android:padding="10dp"
+        android:text="Topic"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batch_tv" />
+
+
+    <Button
+        android:id="@+id/dp_topic_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintStart_toEndOf="@+id/topic_tv"
+        app:layout_constraintTop_toBottomOf="@+id/deadlineTV" />
+
+    <Button
+        android:id="@+id/dp_topic_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/deadlineTV" />
+
+
+    <TextView
+        android:id="@+id/proposal_ppt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:padding="10dp"
+        android:text="Proposal PPT"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/dp_proposal_ppt_begin_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topic_tv" />
+
+    <Button
+        android:id="@+id/dp_proposal_ppt_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintStart_toEndOf="@+id/topic_tv"
+        app:layout_constraintTop_toBottomOf="@+id/dp_topic_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_proposal_ppt_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dp_topic_deadline_btn" />
+
+
+    <TextView
+        android:id="@+id/proposal_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:padding="10dp"
+        android:text="Proposal"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/dp_proposal_ppt_begin_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/proposal_ppt_tv" />
+
+    <Button
+        android:id="@+id/dp_proposal_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintStart_toEndOf="@+id/topic_tv"
+        app:layout_constraintTop_toBottomOf="@+id/dp_proposal_ppt_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_proposal_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dp_proposal_ppt_deadline_btn" />
+
+
+    <TextView
+        android:id="@+id/final_draft_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="28dp"
+        android:padding="10dp"
+        android:text="Final Draft"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/proposal_tv"
+        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_final_draft_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:layout_marginTop="20dp"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/dp_final_draft_deadline_btn"
+        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintStart_toEndOf="@+id/final_draft_tv"
+        app:layout_constraintTop_toBottomOf="@+id/dp_proposal_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_final_draft_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:layout_marginTop="20dp"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dp_proposal_deadline_btn" />
+
+    <TextView
+        android:id="@+id/final_ppt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="22dp"
+        android:padding="10dp"
+        android:text="Final PPT"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/final_draft_tv"
+        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_final_ppt_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:layout_marginTop="20dp"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/dp_final_draft_deadline_btn"
+        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintStart_toEndOf="@+id/final_ppt_tv"
+        app:layout_constraintTop_toBottomOf="@+id/dp_final_draft_deadline_btn" />
+
+    <Button
+        android:id="@+id/dp_final_ppt_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:layout_marginTop="20dp"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dp_final_draft_deadline_btn" />
+
+
+    <TextView
+        android:id="@+id/final_thesis_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:padding="10dp"
+        android:text="Final Thesis"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/final_ppt_tv"
+        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+
+
+    <Button
+        android:id="@+id/dp_final_thesis_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:layout_marginTop="20dp"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/dp_final_draft_deadline_btn"
+        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintStart_toEndOf="@+id/final_ppt_tv"
+        app:layout_constraintTop_toBottomOf="@+id/dp_final_ppt_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_final_thesis_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dp_final_ppt_deadline_btn" />
+
+    <TextView
+        android:id="@+id/poster_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="24dp"
+        android:padding="10dp"
+        android:text="Poster"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/final_thesis_tv"
+        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_poster_begin_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/dp_final_draft_deadline_btn"
+        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintStart_toEndOf="@+id/final_ppt_tv"
+        app:layout_constraintTop_toBottomOf="@+id/dp_final_thesis_begin_btn" />
+
+    <Button
+        android:id="@+id/dp_poster_deadline_btn"
+        style="?spinnerStyle"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="openDatePicker"
+        android:text="01 Jan 2022"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dp_topic_begin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dp_final_thesis_deadline_btn" />
+
+    <LinearLayout
+        android:id="@+id/btnLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@+id/dp_poster_deadline_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/rejected_red"
+            android:text="BACK"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/approve_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:textSize="20sp"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_margin="10dp" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
