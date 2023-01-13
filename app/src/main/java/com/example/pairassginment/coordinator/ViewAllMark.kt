@@ -1,5 +1,7 @@
 package com.example.pairassginment.coordinator
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +23,24 @@ class ViewAllMark : AppCompatActivity() {
         studentData = intent.getParcelableExtra<StudentData>("item_click")
 
         setUIReady()
+        setBtnListener()
+    }
 
+    private fun setBtnListener(){
+        val backBtn = binding.backBtn
+        backBtn.setOnClickListener {
+            val intentBack = Intent(this, StudentList::class.java)
+            setResult(Activity.RESULT_CANCELED, intentBack)
+            finish()
+        }
+
+        val approve_btn = binding.approveBtn
+        approve_btn.setOnClickListener {
+            // send data to data base
+            val intentApprove = Intent(this, StudentList::class.java)
+            setResult(Activity.RESULT_OK, intentApprove)
+            finish()
+        }
     }
 
     private fun setUIReady(){

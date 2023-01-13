@@ -1,5 +1,6 @@
 package com.example.pairassginment.coordinator.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class CoordinatorAdapter(val items: ArrayList<StudentData>) :
     }
 
     fun setOnClickListener(listener: onItemClickListner){
+        Log.d("listener", items.toString())
         mListener = listener
     }
 
@@ -34,6 +36,7 @@ class CoordinatorAdapter(val items: ArrayList<StudentData>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Log.d("item listener", items.toString())
         if (holder is ViewHolder) {
             holder.itemTitle.setText(items[position].name)
             holder.itemMark.setText(items[position].total_mark.toString())
