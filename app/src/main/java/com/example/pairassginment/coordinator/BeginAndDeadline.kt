@@ -97,11 +97,11 @@ class BeginAndDeadline : Fragment() {
 
     private fun getItems(){
         itemsArray = ArrayList();
-        itemsArray.add(BatchData("May 2022", "01 Sep 2022", "01 Oct 2022","01 Nov 2022", "01 Dec 2022", "01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "30 Sep 2022", "31 Oct 2022", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023"))
-        itemsArray.add(BatchData("Sep 2022", "01 Oct 2022", "01 Nov 2022","01 Dec 2022", "01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "01 Sep 2023", "31 Oct 2022", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023"))
-        itemsArray.add(BatchData("Oct 2022", "01 Nov 2022", "01 Dec 2022","01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "01 Apr 2023", "01 Oct 2023", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023"))
-        itemsArray.add(BatchData("Nov 2022", "01 Dec 2022", "01 Jan 2023","01 Feb 2023", "01 Mar 2023", "01 Apr 2023", "01 May 2023", "01 Nov 2023", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023", "30 Jun 2023"))
-        itemsArray.add(BatchData("Dec 2022", "01 Jan 2023", "01 Oct 2022","01 Mar 2023", "01 Apr 2023", "01 Mar 2023", "01 Jun 2023", "01 Dec 2023", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023", "30 Jun 2023", "31 July 2023"))
+        itemsArray.add(BatchData("11 May 2022", "01 Sep 2022", "01 Oct 2022","01 Nov 2022", "01 Dec 2022", "01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "30 Sep 2022", "31 Oct 2022", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023"))
+        itemsArray.add(BatchData("11 Sep 2022", "01 Oct 2022", "01 Nov 2022","01 Dec 2022", "01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "01 Sep 2023", "31 Oct 2022", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023"))
+        itemsArray.add(BatchData("11 Oct 2022", "01 Nov 2022", "01 Dec 2022","01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "01 Apr 2023", "01 Oct 2023", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023"))
+        itemsArray.add(BatchData("11 Nov 2022", "01 Dec 2022", "01 Jan 2023","01 Feb 2023", "01 Mar 2023", "01 Apr 2023", "01 May 2023", "01 Nov 2023", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023", "30 Jun 2023"))
+        itemsArray.add(BatchData("11 Dec 2022", "01 Jan 2023", "01 Oct 2022","01 Mar 2023", "01 Apr 2023", "01 Mar 2023", "01 Jun 2023", "01 Dec 2023", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023", "30 Jun 2023", "31 July 2023"))
 
     }
 

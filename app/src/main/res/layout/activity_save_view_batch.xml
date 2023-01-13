@@ -108,7 +108,7 @@
 
     <TextView
         android:id="@+id/proposal_ppt_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:padding="10dp"
@@ -155,7 +155,7 @@
         android:id="@+id/proposal_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="4dp"
         android:padding="10dp"
         android:text="Proposal"
         android:textColor="@color/black"
@@ -201,7 +201,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="25dp"
         android:padding="10dp"
         android:text="Final Draft"
         android:textColor="@color/black"
@@ -209,7 +209,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/proposal_tv"
-        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+        app:layout_constraintRight_toLeftOf="@+id/dp_final_draft_begin_btn" />
 
     <Button
         android:id="@+id/dp_final_draft_begin_btn"
@@ -254,7 +254,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/final_draft_tv"
-        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+        app:layout_constraintRight_toLeftOf="@+id/dp_final_ppt_begin_btn" />
 
     <Button
         android:id="@+id/dp_final_ppt_begin_btn"
@@ -299,7 +299,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/final_ppt_tv"
-        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+        app:layout_constraintRight_toLeftOf="@+id/dp_final_thesis_begin_btn" />
 
 
     <Button
@@ -345,7 +345,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/final_thesis_tv"
-        app:layout_constraintend_toStartOf="@+id/dp_final_draft_begin_btn" />
+        app:layout_constraintRight_toLeftOf="@+id/dp_poster_begin_btn" />
 
     <Button
         android:id="@+id/dp_poster_begin_btn"
