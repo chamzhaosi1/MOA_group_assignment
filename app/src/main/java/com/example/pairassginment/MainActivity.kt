@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+
+
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -39,6 +41,8 @@ class MainActivity : AppCompatActivity(){
         circleProgress!!.visibility = View.GONE
 
         setContentView(bindingMain.root)
+
+        Log.d("dfsdfadf", "asdfsadf")
 
         // set the authorized listener
         setupFirebaseAuth();
@@ -135,6 +139,8 @@ class MainActivity : AppCompatActivity(){
         if (!isEmpty(mEmail!!.text.toString()) && !isEmpty(mPassword!!.text.toString())
         ) {
             Log.d(TAG, "onClick: attempting to authenticate.")
+            Log.d("User", mEmail!!.text.toString())
+            Log.d("Pass", mPassword!!.text.toString())
 
             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                 mEmail!!.text.toString(), mPassword!!.text.toString()
