@@ -3,6 +3,7 @@ package com.example.pairassginment.coordinator
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,6 +34,8 @@ class SaveViewBatch : AppCompatActivity() {
 
     private var tempDatePickerBtn: Button? = null
     private var submissionDetail: BatchData? = null
+    private var backBtn : Button? = null
+    private var saveBtn : Button? = null
 
     private var binding: ActivitySaveViewBatchBinding? = null
 
@@ -40,6 +43,9 @@ class SaveViewBatch : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySaveViewBatchBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
+        backBtn = binding!!.backBtn
+        saveBtn = binding!!.saveBtn
 
         submissionDetail = intent.getParcelableExtra("item_click")
 
@@ -63,7 +69,7 @@ class SaveViewBatch : AppCompatActivity() {
 
         setEachDatePickerOnClickListener()
         setDatePickerReady()
-
+        setBtnOnClickListener()
     }
 
     private fun setDatePickerReady(){
@@ -79,12 +85,29 @@ class SaveViewBatch : AppCompatActivity() {
             datePosterBeginButton!!.text = submissionDetail!!.poster_begin
 
             dateTopicDeadlineButton!!.text = submissionDetail!!.topics_deadline
-            dateProposalPPTDeadlineButton!!.text = submissionDetail!!.proposal_ppt_dealine
+            dateProposalPPTDeadlineButton!!.text = submissionDetail!!.proposal_ppt_deadline
             dateProposalDeadlineButton!!.text = submissionDetail!!.proposal_deadline
             dateFinalDraftDeadlineButton!!.text = submissionDetail!!.final_draft_deadline
             dateFinalPPTDeadlineButton!!.text = submissionDetail!!.final_ppt_deadline
             dateFinalThesisDeadlineButton!!.text = submissionDetail!!.final_thesis_deadline
             datePosterDeadlineButton!!.text = submissionDetail!!.poster_deadline
+        }
+
+    }
+
+    private fun setBtnOnClickListener(){
+        val intentBack = Intent(this, Dashboard::class.java)
+        val intentSave = Intent(this, Dashboard::class.java)
+
+        backBtn!!.setOnClickListener {
+            intentBack.putExtra("from_view", "batch")
+            startActivity(intentBack)
+        }
+
+        saveBtn!!.setOnClickListener {
+            intentSave.putExtra("from_view", "batch")
+            intentSave.putExtra("message", "Save Successfully")
+            startActivity(intentSave)
         }
 
     }

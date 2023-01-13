@@ -15,12 +15,13 @@ data class BatchData (
     var poster_begin: String? = null,
 
     var topics_deadline: String? = null,
-    var proposal_ppt_dealine: String? = null,
+    var proposal_ppt_deadline: String? = null,
     var proposal_deadline: String? = null,
     var final_draft_deadline: String? = null,
     var final_ppt_deadline: String? = null,
     var final_thesis_deadline: String? = null,
     var poster_deadline: String? = null,
+
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -51,7 +52,7 @@ data class BatchData (
         parcel.writeString(final_thesis_begin)
         parcel.writeString(poster_begin)
         parcel.writeString(topics_deadline)
-        parcel.writeString(proposal_ppt_dealine)
+        parcel.writeString(proposal_ppt_deadline)
         parcel.writeString(proposal_deadline)
         parcel.writeString(final_draft_deadline)
         parcel.writeString(final_ppt_deadline)

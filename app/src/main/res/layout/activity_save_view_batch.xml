@@ -397,7 +397,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/approve_btn"
+            android:id="@+id/save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SAVE"
