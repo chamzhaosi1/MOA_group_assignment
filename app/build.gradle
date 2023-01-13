@@ -54,4 +54,7 @@ dependencies {
     //vertical sequence UI component for Android
     implementation 'com.github.transferwise:sequence-layout:1.1.1' // use latest version
 
+    // Balloon
+    implementation "com.github.skydoves:balloon:1.5.2" //https://github.com/skydoves/Balloon
+
 }

@@ -9,4 +9,27 @@
     <string name="rejected_date">Rejected Date: %1$s</string>
     <string name="three_topics_title">Selected Title</string>
     <string name="other_document_label_tv">other document label</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title">Title</string>
+    <string name="proposal">Proposal(5m)</string>
+    <string name="approve">Approve</string>
+    <string name="resubmit">Resubmit</string>
+    <string name="save">Save</string>
+    <string name="rubric">rubric</string>
+    <string name="mark">mark</string>
+    <string name="mark1">Abstrak (3m)</string>
+    <string name="mark2">Pendahuluan (4m)</string>
+    <string name="mark3">Kajian Literature (5m)</string>
+    <string name="mark4">Methodologi (5m)</string>
+    <string name="mark5">Reka bentuk Sistem (5m)</string>
+    <string name="mark6">Perlaksanaan (5m)</string>
+    <string name="mark7">Perbincangan (5m)</string>
+    <string name="mark8">Kesimpulan dan Candangan (3m)</string>
+    <string name="mark9">Rujukan (2m)</string>
+    <string name="mark10">Sitasi Penulisan (3m)</string>
+    <string name="mark11">Rekabentuk (5m)</string>
+    <string name="mark12">Konfigurasi persekitaran (5m)</string>
+    <string name="mark13">Pemilihan methodologi/teknik/perisian (5m)</string>
 </resources>

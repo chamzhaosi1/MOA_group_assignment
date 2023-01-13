@@ -14,7 +14,6 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.databinding.ActivityMainBinding
-import com.example.pairassginment.student.Dashboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -91,14 +90,18 @@ class MainActivity : AppCompatActivity(){
 
                             when(role){
                                 "student" ->{
-                                    val intent = Intent(this@MainActivity, Dashboard::class.java)
+                                    val intent = Intent(this@MainActivity, com.example.pairassginment.student.Dashboard::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     intent.putExtra("role_id", document.data!!.getValue("Role_ID").toString())
                                     startActivity(intent)
                                     finish()
                                 }
                                 "coordinator" ->{
-                                    Log.d("Role" , role)
+                                    val intent = Intent(this@MainActivity, com.example.pairassginment.coordinator.Dashboard::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.putExtra("role_id", document.data!!.getValue("Role_ID").toString())
+                                    startActivity(intent)
+                                    finish()
                                 }
                                 "supervisor" ->{
                                     Log.d("Role" , role)

@@ -22,5 +22,8 @@
     <color name="rejected_red">#cc4343</color>
     <color name="overdue_red">#a61616</color>
     <color name="waiting_yellow">#a89c2c</color>
+    <color name="tooltip_bg">#FFB45A</color>
+    <color name="balloon_overlay">#C3000000</color>
+    <color name="approved_blue">#9EEFF2</color>
 
 </resources>
