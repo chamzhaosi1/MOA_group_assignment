@@ -11,6 +11,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.coordinator.objectClass.BatchData
 import com.example.pairassginment.databinding.ActivitySaveViewBatchBinding
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class SaveViewBatch : AppCompatActivity() {
@@ -38,6 +39,9 @@ class SaveViewBatch : AppCompatActivity() {
     private var saveBtn : Button? = null
 
     private var binding: ActivitySaveViewBatchBinding? = null
+    private var batchDetail: BatchData = BatchData()
+
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +79,8 @@ class SaveViewBatch : AppCompatActivity() {
     private fun setDatePickerReady(){
 
         if(submissionDetail != null){
+            binding!!.saveBtn.text = "UPDATE"
+
             dateBatchButton!!.text = submissionDetail!!.intake_mnt_year
             dateTopicBeginButton!!.text = submissionDetail!!.topics_begin
             dateProposalPPTBeginButton!!.text = submissionDetail!!.proposal_ppt_begin
@@ -92,24 +98,91 @@ class SaveViewBatch : AppCompatActivity() {
             dateFinalThesisDeadlineButton!!.text = submissionDetail!!.final_thesis_deadline
             datePosterDeadlineButton!!.text = submissionDetail!!.poster_deadline
         }
-
     }
 
     private fun setBtnOnClickListener(){
         val intentBack = Intent(this, Dashboard::class.java)
-        val intentSave = Intent(this, Dashboard::class.java)
 
         backBtn!!.setOnClickListener {
             intentBack.putExtra("from_view", "batch")
             startActivity(intentBack)
+            finish()
         }
 
         saveBtn!!.setOnClickListener {
-            intentSave.putExtra("from_view", "batch")
-            intentSave.putExtra("message", "Save Successfully")
-            startActivity(intentSave)
+            updateOntoDB()
         }
 
+    }
+
+    private fun updateOntoDB(){
+
+        retrieveData()
+        Log.d("adsfadf", batchDetail.toString())
+
+        val batchDetailDB = hashMapOf<String, Any>(
+            "Intake_MntYear" to batchDetail.intake_mnt_year.toString(),
+            "Topics_Begin" to batchDetail.topics_begin.toString(),
+            "Proposal_PPT_Begin" to batchDetail.proposal_ppt_begin.toString(),
+            "Proposal_Begin" to batchDetail.proposal_begin.toString(),
+            "Final_Draft_Begin" to batchDetail.final_draft_begin.toString(),
+            "Final_PPT_Begin" to batchDetail.final_ppt_begin.toString(),
+            "Final_Thesis_Begin" to batchDetail.final_thesis_begin.toString(),
+            "Poster_Begin" to batchDetail.poster_begin.toString(),
+            "Topics_Deadline" to batchDetail.topics_deadline.toString(),
+            "Proposal_PPT_Deadline" to batchDetail.proposal_ppt_deadline.toString(),
+            "Proposal_Deadline" to batchDetail.proposal_deadline.toString(),
+            "Final_Draft_Deadline" to batchDetail.final_draft_deadline.toString(),
+            "Final_PPT_Deadline" to batchDetail.final_ppt_deadline.toString(),
+            "Final_Thesis_Deadline" to batchDetail.final_thesis_deadline.toString(),
+            "Poster_Deadline" to batchDetail.poster_deadline.toString()
+        )
+
+        val batch_collection = mDB.collection("Batch")
+
+
+        if(submissionDetail != null){
+            batch_collection
+                .document(submissionDetail!!.document_id!!)
+                .update(batchDetailDB)
+                .addOnSuccessListener {
+                    val intentSave = Intent(this, Dashboard::class.java)
+                    intentSave.putExtra("from_view", "batch")
+                    intentSave.putExtra("message", "Update Successfully")
+                    startActivity(intentSave)
+                    finish()
+                }
+
+        }else{
+            batch_collection
+                .document()
+                .set(batchDetailDB)
+                .addOnSuccessListener {
+                    val intentSave = Intent(this, Dashboard::class.java)
+                    intentSave.putExtra("from_view", "batch")
+                    intentSave.putExtra("message", "Create Successfully")
+                    startActivity(intentSave)
+                    finish()
+                }
+        }
+    }
+
+    private fun retrieveData(){
+        batchDetail.intake_mnt_year = dateBatchButton!!.text.toString()
+        batchDetail.topics_begin = dateTopicBeginButton!!.text.toString()
+        batchDetail.proposal_ppt_begin = dateProposalPPTBeginButton!!.text.toString()
+        batchDetail.proposal_begin = dateProposalBeginButton!!.text.toString()
+        batchDetail.final_draft_begin = dateFinalDraftBeginButton!!.text.toString()
+        batchDetail.final_ppt_begin = dateFinalPPTBeginButton!!.text.toString()
+        batchDetail.final_thesis_begin = dateFinalThesisBeginButton!!.text.toString()
+        batchDetail.poster_begin = datePosterBeginButton!!.text.toString()
+        batchDetail.topics_deadline = dateTopicDeadlineButton!!.text.toString()
+        batchDetail.proposal_ppt_deadline = dateProposalPPTDeadlineButton!!.text.toString()
+        batchDetail.proposal_deadline = dateProposalDeadlineButton!!.text.toString()
+        batchDetail.final_draft_deadline = dateFinalDraftDeadlineButton!!.text.toString()
+        batchDetail.final_ppt_deadline = dateFinalPPTDeadlineButton!!.text.toString()
+        batchDetail.final_thesis_deadline = dateFinalThesisDeadlineButton!!.text.toString()
+        batchDetail.poster_deadline = datePosterDeadlineButton!!.text.toString()
     }
 
     private fun setEachDatePickerOnClickListener(){

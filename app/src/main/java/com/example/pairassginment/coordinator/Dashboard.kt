@@ -3,6 +3,7 @@ package com.example.pairassginment.coordinator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.pairassginment.R
 import com.example.pairassginment.databinding.ActivityDashboardCoordinatorBinding
@@ -16,7 +17,11 @@ class Dashboard : AppCompatActivity() {
         setContentView(binding.root)
 
         val to_view = intent.getStringExtra("from_view")
-        Log.d("to_view", to_view.toString())
+        val message = intent.getStringExtra("message")
+
+        if(message != null){
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
 
         if(to_view != null){
             when(to_view){
@@ -33,8 +38,6 @@ class Dashboard : AppCompatActivity() {
             when (it.itemId){
 
                 R.id.Student -> replaceFragment(StudentList())
-
-                // if database batch document empty then direct go to add
                 R.id.Assignment -> replaceFragment(BeginAndDeadline())
 
                 else -> {

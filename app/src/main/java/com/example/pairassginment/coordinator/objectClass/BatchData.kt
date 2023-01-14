@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class BatchData (
+    var document_id: String? = null,
     var intake_mnt_year: String? = null,
 
     var topics_begin: String? = null,
@@ -38,11 +39,13 @@ data class BatchData (
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(document_id)
         parcel.writeString(intake_mnt_year)
         parcel.writeString(topics_begin)
         parcel.writeString(proposal_ppt_begin)

@@ -39,7 +39,7 @@ class BatchAdapter(val items: ArrayList<BatchData>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Log.d("item listener", items.toString())
         if (holder is ViewHolder) {
-            holder.batchName.setText(items[position].intake_mnt_year.toString())
+            holder.batchName.setText("Intake Batch: "+items[position].intake_mnt_year.toString())
         }
     }
 

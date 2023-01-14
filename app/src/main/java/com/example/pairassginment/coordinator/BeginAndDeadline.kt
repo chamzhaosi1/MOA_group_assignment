@@ -21,6 +21,7 @@ import com.example.pairassginment.coordinator.adapter.CoordinatorAdapter
 import com.example.pairassginment.coordinator.objectClass.BatchData
 import com.example.pairassginment.coordinator.objectClass.StudentData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
 
 class BeginAndDeadline : Fragment() {
     private var itemsArray: ArrayList<BatchData> = ArrayList()
@@ -28,6 +29,7 @@ class BeginAndDeadline : Fragment() {
     private var adapter: BatchAdapter? = null
     private var addBtn: FloatingActionButton? = null
     private var MY_ITEM_CODE_REQUEST: Int = 10;
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
@@ -43,7 +45,7 @@ class BeginAndDeadline : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_begin_and_deadline, container, false)
-        getItems()
+        getItemsDetail()
 
         addBtn = view.findViewById(R.id.floating_add_btn)
 
@@ -52,7 +54,7 @@ class BeginAndDeadline : Fragment() {
         recyclerViewLayoutManager.layoutManager = layoutManager
 
         adapter = BatchAdapter(itemsArray)
-        recyclerViewAdapter = view.findViewById<RecyclerView>(R.id.batch_name_recycle_view)
+        recyclerViewAdapter = view.findViewById(R.id.batch_name_recycle_view)
         recyclerViewAdapter!!.adapter= adapter
 
         // set each card listener
@@ -95,14 +97,44 @@ class BeginAndDeadline : Fragment() {
         }
     }
 
-    private fun getItems(){
-        itemsArray = ArrayList();
-        itemsArray.add(BatchData("11 May 2022", "01 Sep 2022", "01 Oct 2022","01 Nov 2022", "01 Dec 2022", "01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "30 Sep 2022", "31 Oct 2022", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023"))
-        itemsArray.add(BatchData("11 Sep 2022", "01 Oct 2022", "01 Nov 2022","01 Dec 2022", "01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "01 Sep 2023", "31 Oct 2022", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023"))
-        itemsArray.add(BatchData("11 Oct 2022", "01 Nov 2022", "01 Dec 2022","01 Jan 2023", "01 Feb 2023", "01 Mar 2023", "01 Apr 2023", "01 Oct 2023", "30 Nov 2022", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023"))
-        itemsArray.add(BatchData("11 Nov 2022", "01 Dec 2022", "01 Jan 2023","01 Feb 2023", "01 Mar 2023", "01 Apr 2023", "01 May 2023", "01 Nov 2023", "31 Dec 2022", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023", "30 Jun 2023"))
-        itemsArray.add(BatchData("11 Dec 2022", "01 Jan 2023", "01 Oct 2022","01 Mar 2023", "01 Apr 2023", "01 Mar 2023", "01 Jun 2023", "01 Dec 2023", "31 Jan 2023", "28 Feb 2023", "31 Mar 2023", "30 Apr 2023", "31 May 2023", "30 Jun 2023", "31 July 2023"))
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getItemsDetail(){
+        mDB.collection("Batch")
+            .get()
+            .addOnSuccessListener { documents ->
+                Log.d("addffasfsad", documents.size().toString())
+                if(documents.size() > 0){
+                    for(document in documents){
+                        if (document != null){
+                            Log.d("item detail", document.get("Intake_MntYear").toString())
+                            itemsArray.add(BatchData(
+                                document.id,
+                                document.get("Intake_MntYear").toString(),
+                                document.get("Topics_Begin").toString(),
+                                document.get("Proposal_PPT_Begin").toString(),
+                                document.get("Proposal_Begin").toString(),
+                                document.get("Final_Draft_Begin").toString(),
+                                document.get("Final_PPT_Begin").toString(),
+                                document.get("Final_Thesis_Begin").toString(),
+                                document.get("Poster_Begin").toString(),
+                                document.get("Topics_Deadline").toString(),
+                                document.get("Proposal_PPT_Deadline").toString(),
+                                document.get("Proposal_Deadline").toString(),
+                                document.get("Final_Draft_Deadline").toString(),
+                                document.get("Final_PPT_Deadline").toString(),
+                                document.get("Final_Thesis_Deadline").toString(),
+                                document.get("Poster_Deadline").toString(),
+                            ))
+                        }
+                    }
+                    adapter!!.notifyDataSetChanged()
+
+                }else{
+                    Log.d("addffasfsad", "afdasdfadsf")
+                    val intent = Intent(this.context, SaveViewBatch::class.java)
+                    startActivity(intent)
+                }
+            }
     }
-
 }
