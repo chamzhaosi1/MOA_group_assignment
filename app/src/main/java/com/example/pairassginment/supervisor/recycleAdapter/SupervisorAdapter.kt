@@ -1,6 +1,7 @@
 package com.example.pairassginment.supervisor.recycleAdapter
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class SupervisorAdapter(val items: ArrayList<HomeItems>, val listener: OnItemCli
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Log.d("dfasdf", items.toString())
         if (holder is ViewHolder) {
             when (items[position].homeStatus) {
                 "APPROVED" -> {
