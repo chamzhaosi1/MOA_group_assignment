@@ -58,6 +58,9 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
         val finalThesisOtherDocumentArray : ArrayList<otherDocument> = ArrayList()
         val posterOtherDocumentArray : ArrayList<otherDocument> = ArrayList()
 
+        val studentName: ArrayList<String> = ArrayList()
+        val studentID: ArrayList<String> = ArrayList()
+
         var studentSubmission = StudentSubmission()
 
         val studentSubmissionArray: ArrayList<StudentSubmission> = ArrayList()
@@ -68,70 +71,69 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
         mDB.collection("Students").get().addOnSuccessListener { documents ->
             if (documents.size() > 0) {
                 for (document in documents) {
-
                     submission_id_a!!.add(document.get("Submission_ID").toString())
+                    Log.d("adfsda17", submission_id_a.size.toString())
                 }
             }
         }.continueWith{
             if(submission_id_a != null && submission_id_a.size > 0){
+                Log.d("adfsda18", submission_id_a.size.toString())
                 for (index in submission_id_a.indices){
-                    submission_collection
-                        .document(submission_id_a[index])
-                        .collection("Topics")
+                    Log.d("adfsda39", submission_id_a[index].toString())
+                    Log.d("adfsda19", index.toString())
+                    mDB.collection("Students")
                         .get()
                         .addOnSuccessListener { documents ->
-                            if(documents.size() > 0){
-                                for (document in documents){
-                                    topicArray.add(topic(
-                                        title = document.get("Title").toString(),
-                                        abstract = document.get("Abstract").toString(),
-                                        dateSubmission = document.get("Date_Submit").toString(),
-                                        status = document.get("Status").toString()
-                                    ))
-                                }
-                                val temp : ArrayList<topic> = ArrayList()
-                                temp.addAll(topicArray)
-                                studentSubmissionArray.add(
-                                    StudentSubmission(
-                                        Topics = temp
-                                ))
-
-                                topicArray.clear()
+                            Log.d("adfsda40", documents.size().toString())
+                            studentName.clear()
+                            studentID.clear()
+                            for(document in documents){
+                                studentName.add(document.get("Name").toString())
+                                studentID.add(document.get("Student_ID").toString())
+                                Log.d("adfsda40", studentName.toString())
+                                Log.d("adfsda41", studentID.toString())
                             }
-                        }.continueWith{
-                            Log.d("adfsda0", studentSubmission.toString())
+                        }.continueWith {
                             submission_collection
                                 .document(submission_id_a[index])
-                                .collection("Proposal_PPT")
+                                .collection("Topics")
                                 .get()
                                 .addOnSuccessListener { documents ->
                                     if(documents.size() > 0){
-                                        Log.d("fadfa", documents.size().toString())
                                         for (document in documents){
-                                            proposalPPTOtherDocumentArray.add(otherDocument(
-                                                dataSubmission = document.get("Date_Submit").toString(),
-                                                fileSubmission = document.get("File_Submitted").toString(),
-                                                fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                status = document.get("Status").toString(),
-                                                studComment = document.get("Student_Comment").toString()
+                                            topicArray.add(topic(
+                                                title = document.get("Title").toString(),
+                                                abstract = document.get("Abstract").toString(),
+                                                dateSubmission = document.get("Date_Submit").toString(),
+                                                status = document.get("Status").toString()
                                             ))
                                         }
-                                        val temp : ArrayList<otherDocument> = ArrayList()
-                                        temp.addAll(proposalPPTOtherDocumentArray)
-                                        studentSubmissionArray[index].Proposal_PPT = temp
+                                        val temp : ArrayList<topic> = ArrayList()
+                                        temp.addAll(topicArray)
+                                        Log.d("adfsda20", topicArray.toString())
+                                        Log.d("adfsda21", index.toString())
+                                        studentSubmissionArray.add(
+                                            StudentSubmission(
+                                                Topics = temp
+                                            )
+                                        )
 
-                                        proposalPPTOtherDocumentArray.clear()
+                                        Log.d("adfsda22", studentSubmissionArray.toString())
+
+                                        topicArray.clear()
                                     }
                                 }.continueWith{
+                                    Log.d("adfsda0", studentSubmission.toString())
                                     submission_collection
                                         .document(submission_id_a[index])
-                                        .collection("Proposal")
+                                        .collection("Proposal_PPT")
                                         .get()
                                         .addOnSuccessListener { documents ->
+                                            Log.d("adfsda23", documents.size().toString())
                                             if(documents.size() > 0){
                                                 Log.d("fadfa", documents.size().toString())
                                                 for (document in documents){
-                                                    proposalOtherDocumentArray.add(otherDocument(
+                                                    proposalPPTOtherDocumentArray.add(otherDocument(
                                                         dataSubmission = document.get("Date_Submit").toString(),
                                                         fileSubmission = document.get("File_Submitted").toString(),
                                                         fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
@@ -140,21 +142,25 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                     ))
                                                 }
                                                 val temp : ArrayList<otherDocument> = ArrayList()
-                                                temp.addAll(proposalOtherDocumentArray)
-                                                studentSubmissionArray[index].Proposal = temp
+                                                temp.addAll(proposalPPTOtherDocumentArray)
+                                                studentSubmissionArray[index].Proposal_PPT = temp
 
-                                                proposalOtherDocumentArray.clear()
+                                                Log.d("adfsda25", studentSubmissionArray.toString())
+
+                                                proposalPPTOtherDocumentArray.clear()
                                             }
                                         }.continueWith{
+                                            Log.d("adfsda26", studentSubmissionArray.toString())
                                             submission_collection
                                                 .document(submission_id_a[index])
-                                                .collection("Final_Draft")
+                                                .collection("Proposal")
                                                 .get()
                                                 .addOnSuccessListener { documents ->
+                                                    Log.d("adfsda27", studentSubmissionArray.toString())
                                                     if(documents.size() > 0){
                                                         Log.d("fadfa", documents.size().toString())
                                                         for (document in documents){
-                                                            finalDraftOtherDocumentArray.add(otherDocument(
+                                                            proposalOtherDocumentArray.add(otherDocument(
                                                                 dataSubmission = document.get("Date_Submit").toString(),
                                                                 fileSubmission = document.get("File_Submitted").toString(),
                                                                 fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
@@ -163,21 +169,22 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                             ))
                                                         }
                                                         val temp : ArrayList<otherDocument> = ArrayList()
-                                                        temp.addAll(finalDraftOtherDocumentArray)
-                                                        studentSubmissionArray[index].Final_Draft = temp
+                                                        temp.addAll(proposalOtherDocumentArray)
+                                                        studentSubmissionArray[index].Proposal = temp
 
-                                                        finalDraftOtherDocumentArray.clear()
+                                                        proposalOtherDocumentArray.clear()
                                                     }
                                                 }.continueWith{
+                                                    Log.d("adfsda28", studentSubmissionArray.toString())
                                                     submission_collection
                                                         .document(submission_id_a[index])
-                                                        .collection("Final_PPT")
+                                                        .collection("Final_Draft")
                                                         .get()
                                                         .addOnSuccessListener { documents ->
                                                             if(documents.size() > 0){
                                                                 Log.d("fadfa", documents.size().toString())
                                                                 for (document in documents){
-                                                                    finalPPTOtherDocumentArray.add(otherDocument(
+                                                                    finalDraftOtherDocumentArray.add(otherDocument(
                                                                         dataSubmission = document.get("Date_Submit").toString(),
                                                                         fileSubmission = document.get("File_Submitted").toString(),
                                                                         fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
@@ -186,21 +193,21 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                     ))
                                                                 }
                                                                 val temp : ArrayList<otherDocument> = ArrayList()
-                                                                temp.addAll(finalPPTOtherDocumentArray)
-                                                                studentSubmissionArray[index].Final_PPT = temp
+                                                                temp.addAll(finalDraftOtherDocumentArray)
+                                                                studentSubmissionArray[index].Final_Draft = temp
 
-                                                                finalPPTOtherDocumentArray.clear()
+                                                                finalDraftOtherDocumentArray.clear()
                                                             }
-                                                        }.continueWith {
+                                                        }.continueWith{
                                                             submission_collection
                                                                 .document(submission_id_a[index])
-                                                                .collection("Final_Thesis")
+                                                                .collection("Final_PPT")
                                                                 .get()
                                                                 .addOnSuccessListener { documents ->
                                                                     if(documents.size() > 0){
                                                                         Log.d("fadfa", documents.size().toString())
                                                                         for (document in documents){
-                                                                            finalThesisOtherDocumentArray.add(otherDocument(
+                                                                            finalPPTOtherDocumentArray.add(otherDocument(
                                                                                 dataSubmission = document.get("Date_Submit").toString(),
                                                                                 fileSubmission = document.get("File_Submitted").toString(),
                                                                                 fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
@@ -209,21 +216,21 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                             ))
                                                                         }
                                                                         val temp : ArrayList<otherDocument> = ArrayList()
-                                                                        temp.addAll(finalThesisOtherDocumentArray)
-                                                                        studentSubmissionArray[index].Final_Thesis = temp
+                                                                        temp.addAll(finalPPTOtherDocumentArray)
+                                                                        studentSubmissionArray[index].Final_PPT = temp
 
-                                                                        finalThesisOtherDocumentArray.clear()
+                                                                        finalPPTOtherDocumentArray.clear()
                                                                     }
-                                                                }.continueWith{
+                                                                }.continueWith {
                                                                     submission_collection
                                                                         .document(submission_id_a[index])
-                                                                        .collection("Poster")
+                                                                        .collection("Final_Thesis")
                                                                         .get()
                                                                         .addOnSuccessListener { documents ->
                                                                             if(documents.size() > 0){
                                                                                 Log.d("fadfa", documents.size().toString())
                                                                                 for (document in documents){
-                                                                                    posterOtherDocumentArray.add(otherDocument(
+                                                                                    finalThesisOtherDocumentArray.add(otherDocument(
                                                                                         dataSubmission = document.get("Date_Submit").toString(),
                                                                                         fileSubmission = document.get("File_Submitted").toString(),
                                                                                         fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
@@ -232,14 +239,51 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                                     ))
                                                                                 }
                                                                                 val temp : ArrayList<otherDocument> = ArrayList()
-                                                                                temp.addAll(posterOtherDocumentArray)
-                                                                                studentSubmissionArray[index].Poster = temp
+                                                                                temp.addAll(finalThesisOtherDocumentArray)
+                                                                                studentSubmissionArray[index].Final_Thesis = temp
 
-                                                                                posterOtherDocumentArray.clear()
+                                                                                finalThesisOtherDocumentArray.clear()
                                                                             }
-                                                                        }.continueWith {
-                                                                            Log.d("adfsda3", studentSubmission.toString())
-                                                                            Log.d("adfsda4", studentSubmissionArray.toString())
+                                                                        }.continueWith{
+                                                                            submission_collection
+                                                                                .document(submission_id_a[index])
+                                                                                .collection("Poster")
+                                                                                .get()
+                                                                                .addOnSuccessListener { documents ->
+                                                                                    if(documents.size() > 0){
+                                                                                        Log.d("fadfa", documents.size().toString())
+                                                                                        for (document in documents){
+                                                                                            posterOtherDocumentArray.add(otherDocument(
+                                                                                                dataSubmission = document.get("Date_Submit").toString(),
+                                                                                                fileSubmission = document.get("File_Submitted").toString(),
+                                                                                                fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                                                                status = document.get("Status").toString(),
+                                                                                                studComment = document.get("Student_Comment").toString()
+                                                                                            ))
+                                                                                        }
+                                                                                        val temp : ArrayList<otherDocument> = ArrayList()
+                                                                                        temp.addAll(posterOtherDocumentArray)
+                                                                                        studentSubmissionArray[index].Poster = temp
+
+                                                                                        posterOtherDocumentArray.clear()
+
+
+                                                                                    }
+                                                                                }.continueWith {
+                                                                                    Log.d("adfsda29", studentSubmissionArray.toString())
+                                                                                    Log.d("adfsda30", studentName.size.toString())
+                                                                                    Log.d("adfsda31", studentSubmissionArray.size.toString())
+                                                                                    Log.d("adfsda32", studentID.size.toString())
+
+                                                                                    val num = studentName.size
+                                                                                    for(i in studentName.indices){
+                                                                                        if(studentID.size == num && studentSubmissionArray.size == num){
+                                                                                            studentSubmissionArray[i].studName = studentName[i]
+                                                                                            studentSubmissionArray[i].studID = studentID[i]
+                                                                                        }
+                                                                                        Log.d("adfsda7", studentSubmissionArray.toString())
+                                                                                    }
+                                                                                }
                                                                         }
                                                                 }
                                                         }
