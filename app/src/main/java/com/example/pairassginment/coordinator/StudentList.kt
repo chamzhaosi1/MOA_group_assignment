@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
 import com.example.pairassginment.coordinator.adapter.CoordinatorAdapter
 import com.example.pairassginment.coordinator.objectClass.StudentData
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.awaitAll
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,6 +31,7 @@ class StudentList : Fragment() {
     private var searchView: SearchView? = null;
     private var recyclerViewAdapter: RecyclerView? = null
     private var adapter: CoordinatorAdapter? = null
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     val startItemForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         onItemActivityResult(MY_ITEM_CODE_REQUEST, result)
@@ -45,7 +48,8 @@ class StudentList : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_student_list, container, false)
-        getItems()
+        getStudentMarkDetail()
+
 //        val intent_view_approve_mark= Intent(context, ViewAndApproveMark::class.java)
         val layoutManager = LinearLayoutManager(context)
 
@@ -126,27 +130,92 @@ class StudentList : Fragment() {
         }
     }
 
-    private fun getItems(){
-        itemsArray = ArrayList();
-        itemsArray.add(StudentData("Lee Wei Heng", 60,"Approved","May 2022", 5,  3,4,5,5,5,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Cham Zhao si", 50,"Revised", "May 2022",3, 3,2,3,3,3,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Chia Yue Shyang", 60,"Approved", "Sep 2022", 5, 3,4,5,5,5,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Tan Zhen Xun", 40,"Approved", "Sep 2022", 1, 3,4,1,1,1,1,1,1,2,1,1,1, 1))
-        itemsArray.add(StudentData("Wong Jing Yi", 5,"Pending", "May 2022", 5))
-        itemsArray.add(StudentData("Wong Jing Yi", 0,"Havent", "May 2022"))
-        itemsArray.add(StudentData("Lee Wei Heng", 60,"Approved", "May 2022", 5, 3,4,5,5,5,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Cham Zhao si", 50,"Revised", "Oct 2022",3, 3,2,3,3,3,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Chia Yue Shyang", 60,"Approved", "May 2022", 5, 3,4,5,5,5,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Tan Zhen Xun", 40,"Approved", "May 2022", 1, 3,4,1,1,1,1,1,1,2,1,1,1, 1))
-        itemsArray.add(StudentData("Wong Jing Yi", 5,"Pending", "Nov 2022", 5))
-        itemsArray.add(StudentData("Wong Jing Yi", 0,"Havent", "May 2022"))
-        itemsArray.add(StudentData("Lee Wei Heng", 60,"Approved", "Nov 2022", 5, 3,4,5,5,5,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Cham Zhao si", 50,"Revised", "May 2022",3, 3,2,3,3,3,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Chia Yue Shyang", 60,"Approved", "May 2022", 5, 3,4,5,5,5,5,5,3,2,3,5,5, 5))
-        itemsArray.add(StudentData("Tan Zhen Xun", 40,"Approved", "May 2022", 1, 3,4,1,1,1,1,1,1,2,1,1,1, 1))
-        itemsArray.add(StudentData("Wong Jing Yi", 5,"Pending", "May 2022", 5))
-        itemsArray.add(StudentData("Wong Jing Yi", 0,"Havent", "May 2022"))
+    private fun getStudentMarkDetail(){
+        var studentMarkData :StudentData? = null
 
+        var name_array: ArrayList<String> = ArrayList()
+        var mark_id_array : ArrayList<String> = ArrayList()
+        var batch_id_array : ArrayList<String> = ArrayList()
+        var batch_array : ArrayList<String> = ArrayList()
+        var total_mark_array :ArrayList<String> = ArrayList()
+        var status_array : ArrayList<String> = ArrayList()
+
+        mDB.collection("Students")
+            .get()
+            .addOnSuccessListener { documents ->
+                if(documents.size() > 0){
+                    for (document in documents){
+                        Log.d("_Student_detail_1", document.toString())
+                        if (document != null){
+                            val name = document.get("Name").toString()
+                            val mark_id = document.get("Mark_ID").toString()
+                            val batch_id = document.get("Batch_ID").toString()
+
+                            name_array.add(name!!)
+                            mark_id_array.add(mark_id!!)
+                            batch_id_array.add(batch_id!!)
+
+                            Log.d("afadsf1", name.toString())
+                            Log.d("afadsf2", mark_id.toString())
+                            Log.d("afadsf3", batch_id.toString())
+
+                            Log.d("afadsf4", name_array.toString())
+                            Log.d("afadsf5", mark_id_array.toString())
+                            Log.d("afadsf6", batch_id_array.toString())
+                        }
+                    }
+                }
+            }.continueWith{
+                for (batch_id_a in batch_id_array){
+                    mDB.collection("Batch")
+                        .document(batch_id_a!!)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            Log.d("_Student_detail_3", document.toString())
+                            val batch = document.get("Intake_MntYear").toString()
+
+                            batch_array.add(batch!!)
+                        }
+                }
+
+            }.continueWith{
+                for (mark_id_a in mark_id_array){
+                    mDB.collection("Mark")
+                        .document(mark_id_a!!)
+                        .get()
+                        .addOnSuccessListener { document ->
+
+                            val total_mark = document.get("Total_Mark").toString()
+                            val status = document.get("Status").toString()
+
+                            total_mark_array.add(total_mark!!)
+                            status_array.add(status!!)
+
+                            Log.d("afadsf7", total_mark_array.toString())
+                            Log.d("afadsf8", status_array.toString())
+
+                            itemsArray.clear()
+                            val num = name_array.size
+                            for ( i in name_array.indices){
+                                if(mark_id_array.size == num && status_array.size == num && batch_array.size == num && total_mark_array.size == num) {
+                                    itemsArray.add(
+                                        StudentData(
+                                            name = name_array[i],
+                                            mark_id = mark_id_array[i],
+                                            status = status_array[i],
+                                            batch = batch_array[i],
+                                            total_mark = total_mark_array[i].toInt()
+                                        )
+                                    )
+                                }
+                            }
+
+                            Log.d("fadfs", itemsArray.toString())
+                            tempArrayList.addAll(itemsArray)
+                            recyclerViewAdapter!!.adapter!!.notifyDataSetChanged()
+                        }
+                }
+
+            }
     }
-
 }
