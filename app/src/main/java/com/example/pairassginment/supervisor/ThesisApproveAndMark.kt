@@ -1,144 +1,46 @@
-package com.example.pairassginment.coordinator
+package com.example.pairassginment.supervisor
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.example.pairassginment.R
-import com.example.pairassginment.coordinator.objectClass.StudentData
-import com.example.pairassginment.databinding.ActivityDashboardCoordinatorBinding
-import com.example.pairassginment.databinding.ActivityViewAllMarkBinding
-import com.google.firebase.firestore.FirebaseFirestore
-import com.skydoves.balloon.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
+import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
+import com.skydoves.balloon.showAlignTop
 
-class ViewAllMark : AppCompatActivity() {
-    private lateinit var binding: ActivityViewAllMarkBinding
-    private var studentData: StudentData? = null
-    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
+class ThesisApproveAndMark : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityViewAllMarkBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        studentData = intent.getParcelableExtra<StudentData>("item_click")
 
-        setUIReady()
-        setBtnListener()
     }
 
-    private fun setBtnListener(){
-        val backBtn = binding.backBtn
-        backBtn.setOnClickListener {
-            val intentBack = Intent(this, StudentList::class.java)
-            setResult(Activity.RESULT_CANCELED, intentBack)
-            finish()
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_thesis_approve_and_mark, container, false)
 
-        val approve_btn = binding.approveBtn
-        approve_btn.setOnClickListener {
-            // send data to data base
-            updateDB()
-        }
-    }
+        val button = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        val button2 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton2)
+        val button3 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton3)
+        val button4 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton4)
+        val button5 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton5)
+        val button6 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton6)
+        val button7 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton7)
+        val button8 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton8)
+        val button9 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton9)
+        val button10 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton10)
+        val button11 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton11)
+        val button12 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton12)
+        val button13 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton13)
 
-    private fun updateDB(){
-        var status: String? = null
-
-        when(studentData!!.status){
-            "Pending" -> status = "Approved"
-            "Havent" -> status = "Approved"
-            "Approved" -> status = "Revised"
-            "Revised" -> status = "Approved"
-        }
-
-        mDB.collection("Mark")
-            .document(studentData!!.mark_id!!)
-            .update("Status", status)
-            .addOnSuccessListener {
-                val intentApprove = Intent(this, Dashboard::class.java)
-                intentApprove.putExtra("from_view", "mark")
-                intentApprove.putExtra("message", "Update Successfully")
-                startActivity(intentApprove)
-                finish()
-            }
-    }
-
-    private fun setUIReady(){
-        binding.textView3.text = studentData!!.name.toString()
-        binding.textView4.text = studentData!!.total_mark.toString()
-
-        when(studentData!!.status){
-            "Approved" -> binding.approveBtn.setText("REVISE")
-            "Havent" -> {
-                binding.approveBtn.setText("WAITING")
-                binding.approveBtn.isEnabled = false
-                binding.approveBtn.setBackgroundColor(Color.parseColor("#c2c2c0"))
-            }
-            else -> binding.approveBtn.setText("APPROVE")
-        }
-
-        val button = binding.floatingActionButton17
-        val button1 = binding.floatingActionButton
-        val button2 = binding.floatingActionButton2
-        val button3 =  binding.floatingActionButton3
-        val button4 =  binding.floatingActionButton4
-        val button5 =  binding.floatingActionButton5
-        val button6 =  binding.floatingActionButton6
-        val button7 =  binding.floatingActionButton7
-        val button8 =  binding.floatingActionButton8
-        val button9 =  binding.floatingActionButton9
-        val button10 =  binding.floatingActionButton10
-        val button11 =  binding.floatingActionButton11
-        val button12 =  binding.floatingActionButton12
-        val button13 =  binding.floatingActionButton13
-
-        val ballon = createBalloon(this) {
-            setArrowSize(10)
-            setWidth(BalloonSizeSpec.WRAP)
-            setHeight(BalloonSizeSpec.WRAP)
-            setArrowPosition(0.5f)
-            setCornerRadius(4f)
-            setArrowAlignAnchorPadding(10)
-            setAlpha(0.9f)
-            setPadding(10)
-            setIsVisibleOverlay(true)
-            setOverlayColorResource(R.color.balloon_overlay)
-            setOverlayPadding(6f)
-            setOverlayPaddingColorResource(R.color.colorPrimary)
-            setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)
-            setDismissWhenOverlayClicked(false)
-            setText(
-                "Laporan proposal (P01, C4(analisis)) : 5%  pengetahuan\n" +
-                        "\n" +
-                        "Perlu mempunyai elemen berikut:\n" +
-                        "•\tPengenalan tentang projek dinyatakan dengan jelas  \n" +
-                        "•\tPernyataan masalah dinyatakan dengan jelas\n" +
-                        "•\tKajian literatur adalah relevan dengan pernyataan masalah\n" +
-                        "•\tObjektif yang hendak dicapai selaras dengan pernyataan masalah\n" +
-                        "•\tSkop projek bersesuaian dengan tahap prasiswazah \n" +
-                        "•\tJangkaan hasil yang boleh dicapai\n" +
-                        "•\tPerancangan projek dirangka dengan tersusun"
-            )
-            setTextColorResource(R.color.black)
-            setBackgroundColorResource(R.color.tooltip_bg)
-            setBalloonAnimation(BalloonAnimation.ELASTIC)
-            setLifecycleOwner(lifecycleOwner)
-        }
-        button.setOnClickListener{
-            button.showAlignBottom(ballon, 800)
-        }
-
-        if(studentData!!.proposal != null){
-            binding.markEt.setText(studentData!!.proposal!!.toString())
-        }else{
-            binding.markEt.setText("Not Yet")
-        }
-
-
-        val balloon1 = createBalloon(this) {
+        val balloon = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -168,18 +70,12 @@ class ViewAllMark : AppCompatActivity() {
             setLifecycleOwner(lifecycleOwner)
         }
 
-        button1.setOnClickListener{
-            button1.showAlignBottom(balloon1)
-        }
-
-        if(studentData!!.abstrak != null){
-            binding.markEt1.setText(studentData!!.abstrak!!.toString())
-        }else{
-            binding.markEt1.setText("Not Yet")
+        button.setOnClickListener{
+            button.showAlignTop(balloon)
         }
 
 
-        val balloon2 = createBalloon(this) {
+        val balloon2 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -215,17 +111,7 @@ class ViewAllMark : AppCompatActivity() {
             button2.showAlignTop(balloon2)
         }
 
-//        Log.d("student mark", studentData!!.toString())
-//        Log.d("student mark", studentData!!.abstrak!!.toString())
-
-        if(studentData!!.pendahuluan != null) {
-            binding.markEt2.setText(studentData!!.pendahuluan.toString())
-        }else{
-            binding.markEt2.setText("Not Yet")
-        }
-
-
-        val balloon3 = createBalloon(this) {
+        val balloon3 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -263,13 +149,7 @@ class ViewAllMark : AppCompatActivity() {
             button3.showAlignTop(balloon3)
         }
 
-        if(studentData!!.kajian_literature != null) {
-            binding.markEt3.setText(studentData!!.kajian_literature.toString())
-        }else{
-            binding.markEt3.setText("Not Yet")
-        }
-
-        val balloon4 = createBalloon(this) {
+        val balloon4 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -307,13 +187,7 @@ class ViewAllMark : AppCompatActivity() {
             button4.showAlignTop(balloon4)
         }
 
-        if(studentData!!.metodologi != null) {
-            binding.markEt4.setText(studentData!!.metodologi.toString())
-        }else{
-            binding.markEt4.setText("Not Yet")
-        }
-
-        val balloon5 = createBalloon(this) {
+        val balloon5 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -351,13 +225,7 @@ class ViewAllMark : AppCompatActivity() {
             button5.showAlignTop(balloon5)
         }
 
-        if(studentData!!.reka_bentuk_sistem != null) {
-            binding.markEt5.setText(studentData!!.reka_bentuk_sistem.toString())
-        }else{
-            binding.markEt5.setText("Not Yet")
-        }
-
-        val balloon6 = createBalloon(this) {
+        val balloon6 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -395,13 +263,7 @@ class ViewAllMark : AppCompatActivity() {
             button6.showAlignTop(balloon6)
         }
 
-        if(studentData!!.perlaksanan != null) {
-            binding.markEt6.setText(studentData!!.perlaksanan.toString())
-        }else{
-            binding.markEt6.setText("Not Yet")
-        }
-
-        val balloon7 = createBalloon(this) {
+        val balloon7 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -439,13 +301,7 @@ class ViewAllMark : AppCompatActivity() {
             button7.showAlignTop(balloon7)
         }
 
-        if(studentData!!.perbincangan != null) {
-            binding.markEt7.setText(studentData!!.perbincangan.toString())
-        }else{
-            binding.markEt7.setText("Not Yet")
-        }
-
-        val balloon8 = createBalloon(this) {
+        val balloon8 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -479,13 +335,7 @@ class ViewAllMark : AppCompatActivity() {
             button8.showAlignTop(balloon8)
         }
 
-        if(studentData!!.kesimpulan_dan_cadangan != null) {
-            binding.markEt8.setText(studentData!!.kesimpulan_dan_cadangan.toString())
-        }else{
-            binding.markEt8.setText("Not Yet")
-        }
-
-        val balloon9 = createBalloon(this) {
+        val balloon9 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -517,13 +367,7 @@ class ViewAllMark : AppCompatActivity() {
             button9.showAlignTop(balloon9)
         }
 
-        if(studentData!!.rujukan != null) {
-            binding.markEt9.setText(studentData!!.rujukan.toString())
-        }else{
-            binding.markEt9.setText("Not Yet")
-        }
-
-        val ballon10 = createBalloon(this) {
+        val balloon10 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -554,16 +398,10 @@ class ViewAllMark : AppCompatActivity() {
         }
 
         button10.setOnClickListener{
-            button10.showAlignTop(ballon10)
+            button10.showAlignTop(balloon10)
         }
 
-        if(studentData!!.sitasi_penulisan != null) {
-            binding.markEt10.setText(studentData!!.sitasi_penulisan.toString())
-        }else{
-            binding.markEt10.setText("Not Yet")
-        }
-
-        val ballon11 = createBalloon(this) {
+        val balloon11 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -586,16 +424,10 @@ class ViewAllMark : AppCompatActivity() {
         }
 
         button11.setOnClickListener{
-            button11.showAlignTop(ballon11)
+            button11.showAlignTop(balloon11)
         }
 
-        if(studentData!!.rekabentuk != null) {
-            binding.markEt11.setText(studentData!!.rekabentuk.toString())
-        }else{
-            binding.markEt11.setText("Not Yet")
-        }
-
-        val balloon12 = createBalloon(this) {
+        val balloon12 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -623,13 +455,7 @@ class ViewAllMark : AppCompatActivity() {
             button12.showAlignTop(balloon12)
         }
 
-        if(studentData!!.konfigurasi_persekitaran != null) {
-            binding.markEt12.setText(studentData!!.konfigurasi_persekitaran.toString())
-        }else{
-            binding.markEt12.setText("Not Yet")
-        }
-
-        val balloon13 = createBalloon(this) {
+        val balloon13 = createBalloon(requireContext()) {
             setArrowSize(10)
             setWidth(BalloonSizeSpec.WRAP)
             setHeight(BalloonSizeSpec.WRAP)
@@ -655,10 +481,7 @@ class ViewAllMark : AppCompatActivity() {
             button13.showAlignTop(balloon13)
         }
 
-        if(studentData!!.pemilihan_methodologi_teknik_perisan != null) {
-            binding.markEt13.setText(studentData!!.pemilihan_methodologi_teknik_perisan.toString())
-        }else{
-            binding.markEt13.setText("Not Yet")
-        }
+        // Inflate the layout for this fragment
+        return view
     }
 }

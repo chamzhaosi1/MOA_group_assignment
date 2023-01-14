@@ -14,6 +14,7 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pairassginment.databinding.ActivityMainBinding
+import com.example.pairassginment.supervisor.DashboardSupervisor
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -108,7 +109,11 @@ class MainActivity : AppCompatActivity(){
                                     finish()
                                 }
                                 "supervisor" ->{
-                                    Log.d("Role" , role)
+                                    val intent = Intent(this@MainActivity, DashboardSupervisor::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.putExtra("role_id", document.data!!.getValue("Role_ID").toString())
+                                    startActivity(intent)
+                                    finish()
                                 }
                             }
                         }
