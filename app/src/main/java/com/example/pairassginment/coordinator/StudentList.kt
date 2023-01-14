@@ -123,7 +123,7 @@ class StudentList : Fragment() {
             val intent = result.data
             when (requestCode) {
                 MY_ITEM_CODE_REQUEST -> {
-                    val message = "Approved Successfully"
+                    val message = "Update Successfully"
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -191,8 +191,6 @@ class StudentList : Fragment() {
                             total_mark_array.add(total_mark!!)
                             status_array.add(status!!)
 
-                            Log.d("afadsf7", total_mark_array.toString())
-                            Log.d("afadsf8", status_array.toString())
 
                             itemsArray.clear()
                             val num = name_array.size

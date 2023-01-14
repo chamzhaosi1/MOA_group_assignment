@@ -10,12 +10,14 @@ import com.example.pairassginment.R
 import com.example.pairassginment.coordinator.objectClass.StudentData
 import com.example.pairassginment.databinding.ActivityDashboardCoordinatorBinding
 import com.example.pairassginment.databinding.ActivityViewAllMarkBinding
+import com.google.firebase.firestore.FirebaseFirestore
 import com.skydoves.balloon.*
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 
 class ViewAllMark : AppCompatActivity() {
     private lateinit var binding: ActivityViewAllMarkBinding
     private var studentData: StudentData? = null
+    private var mDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +40,28 @@ class ViewAllMark : AppCompatActivity() {
         val approve_btn = binding.approveBtn
         approve_btn.setOnClickListener {
             // send data to data base
-            val intentApprove = Intent(this, StudentList::class.java)
-            setResult(Activity.RESULT_OK, intentApprove)
-            finish()
+            updateDB()
         }
+    }
+
+    private fun updateDB(){
+        var status: String? = null
+
+        when(studentData!!.status){
+            "Pending" -> status = "Approved"
+            "Havent" -> status = "Approved"
+            "Approved" -> status = "Revised"
+            "Revised" -> status = "Approved"
+        }
+
+        mDB.collection("Mark")
+            .document(studentData!!.mark_id!!)
+            .update("Status", status)
+            .addOnSuccessListener {
+                val intentApprove = Intent(this, StudentList::class.java)
+                setResult(Activity.RESULT_OK, intentApprove)
+                finish()
+            }
     }
 
     private fun setUIReady(){
@@ -49,13 +69,13 @@ class ViewAllMark : AppCompatActivity() {
         binding.textView4.text = studentData!!.total_mark.toString()
 
         when(studentData!!.status){
-            "Approved" -> binding.approveBtn.setText("REVISED")
+            "Approved" -> binding.approveBtn.setText("REVISE")
             "Havent" -> {
                 binding.approveBtn.setText("WAITING")
                 binding.approveBtn.isEnabled = false
                 binding.approveBtn.setBackgroundColor(Color.parseColor("#c2c2c0"))
             }
-            else -> binding.approveBtn.setText("APPROVED")
+            else -> binding.approveBtn.setText("APPROVE")
         }
 
         val button = binding.floatingActionButton17
