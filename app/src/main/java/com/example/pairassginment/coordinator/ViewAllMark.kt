@@ -47,6 +47,12 @@ class ViewAllMark : AppCompatActivity() {
         binding.textView3.text = studentData!!.name.toString()
         binding.textView4.text = studentData!!.total_mark.toString()
 
+        when(studentData!!.status){
+            "Approved" -> binding.approveBtn.setText("REVISED")
+            "Havent" -> binding.approveBtn.setText("WAITING")
+            else -> binding.approveBtn.setText("APPROVED")
+        }
+
         val button = binding.floatingActionButton17
         val button1 = binding.floatingActionButton
         val button2 = binding.floatingActionButton2
@@ -621,6 +627,10 @@ class ViewAllMark : AppCompatActivity() {
             binding.markEt13.setText(studentData!!.pemilihan_methodologi_teknik_perisan.toString())
         }else{
             binding.markEt13.setText("Not Yet")
+        }
+
+        when(studentData!!.status){
+            "Havent" -> binding.markEt13.isFocusable = false
         }
     }
 }

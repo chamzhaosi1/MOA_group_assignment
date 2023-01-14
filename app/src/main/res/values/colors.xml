@@ -26,4 +26,9 @@
     <color name="balloon_overlay">#C3000000</color>
     <color name="approved_blue">#9EEFF2</color>
 
+    <color name="c_approved_green">#36c73b</color>
+    <color name="c_revised_blue">#2eb8a5</color>
+    <color name="c_havent_gray">#77807e</color>
+    <color name="c_pending_yellow">#bda72f</color>
+
 </resources>

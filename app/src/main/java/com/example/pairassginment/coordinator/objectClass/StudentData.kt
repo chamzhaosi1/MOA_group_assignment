@@ -6,6 +6,7 @@ import android.os.Parcelable
 data class StudentData (
     val name : String? = null,
     val total_mark : Int? = null,
+    val status: String? = null,
     val batch: String? = null,
     val proposal :Int? = null,
     val abstrak: Int? = null,
@@ -27,6 +28,7 @@ data class StudentData (
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
+        parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -47,6 +49,7 @@ data class StudentData (
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeValue(total_mark)
+        parcel.writeString(status)
         parcel.writeString(batch)
         parcel.writeValue(proposal)
         parcel.writeValue(abstrak)
