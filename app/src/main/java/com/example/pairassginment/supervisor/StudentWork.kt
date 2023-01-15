@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
 import com.example.pairassginment.supervisor.`object`.StudWorkClass
+import com.example.pairassginment.supervisor.`object`.StudentSubmission
 import com.example.pairassginment.supervisor.recycleAdapter.StudWorkAdapter
 
 
@@ -25,7 +26,8 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_student_work, container, false)
-        getItems()
+//        getItems()
+        val itemsArray: StudentSubmission? = arguments?.getParcelable("item clicked")
 
         view.findViewById<RecyclerView>(R.id.studWork_rv).layoutManager =
             LinearLayoutManager(context)

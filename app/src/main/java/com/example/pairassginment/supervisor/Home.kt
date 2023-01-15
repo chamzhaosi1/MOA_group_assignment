@@ -7,16 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
-import com.example.pairassginment.databinding.FragmentHomeBinding
-import com.example.pairassginment.student.itemRecycleAdapter
-import com.example.pairassginment.student.objectClass.StudentDetail
-import com.example.pairassginment.student.objectClass.ThreeTopicsItem
 import com.example.pairassginment.supervisor.`object`.HomeItems
 import com.example.pairassginment.supervisor.`object`.StudentSubmission
 import com.example.pairassginment.supervisor.`object`.otherDocument
@@ -271,12 +264,13 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(position: Int) {
-        val type = itemsArray[position].homeTitle.toString()
+//        val type = itemsArray[position].homeTitle.toString()
+        val bundle = Bundle()
+        val studentWork = StudentWork()
 
-        when (type) {
-            "Cham Zhao Si" -> replaceFragment(StudentWork())
-            "Lee Wei Heng" -> replaceFragment(StudentWork())
-        }
+        bundle.putParcelable("item clicked", studentSubmissionArray?.get(position))
+        studentWork.arguments = bundle
+        replaceFragment(studentWork)
     }
 
     @SuppressLint("NotifyDataSetChanged")
