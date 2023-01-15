@@ -8,8 +8,12 @@ data class topic (
     val abstract : String? = null,
     val dateSubmission : String? = null,
     val status : String? = null,
+    val dateFeedback : String? =null,
+    val documentType : String? = null,
 ):Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -22,6 +26,8 @@ data class topic (
         parcel.writeString(abstract)
         parcel.writeString(dateSubmission)
         parcel.writeString(status)
+        parcel.writeString(dateFeedback)
+        parcel.writeString(documentType)
     }
 
     override fun describeContents(): Int {
@@ -37,4 +43,5 @@ data class topic (
             return arrayOfNulls(size)
         }
     }
+
 }

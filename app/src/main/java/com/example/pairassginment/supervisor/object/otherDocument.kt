@@ -5,14 +5,18 @@ import android.os.Parcelable
 
 data class otherDocument (
 
-    val dataSubmission : String? = null,
+    val dateSubmission : String? = null,
     val fileSubmission : String? = null,
     val fileSubmissionOrg : String? = null,
     val status : String? = null,
-    val studComment : String? = null
+    val studComment : String? = null,
+    val documentType : String? = null,
+    val dateFeedback : String? =null,
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -22,11 +26,13 @@ data class otherDocument (
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(dataSubmission)
+        parcel.writeString(dateSubmission)
         parcel.writeString(fileSubmission)
         parcel.writeString(fileSubmissionOrg)
         parcel.writeString(status)
         parcel.writeString(studComment)
+        parcel.writeString(documentType)
+        parcel.writeString(dateFeedback)
     }
 
     override fun describeContents(): Int {
