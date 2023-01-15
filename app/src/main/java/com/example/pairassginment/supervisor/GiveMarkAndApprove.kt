@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.pairassginment.R
+import com.example.pairassginment.supervisor.`object`.otherDocument
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,6 +34,10 @@ class GiveMarkAndApprove : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_give_mark_and_approve, container, false)
+
+        val title = arguments?.getString("title")
+        val item_clicked = arguments?.getParcelable<otherDocument>("item clicked")
+
         val mark = view.findViewById<EditText>(R.id.mark_et)
         val button = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         val approve = view.findViewById<Button>(R.id.button2)

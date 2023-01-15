@@ -131,6 +131,7 @@ class ViewAllMark : AppCompatActivity() {
             button.showAlignBottom(ballon, 800)
         }
 
+//        Log.d("fasdf,",studentData.toString())
         if(studentData!!.proposal != null){
             binding.markEt.setText(studentData!!.proposal!!.toString())
         }else{

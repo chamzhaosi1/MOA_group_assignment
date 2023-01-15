@@ -12,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
 import com.example.pairassginment.supervisor.`object`.StudWorkClass
 import com.example.pairassginment.supervisor.`object`.StudentSubmission
+import com.example.pairassginment.supervisor.`object`.otherDocument
 import com.example.pairassginment.supervisor.recycleAdapter.StudWorkAdapter
 
 
 class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
     private var recyclerView: RecyclerView? = null
+    private var title: String? =null
+    val allItems = ArrayList<Any>()
 
 //    private lateinit var itemsArray: ArrayList<StudWorkClass>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,11 +39,14 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
         recyclerView = view.findViewById<RecyclerView>(R.id.studWork_rv)
         recyclerView!!.layoutManager = LinearLayoutManager(context)
 
-        val allItems = ArrayList<Any>()
+
 
         if(itemsArray!!.Topics != null && itemsArray!!.Topics!!.size > 0){
             for(item in itemsArray!!.Topics!!){
                 allItems.add(item)
+                if(item.status == "APPROVED"){
+                    title = item.title;
+                }
             }
         }
 
@@ -88,13 +94,13 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
 
     override fun onItemClick(position: Int) {
 //        val type = itemsArray[position].itemImage.toString()
-//
-//        when (type) {
-//            "Proposal_PPT" -> replaceFragment(pptApprove())
-//            "Proposal" -> replaceFragment(GiveMarkAndApprove())
-//            "Final_Thesis" -> replaceFragment(ThesisApproveAndMark())
-//            else -> replaceFragment(TitleApprove())
-//        }
+        val bundle = Bundle()
+        val giveMarkAndApprove = GiveMarkAndApprove()
+
+        bundle.putString("title", title)
+        bundle.putParcelable("item clicked", allItems?.get(position) as otherDocument)
+        giveMarkAndApprove.arguments = bundle
+        replaceFragment(giveMarkAndApprove)
     }
 
     private fun replaceFragment(fragment: Fragment) {

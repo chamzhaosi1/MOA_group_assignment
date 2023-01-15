@@ -9,7 +9,7 @@ data class StudentData (
     var mark_id: String? = null,
     var status: String? = null,
     var batch: String? = null,
-    val proposal :Int? = null,
+    var proposal :String? = null,
     val abstrak: Int? = null,
     val pendahuluan: Int? =null,
     val kajian_literature: Int? = null,
@@ -31,7 +31,7 @@ data class StudentData (
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -54,7 +54,7 @@ data class StudentData (
         parcel.writeString(mark_id)
         parcel.writeString(status)
         parcel.writeString(batch)
-        parcel.writeValue(proposal)
+        parcel.writeString(proposal)
         parcel.writeValue(abstrak)
         parcel.writeValue(pendahuluan)
         parcel.writeValue(kajian_literature)

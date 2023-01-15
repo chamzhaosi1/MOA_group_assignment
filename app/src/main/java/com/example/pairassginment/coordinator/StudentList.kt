@@ -202,7 +202,8 @@ class StudentList : Fragment() {
                                             mark_id = mark_id_array[i],
                                             status = status_array[i],
                                             batch = batch_array[i],
-                                            total_mark = total_mark_array[i].toInt()
+                                            total_mark = total_mark_array[i].toInt(),
+                                            proposal = document.get("Proposal").toString()
                                         )
                                     )
                                 }
