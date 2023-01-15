@@ -21,7 +21,6 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
 //    private lateinit var itemsArray: ArrayList<StudWorkClass>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(

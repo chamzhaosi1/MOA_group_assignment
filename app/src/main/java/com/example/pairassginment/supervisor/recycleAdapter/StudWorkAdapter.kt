@@ -72,8 +72,11 @@ class StudWorkAdapter(val allItems: ArrayList<Any>? = null, val listener: OnItem
                     holder.topic.text = item.title
                     holder.subDate.text = item.dateSubmission
 
-                    if(item.dateFeedback != null){
+                    if(item.dateFeedback != "null"){
                         holder.approveRejectDate.text = item.dateFeedback
+                    }else{
+                        holder.approveRejectDate.visibility = View.GONE
+                        holder.approveTv.visibility = View.GONE
                     }
 
                 }else if(item is otherDocument){
@@ -98,8 +101,11 @@ class StudWorkAdapter(val allItems: ArrayList<Any>? = null, val listener: OnItem
                     holder.topic.visibility = View.GONE
                     holder.subDate.text = item.dateSubmission
 
-                    if(item.dateFeedback != null){
+                    if(item.dateFeedback != "null"){
                         holder.approveRejectDate.text = item.dateFeedback
+                    }else{
+                        holder.approveRejectDate.visibility = View.GONE
+                        holder.approveTv.visibility = View.GONE
                     }
                 }
 
@@ -116,6 +122,7 @@ class StudWorkAdapter(val allItems: ArrayList<Any>? = null, val listener: OnItem
         var mark: TextView
         var subDate: TextView
         var approveRejectDate: TextView
+        var approveTv: TextView
 
         init {
             card_view1 = itemView.findViewById(R.id.card_view)
@@ -124,7 +131,9 @@ class StudWorkAdapter(val allItems: ArrayList<Any>? = null, val listener: OnItem
             mark = itemView.findViewById(R.id.mark_tv)
             subDate = itemView.findViewById(R.id.item_submitted_date_tv)
             approveRejectDate = itemView.findViewById(R.id.item_approved_rejected_date_tv)
+            approveTv = itemView.findViewById(R.id.textView8)
             itemView.setOnClickListener(this)
+
         }
 
         override fun onClick(v: View?) {
