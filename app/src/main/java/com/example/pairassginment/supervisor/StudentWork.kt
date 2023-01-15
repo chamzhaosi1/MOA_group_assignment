@@ -18,12 +18,14 @@ import com.example.pairassginment.supervisor.recycleAdapter.StudWorkAdapter
 
 class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
     private var recyclerView: RecyclerView? = null
-    private var title: String? =null
+    private var title: String? = null
     val allItems = ArrayList<Any>()
+    var itemsArray: StudentSubmission? = null
 
-//    private lateinit var itemsArray: ArrayList<StudWorkClass>
+    //    private lateinit var itemsArray: ArrayList<StudWorkClass>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -32,7 +34,7 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_student_work, container, false)
 //        getItems()
-        val itemsArray: StudentSubmission? = arguments?.getParcelable("item clicked")
+        itemsArray = arguments?.getParcelable("item clicked")
         view.findViewById<TextView>(R.id.textView5).text = itemsArray!!.studName +" "+ itemsArray!!.studID
 
         Log.d("item_clicked", itemsArray.toString())
@@ -40,12 +42,11 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
         recyclerView!!.layoutManager = LinearLayoutManager(context)
 
 
-
         if(itemsArray!!.Topics != null && itemsArray!!.Topics!!.size > 0){
             for(item in itemsArray!!.Topics!!){
                 allItems.add(item)
-                if(item.status == "APPROVED"){
-                    title = item.title;
+                if (item.status == "APPROVED") {
+                    title = item.title
                 }
             }
         }
@@ -93,11 +94,16 @@ class StudentWork : Fragment(), StudWorkAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(position: Int) {
-//        val type = itemsArray[position].itemImage.toString()
+//        val type = itemsArray[position].homeTitle.toString()
         val bundle = Bundle()
         val giveMarkAndApprove = GiveMarkAndApprove()
+        bundle.putString( "title", title)
 
-        bundle.putString("title", title)
+        Log.d("jhgSub", itemsArray?.submission_ID.toString())
+
+        bundle.putString( "submission_ID", itemsArray?.submission_ID)
+        bundle.putString( "mark_ID", itemsArray?.mark_ID)
+        bundle.putString( "stud_ID", itemsArray?.stud_ID)
         bundle.putParcelable("item clicked", allItems?.get(position) as otherDocument)
         giveMarkAndApprove.arguments = bundle
         replaceFragment(giveMarkAndApprove)

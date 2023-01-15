@@ -119,7 +119,6 @@ class StudWorkAdapter(val allItems: ArrayList<Any>? = null, val listener: OnItem
         var card_view1: CardView
         var image: ImageView
         var topic: TextView
-        var mark: TextView
         var subDate: TextView
         var approveRejectDate: TextView
         var approveTv: TextView
@@ -128,12 +127,10 @@ class StudWorkAdapter(val allItems: ArrayList<Any>? = null, val listener: OnItem
             card_view1 = itemView.findViewById(R.id.card_view)
             image = itemView.findViewById(R.id.item_image)
             topic = itemView.findViewById(R.id.itemTopicSubmitted)
-            mark = itemView.findViewById(R.id.mark_tv)
             subDate = itemView.findViewById(R.id.item_submitted_date_tv)
             approveRejectDate = itemView.findViewById(R.id.item_approved_rejected_date_tv)
             approveTv = itemView.findViewById(R.id.textView8)
             itemView.setOnClickListener(this)
-
         }
 
         override fun onClick(v: View?) {

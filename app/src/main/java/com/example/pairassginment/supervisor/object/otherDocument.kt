@@ -10,11 +10,15 @@ data class otherDocument (
     val fileSubmissionOrg : String? = null,
     val status : String? = null,
     val studComment : String? = null,
+    val supComment : String? = null,
     val documentType : String? = null,
     val dateFeedback : String? =null,
+    val document_ID : String? =null
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -31,8 +35,10 @@ data class otherDocument (
         parcel.writeString(fileSubmissionOrg)
         parcel.writeString(status)
         parcel.writeString(studComment)
+        parcel.writeString(supComment)
         parcel.writeString(documentType)
         parcel.writeString(dateFeedback)
+        parcel.writeString(document_ID)
     }
 
     override fun describeContents(): Int {
@@ -48,4 +54,5 @@ data class otherDocument (
             return arrayOfNulls(size)
         }
     }
+
 }

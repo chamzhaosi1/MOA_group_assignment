@@ -10,8 +10,11 @@ data class topic (
     val status : String? = null,
     val dateFeedback : String? =null,
     val documentType : String? = null,
+    val document_ID : String? = null
+
 ):Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -28,6 +31,7 @@ data class topic (
         parcel.writeString(status)
         parcel.writeString(dateFeedback)
         parcel.writeString(documentType)
+        parcel.writeString(document_ID)
     }
 
     override fun describeContents(): Int {

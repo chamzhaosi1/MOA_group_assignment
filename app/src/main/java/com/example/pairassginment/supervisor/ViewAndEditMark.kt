@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.pairassginment.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.skydoves.balloon.*
@@ -49,6 +50,11 @@ class ViewAndEditMark : Fragment() {
         val button11 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton11)
         val button12 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton12)
         val button13 = view.findViewById<FloatingActionButton>(R.id.floatingActionButton13)
+        val save = view.findViewById<Button>(R.id.button5)
+
+        save.setOnClickListener{
+            replaceFragment(MarkList())
+        }
 
         val balloon = createBalloon(requireContext()) {
             setArrowSize(10)
@@ -59,12 +65,12 @@ class ViewAndEditMark : Fragment() {
             setArrowAlignAnchorPadding(10)
             setAlpha(0.9f)
             setPadding(10)
-            setIsVisibleOverlay(true)
-            setOverlayColorResource(R.color.balloon_overlay)
-            setOverlayPadding(6f)
-            setOverlayPaddingColorResource(R.color.colorPrimary)
-            setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)
-            setDismissWhenOverlayClicked(false)
+//            setIsVisibleOverlay(true)
+//            setOverlayColorResource(R.color.balloon_overlay)
+//            setOverlayPadding(6f)
+//            setOverlayPaddingColorResource(R.color.colorPrimary)
+//            setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)
+//            setDismissWhenOverlayClicked(false)
             setText("Laporan proposal (P01, C4(analisis)) : 5%  pengetahuan\n" +
                     "\n" +
                     "Perlu mempunyai elemen berikut:\n" +
@@ -530,23 +536,11 @@ class ViewAndEditMark : Fragment() {
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ViewAndEditMark.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ViewAndEditMark().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.frame_layout, fragment)
+        fragmentTransaction?.commit()
     }
+
 }

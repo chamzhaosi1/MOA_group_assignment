@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pairassginment.R
@@ -44,8 +45,8 @@ class MarkList : Fragment(), MarkAdapter.OnItemClickListener {
     fun getItems() {
         itemsArray = ArrayList();
 
-        itemsArray.add(MarkClass("Chao Zhao Si", "60/60"))
-        itemsArray.add(MarkClass("Lee Wei Heng", "10/60"))
+        itemsArray.add(MarkClass("Chao Zhao Si", "5/60"))
+        itemsArray.add(MarkClass("Lee Wei Heng", "5/60"))
 
 
     }

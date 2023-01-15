@@ -58,6 +58,9 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
 
         val studentName: ArrayList<String> = ArrayList()
         val studentID: ArrayList<String> = ArrayList()
+        val submission_ID: ArrayList<String> = ArrayList()
+        val mark_ID: ArrayList<String> = ArrayList()
+        val Stud_ID: ArrayList<String> = ArrayList()
 
         studentSubmissionArray = ArrayList()
         val submission_id_a: ArrayList<String>? = ArrayList()
@@ -68,6 +71,9 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
             if (documents.size() > 0) {
                 for (document in documents) {
                     submission_id_a!!.add(document.get("Submission_ID").toString())
+                    submission_ID.add(document.get("Submission_ID").toString())
+                    mark_ID.add(document.get("Mark_ID").toString())
+                    Stud_ID.add(document.id)
                 }
             }
         }.continueWith{
@@ -90,14 +96,17 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                 .addOnSuccessListener { documents ->
                                     if(documents.size() > 0){
                                         for (document in documents){
-                                            topicArray.add(topic(
-                                                title = document.get("Title").toString(),
-                                                abstract = document.get("Abstract").toString(),
-                                                dateSubmission = document.get("Date_Submit").toString(),
-                                                status = document.get("Status").toString(),
-                                                documentType = "Topics",
-                                                dateFeedback = document.get("Date_Feedback").toString(),
-                                            ))
+                                            topicArray.add(
+                                                topic(
+                                                    title = document.get("Title").toString(),
+                                                    abstract = document.get("Abstract").toString(),
+                                                    dateSubmission = document.get("Date_Submit").toString(),
+                                                    status = document.get("Status").toString(),
+                                                    documentType = "Topics",
+                                                    dateFeedback = document.get("Date_Feedback").toString(),
+                                                    document_ID = document.id,
+                                                )
+                                            )
                                         }
                                         val temp : ArrayList<topic> = ArrayList()
                                         temp.addAll(topicArray)
@@ -117,15 +126,20 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                         .addOnSuccessListener { documents ->
                                             if(documents.size() > 0){
                                                 for (document in documents){
-                                                    proposalPPTOtherDocumentArray.add(otherDocument(
-                                                        dateSubmission = document.get("Date_Submit").toString(),
-                                                        fileSubmission = document.get("File_Submitted").toString(),
-                                                        fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                        status = document.get("Status").toString(),
-                                                        studComment = document.get("Student_Comment").toString(),
-                                                        documentType = "Proposal_PPT",
-                                                        dateFeedback = document.get("Date_Feedback").toString(),
-                                                    ))
+                                                    Log.d("dsdDco", document.id)
+                                                    proposalPPTOtherDocumentArray.add(
+                                                        otherDocument(
+                                                            dateSubmission = document.get("Date_Submit").toString(),
+                                                            fileSubmission = document.get("File_Submitted").toString(),
+                                                            fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                            status = document.get("Status").toString(),
+                                                            studComment = document.get("Student_Comment").toString(),
+                                                            documentType = "Proposal_PPT",
+                                                            dateFeedback = document.get("Date_Feedback").toString(),
+                                                            document_ID = document.id,
+                                                            supComment = document.get("Supervisor_Comment").toString(),
+                                                        )
+                                                    )
                                                 }
                                                 val temp : ArrayList<otherDocument> = ArrayList()
                                                 temp.addAll(proposalPPTOtherDocumentArray)
@@ -141,15 +155,19 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                 .addOnSuccessListener { documents ->
                                                     if(documents.size() > 0){
                                                         for (document in documents){
-                                                            proposalOtherDocumentArray.add(otherDocument(
-                                                                dateSubmission = document.get("Date_Submit").toString(),
-                                                                fileSubmission = document.get("File_Submitted").toString(),
-                                                                fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                                status = document.get("Status").toString(),
-                                                                studComment = document.get("Student_Comment").toString(),
-                                                                documentType = "Proposal",
-                                                                dateFeedback = document.get("Date_Feedback").toString(),
-                                                            ))
+                                                            proposalOtherDocumentArray.add(
+                                                                otherDocument(
+                                                                    dateSubmission = document.get("Date_Submit").toString(),
+                                                                    fileSubmission = document.get("File_Submitted").toString(),
+                                                                    fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                                    status = document.get("Status").toString(),
+                                                                    studComment = document.get("Student_Comment").toString(),
+                                                                    documentType = "Proposal",
+                                                                    dateFeedback = document.get("Date_Feedback").toString(),
+                                                                    document_ID = document.id,
+                                                                    supComment = document.get("Supervisor_Comment").toString(),
+                                                                )
+                                                            )
                                                         }
                                                         val temp : ArrayList<otherDocument> = ArrayList()
                                                         temp.addAll(proposalOtherDocumentArray)
@@ -165,15 +183,19 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                         .addOnSuccessListener { documents ->
                                                             if(documents.size() > 0){
                                                                 for (document in documents){
-                                                                    finalDraftOtherDocumentArray.add(otherDocument(
-                                                                        dateSubmission = document.get("Date_Submit").toString(),
-                                                                        fileSubmission = document.get("File_Submitted").toString(),
-                                                                        fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                                        status = document.get("Status").toString(),
-                                                                        studComment = document.get("Student_Comment").toString(),
-                                                                        documentType = "Final_Draft",
-                                                                        dateFeedback = document.get("Date_Feedback").toString(),
-                                                                    ))
+                                                                    finalDraftOtherDocumentArray.add(
+                                                                        otherDocument(
+                                                                            dateSubmission = document.get("Date_Submit").toString(),
+                                                                            fileSubmission = document.get("File_Submitted").toString(),
+                                                                            fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                                            status = document.get("Status").toString(),
+                                                                            studComment = document.get("Student_Comment").toString(),
+                                                                            documentType = "Final_Draft",
+                                                                            dateFeedback = document.get("Date_Feedback").toString(),
+                                                                            document_ID = document.id,
+                                                                            supComment = document.get("Supervisor_Comment").toString(),
+                                                                        )
+                                                                    )
                                                                 }
                                                                 val temp : ArrayList<otherDocument> = ArrayList()
                                                                 temp.addAll(finalDraftOtherDocumentArray)
@@ -189,15 +211,19 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                 .addOnSuccessListener { documents ->
                                                                     if(documents.size() > 0){
                                                                         for (document in documents){
-                                                                            finalPPTOtherDocumentArray.add(otherDocument(
-                                                                                dateSubmission = document.get("Date_Submit").toString(),
-                                                                                fileSubmission = document.get("File_Submitted").toString(),
-                                                                                fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                                                status = document.get("Status").toString(),
-                                                                                studComment = document.get("Student_Comment").toString(),
-                                                                                documentType = "Final_PPT",
-                                                                                dateFeedback = document.get("Date_Feedback").toString(),
-                                                                            ))
+                                                                            finalPPTOtherDocumentArray.add(
+                                                                                otherDocument(
+                                                                                    dateSubmission = document.get("Date_Submit").toString(),
+                                                                                    fileSubmission = document.get("File_Submitted").toString(),
+                                                                                    fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                                                    status = document.get("Status").toString(),
+                                                                                    studComment = document.get("Student_Comment").toString(),
+                                                                                    documentType = "Final_PPT",
+                                                                                    dateFeedback = document.get("Date_Feedback").toString(),
+                                                                                    document_ID = document.id,
+                                                                                    supComment = document.get("Supervisor_Comment").toString(),
+                                                                                )
+                                                                            )
                                                                         }
                                                                         val temp : ArrayList<otherDocument> = ArrayList()
                                                                         temp.addAll(finalPPTOtherDocumentArray)
@@ -213,15 +239,19 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                         .addOnSuccessListener { documents ->
                                                                             if(documents.size() > 0){
                                                                                 for (document in documents){
-                                                                                    finalThesisOtherDocumentArray.add(otherDocument(
-                                                                                        dateSubmission = document.get("Date_Submit").toString(),
-                                                                                        fileSubmission = document.get("File_Submitted").toString(),
-                                                                                        fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                                                        status = document.get("Status").toString(),
-                                                                                        studComment = document.get("Student_Comment").toString(),
-                                                                                        documentType = "Final_Thesis",
-                                                                                        dateFeedback = document.get("Date_Feedback").toString(),
-                                                                                    ))
+                                                                                    finalThesisOtherDocumentArray.add(
+                                                                                        otherDocument(
+                                                                                            dateSubmission = document.get("Date_Submit").toString(),
+                                                                                            fileSubmission = document.get("File_Submitted").toString(),
+                                                                                            fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                                                            status = document.get("Status").toString(),
+                                                                                            studComment = document.get("Student_Comment").toString(),
+                                                                                            documentType = "Final_Thesis",
+                                                                                            dateFeedback = document.get("Date_Feedback").toString(),
+                                                                                            document_ID = document.id,
+                                                                                            supComment = document.get("Supervisor_Comment").toString(),
+                                                                                        )
+                                                                                    )
                                                                                 }
                                                                                 val temp : ArrayList<otherDocument> = ArrayList()
                                                                                 temp.addAll(finalThesisOtherDocumentArray)
@@ -237,15 +267,19 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                                 .addOnSuccessListener { documents ->
                                                                                     if(documents.size() > 0){
                                                                                         for (document in documents){
-                                                                                            posterOtherDocumentArray.add(otherDocument(
-                                                                                                dateSubmission = document.get("Date_Submit").toString(),
-                                                                                                fileSubmission = document.get("File_Submitted").toString(),
-                                                                                                fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
-                                                                                                status = document.get("Status").toString(),
-                                                                                                studComment = document.get("Student_Comment").toString(),
-                                                                                                documentType = "Poster",
-                                                                                                dateFeedback = document.get("Date_Feedback").toString(),
-                                                                                            ))
+                                                                                            posterOtherDocumentArray.add(
+                                                                                                otherDocument(
+                                                                                                    dateSubmission = document.get("Date_Submit").toString(),
+                                                                                                    fileSubmission = document.get("File_Submitted").toString(),
+                                                                                                    fileSubmissionOrg = document.get("File_Submitted_Org").toString(),
+                                                                                                    status = document.get("Status").toString(),
+                                                                                                    studComment = document.get("Student_Comment").toString(),
+                                                                                                    documentType = "Poster",
+                                                                                                    dateFeedback = document.get("Date_Feedback").toString(),
+                                                                                                    document_ID = document.id,
+                                                                                                    supComment = document.get("Supervisor_Comment").toString(),
+                                                                                                )
+                                                                                            )
                                                                                         }
                                                                                         val temp : ArrayList<otherDocument> = ArrayList()
                                                                                         temp.addAll(posterOtherDocumentArray)
@@ -257,9 +291,12 @@ class Home : Fragment(), SupervisorAdapter.OnItemClickListener {
                                                                                 }.continueWith {
                                                                                     val num = studentName.size
                                                                                     for(i in studentName.indices){
-                                                                                        if(studentID.size == num && studentSubmissionArray!!.size == num){
+                                                                                        if(studentID.size == num && studentSubmissionArray!!.size == num && submission_ID.size == num && mark_ID.size == num && Stud_ID.size == num){
                                                                                             studentSubmissionArray!![i].studName = studentName[i]
                                                                                             studentSubmissionArray!![i].studID = studentID[i]
+                                                                                            studentSubmissionArray!![i].submission_ID = submission_ID[i]
+                                                                                            studentSubmissionArray!![i].mark_ID = mark_ID[i]
+                                                                                            studentSubmissionArray!![i].stud_ID = Stud_ID[i]
                                                                                         }
                                                                                         Log.d("adfsda7", studentSubmissionArray.toString())
                                                                                         getItems()

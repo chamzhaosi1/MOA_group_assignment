@@ -12,7 +12,11 @@ data class StudentSubmission (
     var Poster : ArrayList<otherDocument>? = null,
     var Proposal : ArrayList<otherDocument>? = null,
     var Proposal_PPT : ArrayList<otherDocument>? = null,
-    var Topics : ArrayList<topic>? = null
+    var Topics : ArrayList<topic>? = null,
+    var submission_ID : String? = null,
+    var mark_ID : String? = null,
+    var stud_ID : String? = null
+
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -23,13 +27,19 @@ data class StudentSubmission (
         parcel.readArrayList(otherDocument::class.java.classLoader) as ArrayList<otherDocument>?,
         parcel.readArrayList(otherDocument::class.java.classLoader) as ArrayList<otherDocument>?,
         parcel.readArrayList(otherDocument::class.java.classLoader) as ArrayList<otherDocument>?,
-        parcel.readArrayList(topic::class.java.classLoader) as ArrayList<topic>?
+        parcel.readArrayList(topic::class.java.classLoader) as ArrayList<topic>?,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(studName)
         parcel.writeString(studID)
+        parcel.writeString(submission_ID)
+        parcel.writeString(mark_ID)
+        parcel.writeString(stud_ID)
         parcel.writeList(Final_Draft)
         parcel.writeList(Final_PPT)
         parcel.writeList(Final_Thesis)
@@ -37,6 +47,7 @@ data class StudentSubmission (
         parcel.writeList(Proposal)
         parcel.writeList(Proposal_PPT)
         parcel.writeList(Topics)
+
     }
 
     override fun describeContents(): Int {
@@ -52,4 +63,6 @@ data class StudentSubmission (
             return arrayOfNulls(size)
         }
     }
+
+
 }
